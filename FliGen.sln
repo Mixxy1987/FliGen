@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen", "FliGen\FliGen.csproj", "{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Common", "FliGen.Common\FliGen.Common.csproj", "{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fligen.Domain", "Fligen.Domain\Fligen.Domain.csproj", "{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Persistence", "FliGen.Persistence\FliGen.Persistence.csproj", "{731E5502-319F-40B9-9849-B2975DBED42C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Application", "FliGen.Application\FliGen.Application.csproj", "{DD1329C2-F615-4583-A74B-E2D97A60D719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Infrastructure", "FliGen.Infrastructure\FliGen.Infrastructure.csproj", "{37C4183E-EF35-4891-A35E-8949AF13A330}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731E5502-319F-40B9-9849-B2975DBED42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731E5502-319F-40B9-9849-B2975DBED42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731E5502-319F-40B9-9849-B2975DBED42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731E5502-319F-40B9-9849-B2975DBED42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD1329C2-F615-4583-A74B-E2D97A60D719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD1329C2-F615-4583-A74B-E2D97A60D719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD1329C2-F615-4583-A74B-E2D97A60D719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD1329C2-F615-4583-A74B-E2D97A60D719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C4183E-EF35-4891-A35E-8949AF13A330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C4183E-EF35-4891-A35E-8949AF13A330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C4183E-EF35-4891-A35E-8949AF13A330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C4183E-EF35-4891-A35E-8949AF13A330}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA4F4FC9-5251-45DB-8C41-967CFEBF4FC3}
+	EndGlobalSection
+EndGlobal
