@@ -7,5 +7,6 @@ namespace Fligen.Domain.Repositories
     public interface IFLiGenRepository
     {
         Task<IEnumerable<Player>> GetPlayersAsync();
+        Task AddPlayer(Player player);
     }
 }

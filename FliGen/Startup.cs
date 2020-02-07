@@ -1,4 +1,12 @@
+using System;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using FliGen.Application.Commands;
+using Fligen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
+using FliGen.Persistence.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +37,15 @@ namespace FliGen
             services.AddDbContext<FliGenContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddMediatR(typeof(Startup))
+                .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
+
+            services.AddControllers();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<FLiGenRepository>().As<IFLiGenRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

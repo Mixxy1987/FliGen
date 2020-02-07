@@ -20,5 +20,11 @@ namespace FliGen.Persistence.Repositories
         {
             return await _context.Players.ToArrayAsync();
         }
+
+        public async Task AddPlayer(Player player)
+        {
+            await _context.Players.AddAsync(player);
+            await _context.SaveChangesAsync();
+        }
     }
 }
