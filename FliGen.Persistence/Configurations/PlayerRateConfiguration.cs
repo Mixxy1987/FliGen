@@ -14,6 +14,12 @@ namespace FliGen.Persistence.Configurations
                 .HasMaxLength(3);
             builder.Property(e => e.Date)
                 .IsRequired();
+
+            builder.HasOne(e => e.Player)
+                .WithMany(e => e.Rates)
+                .HasForeignKey(e => e.PlayerId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

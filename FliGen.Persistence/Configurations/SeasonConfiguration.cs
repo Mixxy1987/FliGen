@@ -11,9 +11,14 @@ namespace FliGen.Persistence.Configurations
             builder.ToTable("Season");
             builder.Property(e => e.Start)
                 .IsRequired();
-            builder.Property(e => e.End)
+            builder.Property(e => e.Finish)
                 .IsRequired();
-            builder.HasKey(e => new {e.Start, e.End});
+            
+            builder.HasOne(e => e.League)
+                .WithMany(e => e.Seasons)
+                .HasForeignKey(e => e.LeagueId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

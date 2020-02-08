@@ -11,5 +11,8 @@ namespace Fligen.Domain.Entities
 
         public int HomeCount { get; set; }
         public int GuestCount { get; set; }
+
+        public int SeasonId { get; set; }
+        public Season Season { get; set; }
     }
 }

@@ -19,6 +19,12 @@ namespace FliGen.Persistence.Configurations
                 .IsRequired();
             builder.Property(e => e.GuestCount)
                 .IsRequired();
+
+            builder.HasOne(e => e.Season)
+                .WithMany(e => e.Tours)
+                .HasForeignKey(e => e.SeasonId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

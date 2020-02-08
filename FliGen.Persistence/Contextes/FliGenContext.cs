@@ -19,6 +19,7 @@ namespace FliGen.Persistence.Contextes
 
         public FliGenContext(DbContextOptions<FliGenContext> options) :base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
