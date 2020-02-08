@@ -8,13 +8,15 @@ namespace FliGen.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Player> builder)
         {
-            builder.ToTable("Player", "FliGen");
+            builder.ToTable("Player");
             builder.Property(e => e.FirstName)
                 .IsRequired()
                 .HasMaxLength(20);
             builder.Property(e => e.LastName)
                 .IsRequired()
                 .HasMaxLength(20);
+            builder.Property(e => e.PlayerRateId)
+                .IsRequired();
         }
     }
 }

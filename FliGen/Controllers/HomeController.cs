@@ -32,6 +32,23 @@ namespace FliGen.Controllers
             return View();
         }
 
+        public IActionResult PlayersAdministration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<string> PlayersAdministration(Player player)
+        {
+            await _mediatr.Send(new AddPlayerCommand()
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName
+            });
+
+            return "Игрок, " + player.FirstName + " добавлен!";
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
