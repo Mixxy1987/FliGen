@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen", "FliGen\FliGen.csproj", "{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Common", "FliGen.Common\FliGen.Common.csproj", "{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Common", "FliGen.Common\FliGen.Common.csproj", "{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Domain", "Fligen.Domain\FliGen.Domain.csproj", "{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fligen.Domain", "Fligen.Domain\Fligen.Domain.csproj", "{59AE8045-DE7F-4983-A4A8-D4DF0E629CA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Persistence", "FliGen.Persistence\FliGen.Persistence.csproj", "{731E5502-319F-40B9-9849-B2975DBED42C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Persistence", "FliGen.Persistence\FliGen.Persistence.csproj", "{731E5502-319F-40B9-9849-B2975DBED42C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Application", "FliGen.Application\FliGen.Application.csproj", "{DD1329C2-F615-4583-A74B-E2D97A60D719}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Application", "FliGen.Application\FliGen.Application.csproj", "{DD1329C2-F615-4583-A74B-E2D97A60D719}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Infrastructure", "FliGen.Infrastructure\FliGen.Infrastructure.csproj", "{37C4183E-EF35-4891-A35E-8949AF13A330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Infrastructure", "FliGen.Infrastructure\FliGen.Infrastructure.csproj", "{37C4183E-EF35-4891-A35E-8949AF13A330}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Web", "FliGen.Web\FliGen.Web.csproj", "{60E30C16-215A-4DA5-A68D-8A967032E094}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6EEC5AC-D2AB-4E8F-8232-DD07B1EFEA71}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F36C45BF-BF67-4B2E-86F7-D0F6EFBE9817}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{37C4183E-EF35-4891-A35E-8949AF13A330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37C4183E-EF35-4891-A35E-8949AF13A330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37C4183E-EF35-4891-A35E-8949AF13A330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E30C16-215A-4DA5-A68D-8A967032E094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E30C16-215A-4DA5-A68D-8A967032E094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E30C16-215A-4DA5-A68D-8A967032E094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E30C16-215A-4DA5-A68D-8A967032E094}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

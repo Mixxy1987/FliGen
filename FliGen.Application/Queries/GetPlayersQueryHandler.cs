@@ -1,5 +1,5 @@
-﻿using Fligen.Domain.Entities;
-using Fligen.Domain.Repositories;
+﻿using FliGen.Domain.Entities;
+using FliGen.Domain.Repositories;
 using FliGen.Application.Dto;
 using MediatR;
 using System.Collections.Generic;

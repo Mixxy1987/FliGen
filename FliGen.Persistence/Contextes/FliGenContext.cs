@@ -1,4 +1,4 @@
-﻿using Fligen.Domain.Entities;
+﻿using FliGen.Domain.Entities;
 using FliGen.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 

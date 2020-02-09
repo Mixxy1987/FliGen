@@ -1,4 +1,4 @@
-﻿using Fligen.Domain.Entities;
+﻿using FliGen.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

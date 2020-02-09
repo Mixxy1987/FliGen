@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fligen.Domain.Entities
+namespace FliGen.Domain.Entities
 {
     public class Team
     {

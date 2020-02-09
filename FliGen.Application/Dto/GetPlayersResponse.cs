@@ -1,4 +1,4 @@
-﻿using Fligen.Domain.Entities;
+﻿using FliGen.Domain.Entities;
 using System.Collections.Generic;
 
 namespace FliGen.Application.Dto

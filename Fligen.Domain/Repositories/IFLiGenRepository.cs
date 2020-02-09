@@ -1,8 +1,8 @@
-﻿using Fligen.Domain.Entities;
+﻿using FliGen.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Fligen.Domain.Repositories
+namespace FliGen.Domain.Repositories
 {
     public interface IFLiGenRepository
     {

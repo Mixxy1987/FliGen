@@ -21,7 +21,7 @@ namespace FliGen.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Fligen.Domain.Entities.League", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.League", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("League");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.LeagueSeasonLink", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSeasonLink", b =>
                 {
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
@@ -51,7 +51,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("LeagueSeasonLinks");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.Player", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +76,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("Player");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.PlayerRate", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.PlayerRate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +95,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("PlayerRate");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.PlayerRatePlayerLink", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.PlayerRatePlayerLink", b =>
                 {
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -108,7 +108,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("PlayerRatePlayerLinks");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.Season", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.Season", b =>
                 {
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
@@ -121,7 +121,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("Season");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.SeasonTourLink", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.SeasonTourLink", b =>
                 {
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
@@ -134,7 +134,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("SeasonTourLinks");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.Team", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +153,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("Team");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.TeamPlayerLink", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.TeamPlayerLink", b =>
                 {
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -166,7 +166,7 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("TeamPlayerLinks");
                 });
 
-            modelBuilder.Entity("Fligen.Domain.Entities.Tour", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.Tour", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

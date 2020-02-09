@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Fligen.Domain.Entities;
-using Fligen.Domain.Repositories;
+using FliGen.Domain.Entities;
+using FliGen.Domain.Repositories;
 using MediatR;
 
 namespace FliGen.Application.Commands

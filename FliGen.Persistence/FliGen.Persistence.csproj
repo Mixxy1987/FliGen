@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fligen.Domain\Fligen.Domain.csproj" />
+    <ProjectReference Include="..\FliGen.Domain\FliGen.Domain.csproj" />
   </ItemGroup>
 
 </Project>

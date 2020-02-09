@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fligen.Domain.Entities
+namespace FliGen.Domain.Entities
 {
     public class Season
     {
