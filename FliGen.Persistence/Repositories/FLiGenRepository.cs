@@ -16,9 +16,9 @@ namespace FliGen.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Player>> GetPlayersAsync()
+        public async Task<IEnumerable<Player>> GetPlayersWithRatesAsync()
         {
-            return await _context.Players.ToArrayAsync();
+            return await _context.Players.Include(x => x.Rates).ToArrayAsync();
         }
 
         public async Task AddPlayer(Player player)

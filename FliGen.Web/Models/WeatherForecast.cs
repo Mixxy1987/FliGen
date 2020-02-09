@@ -1,6 +1,6 @@
 using System;
 
-namespace FliGen.Web
+namespace FliGen.Web.Models
 {
     public class WeatherForecast
     {

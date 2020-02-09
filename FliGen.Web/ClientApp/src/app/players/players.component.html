@@ -1,0 +1,22 @@
+<h1 id="tableLabel">Игроки</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!players"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="players">
+  <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Текущий рейтинг</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players">
+      <td>{{ player.firstName }}</td>
+      <td>{{ player.lastName }}</td>
+      <td>{{ player.rate }}</td>
+    </tr>
+  </tbody>
+</table>

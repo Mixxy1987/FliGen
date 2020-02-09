@@ -5,10 +5,11 @@ using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace FliGen.Application.Queries
 {
-    public class GetPlayersQueryHandler: IRequestHandler<GetPlayersQuery, GetPlayersResponse>
+    public class GetPlayersQueryHandler: IRequestHandler<GetPlayersQuery, IEnumerable<PlayerWithRate>>
     {
         private readonly IFLiGenRepository _repository;
 
@@ -17,14 +18,16 @@ namespace FliGen.Application.Queries
             _repository = repository;
         }
 
-        public async Task<GetPlayersResponse> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PlayerWithRate>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<Player> players = await _repository.GetPlayersAsync();
+            IEnumerable<Player> players = await _repository.GetPlayersWithRatesAsync();
 
-            return new GetPlayersResponse()
+            return players.Select(x => new PlayerWithRate()
             {
-                Players = players
-            };
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Rate = x.Rates.OrderBy(y => y.Date).First().Rate
+            });
         }
     }
 }

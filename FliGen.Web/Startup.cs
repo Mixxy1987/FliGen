@@ -1,15 +1,17 @@
-using System.Reflection;
+using Autofac;
 using FliGen.Application.Commands;
+using FliGen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
+using FliGen.Persistence.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace FliGen.Web
 {
@@ -41,6 +43,12 @@ namespace FliGen.Web
             services.AddMediatR(typeof(Startup))
                 .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
         }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<FLiGenRepository>().As<IFLiGenRepository>();
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
