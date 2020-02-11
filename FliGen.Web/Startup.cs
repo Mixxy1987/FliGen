@@ -46,7 +46,7 @@ namespace FliGen.Web
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<FLiGenRepository>().As<IFLiGenRepository>();
+            builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
         }
 
 

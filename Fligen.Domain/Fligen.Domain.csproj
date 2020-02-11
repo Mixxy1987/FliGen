@@ -8,4 +8,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.0.0" />
+  </ItemGroup>
+
 </Project>

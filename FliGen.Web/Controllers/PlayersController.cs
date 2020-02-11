@@ -1,4 +1,5 @@
-﻿using FliGen.Application.Queries;
+﻿using System;
+using FliGen.Application.Queries;
 using FliGen.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Application.Commands;
 using FliGen.Application.Dto;
 
 namespace FliGen.Web.Controllers
@@ -29,6 +31,17 @@ namespace FliGen.Web.Controllers
             var players = await _mediatr.Send(new GetPlayersQuery());
 
             return players;
+        }
+
+        [HttpPost("add")]
+        public async Task AddPlayer([FromBody]Player player)
+        { 
+            await _mediatr.Send(new AddPlayerCommand()
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                Rate = double.Parse(player.Rate)
+            });
         }
     }
 }

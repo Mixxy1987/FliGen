@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FliGen.Domain.Entities;
 using FliGen.Domain.Repositories;
@@ -8,21 +11,31 @@ namespace FliGen.Application.Commands
 {
     public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand>
     {
-        private readonly IFLiGenRepository _repository;
+        private readonly IPlayerRepository _repository;
 
-        public AddPlayerCommandHandler(IFLiGenRepository repository)
+        public AddPlayerCommandHandler(IPlayerRepository repository)
         {
             _repository = repository;
         }
 
         public async Task<Unit> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
         {
-            await _repository.AddPlayer(new Player()
+            var player = new Player()
             {
                 FirstName = request.FirstName,
-                LastName = request.LastName
-            });
-
+                LastName = request.LastName,
+                Rates = new List<PlayerRate>()
+                {
+                    new PlayerRate()
+                    {
+                        Date = DateTime.Now,
+                        Rate = request.Rate
+                    }
+                }
+            };
+            
+            await _repository.AddPlayer(player);
+            
             return Unit.Value;
         }
     }

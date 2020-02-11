@@ -11,9 +11,9 @@ namespace FliGen.Application.Queries
 {
     public class GetPlayersQueryHandler: IRequestHandler<GetPlayersQuery, IEnumerable<PlayerWithRate>>
     {
-        private readonly IFLiGenRepository _repository;
+        private readonly IPlayerRepository _repository;
 
-        public GetPlayersQueryHandler(IFLiGenRepository repository)
+        public GetPlayersQueryHandler(IPlayerRepository repository)
         {
             _repository = repository;
         }
@@ -26,7 +26,7 @@ namespace FliGen.Application.Queries
             {
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Rate = x.Rates.OrderBy(y => y.Date).First().Rate
+                Rate = 7.0//x.Rates.OrderBy(y => y.Date).First().Rate //todo::temp
             });
         }
     }
