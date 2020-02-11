@@ -6,14 +6,9 @@ namespace FliGen.Domain.Common
 {
 	public abstract class Entity
 	{
-		int? _requestedHashCode;
-		int _Id;
+		private int? _requestedHashCode;
 
-		public virtual int Id
-		{
-			get { return _Id; }
-			protected set { _Id = value; }
-		}
+		public virtual int Id { get; set; }
 
 		private List<INotification> _domainEvents;
 		public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
@@ -36,37 +31,44 @@ namespace FliGen.Domain.Common
 
 		public bool IsTransient()
 		{
-			return this.Id == default(Int32);
+			return Id == default;
 		}
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null || !(obj is Entity))
-				return false;
+            if(obj as Entity == null)
+            {
+                return false;
+            }
 
-			if (Object.ReferenceEquals(this, obj))
-				return true;
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
-			if (this.GetType() != obj.GetType())
-				return false;
+            if (GetType() != obj.GetType())
+            {
+                return false;
+            }
 
-			Entity item = (Entity) obj;
+			var item = (Entity) obj;
 
-			if (item.IsTransient() || this.IsTransient())
-				return false;
-			else
-				return item.Id == this.Id;
-		}
+            if (item.IsTransient() || this.IsTransient())
+            {
+                return false;
+            }
+            return item.Id == Id;
+        }
 
 		public override int GetHashCode()
 		{
 			if (!IsTransient())
 			{
 				if (!_requestedHashCode.HasValue)
+
 					_requestedHashCode =
 						this.Id.GetHashCode() ^
 						31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
-
 				return _requestedHashCode.Value;
 			}
 			else
@@ -75,12 +77,9 @@ namespace FliGen.Domain.Common
 		}
 
 		public static bool operator ==(Entity left, Entity right)
-		{
-			if (Object.Equals(left, null))
-				return (Object.Equals(right, null)) ? true : false;
-			else
-				return left.Equals(right);
-		}
+        {
+            return Equals(left, null) ? Equals(right, null) : left.Equals(right);
+        }
 
 		public static bool operator !=(Entity left, Entity right)
 		{

@@ -11,7 +11,7 @@ namespace FliGen.Domain.Common
 			{
 				return false;
 			}
-			ValueObject other = (ValueObject)obj;
+			var other = (ValueObject)obj;
 			IEnumerator<object> thisValues = GetAtomicValues().GetEnumerator();
 			IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();
 			while (thisValues.MoveNext() && otherValues.MoveNext())
@@ -37,7 +37,7 @@ namespace FliGen.Domain.Common
 
 		public ValueObject GetCopy()
 		{
-			return this.MemberwiseClone() as ValueObject;
+			return MemberwiseClone() as ValueObject;
 		}
 
 		protected static bool EqualOperator(ValueObject left, ValueObject right)

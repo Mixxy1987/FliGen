@@ -34,7 +34,7 @@ namespace FliGen.Application.Commands
                 }
             };
             
-            await _repository.AddPlayer(player);
+            await _repository.AddAsync(player);
             
             return Unit.Value;
         }
