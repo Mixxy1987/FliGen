@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FliGen.Application.Commands.DeletePlayer
+namespace FliGen.Application.Commands.Player.DeletePlayer
 {
     public sealed class DeletePlayerCommandValidator : AbstractValidator<DeletePlayerCommand>
     {

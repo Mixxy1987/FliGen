@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace FliGen.Application.Commands.DeletePlayer
+namespace FliGen.Application.Commands.Player.DeletePlayer
 {
     public class DeletePlayerCommand : IRequest
     {

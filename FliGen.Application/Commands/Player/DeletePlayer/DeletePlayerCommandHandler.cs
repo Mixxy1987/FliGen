@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FliGen.Application.Commands.DeletePlayer
+namespace FliGen.Application.Commands.Player.DeletePlayer
 {
     public class DeletePlayerCommandHandler : IRequestHandler<DeletePlayerCommand>
     {

@@ -1,10 +1,9 @@
-﻿using FliGen.Domain.Entities;
-using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FliGen.Application.Commands.UpdatePlayer
+namespace FliGen.Application.Commands.Player.UpdatePlayer
 {
     public class UpdatePlayerCommandHandler : IRequestHandler<UpdatePlayerCommand>
     {
@@ -17,7 +16,7 @@ namespace FliGen.Application.Commands.UpdatePlayer
 
         public async Task<Unit> Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
         {
-            await _repository.UpdateAsync(Player.GetUpdated(request.Id, request.FirstName, request.LastName, double.Parse(request.Rate)));
+            await _repository.UpdateAsync(Domain.Entities.Player.GetUpdated(request.Id, request.FirstName, request.LastName, double.Parse(request.Rate)));
             
             return Unit.Value;
         }

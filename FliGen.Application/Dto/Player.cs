@@ -1,4 +1,4 @@
-﻿namespace FliGen.Web.Models
+﻿namespace FliGen.Application.Dto
 {
     public class Player
     {

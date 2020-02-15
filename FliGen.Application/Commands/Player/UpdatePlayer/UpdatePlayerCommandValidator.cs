@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FliGen.Application.Commands.UpdatePlayer
+namespace FliGen.Application.Commands.Player.UpdatePlayer
 {
     public sealed class UpdatePlayerCommandValidator : AbstractValidator<UpdatePlayerCommand>
     {

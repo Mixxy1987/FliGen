@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace FliGen.Application.Commands.AddPlayer
+namespace FliGen.Application.Commands.Player.AddPlayer
 {
     public class AddPlayerCommand : IRequest
     {

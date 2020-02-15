@@ -1,5 +1,4 @@
 ﻿using FliGen.Application.Dto;
-using FliGen.Domain.Entities;
 using FliGen.Domain.Repositories;
 using MediatR;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace FliGen.Application.Queries.GetPlayers
 
         public async Task<IEnumerable<PlayerWithRate>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<Player> players = await _repository.GetAsync();
+            var players = await _repository.GetAsync();
 
             return players.Select(x => new PlayerWithRate()
             {

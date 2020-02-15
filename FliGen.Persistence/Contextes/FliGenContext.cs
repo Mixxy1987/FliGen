@@ -11,6 +11,7 @@ namespace FliGen.Persistence.Contextes
     public class FliGenContext : DbContext, IUnitOfWork
     {
         public DbSet<League> Leagues { get; set; }
+        public DbSet<LeagueType> LeagueTypes { get; set; }
         public DbSet<LeagueSeasonLink> LeagueSeasonLinks { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerRate> PlayerRates { get; set; }

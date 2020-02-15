@@ -1,10 +1,9 @@
-﻿using FliGen.Domain.Entities;
-using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FliGen.Application.Commands.AddPlayer
+namespace FliGen.Application.Commands.Player.AddPlayer
 {
     public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand>
     {
@@ -17,7 +16,7 @@ namespace FliGen.Application.Commands.AddPlayer
 
         public async Task<Unit> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
         {
-            var player = Player.Create(request.FirstName, request.LastName, double.Parse(request.Rate));
+            var player = Domain.Entities.Player.Create(request.FirstName, request.LastName, double.Parse(request.Rate));
             
             await _repository.AddAsync(player);
             

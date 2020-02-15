@@ -1,14 +1,13 @@
-﻿using FliGen.Application.Commands.AddPlayer;
-using FliGen.Application.Dto;
+﻿using FliGen.Application.Dto;
 using FliGen.Application.Queries.GetPlayers;
-using FliGen.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Application.Commands.DeletePlayer;
-using FliGen.Application.Commands.UpdatePlayer;
+using FliGen.Application.Commands.Player.AddPlayer;
+using FliGen.Application.Commands.Player.UpdatePlayer;
+using FliGen.Application.Commands.Player.DeletePlayer;
 
 namespace FliGen.Web.Controllers
 {
@@ -35,7 +34,7 @@ namespace FliGen.Web.Controllers
         }
 
         [HttpPost]
-        public async Task AddPlayer([FromBody]Player player)
+        public async Task Add([FromBody]Player player)
         { 
             await _mediatr.Send(new AddPlayerCommand()
             {
@@ -46,7 +45,7 @@ namespace FliGen.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task DeletePlayer(int id)
+        public async Task Delete(int id)
         {
             await _mediatr.Send(new DeletePlayerCommand()
             {
@@ -55,7 +54,7 @@ namespace FliGen.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task UpdatePlayer(int id, [FromBody]Player product)
+        public async Task Update(int id, [FromBody]Player product)
         {
             await _mediatr.Send(new UpdatePlayerCommand()
             {
