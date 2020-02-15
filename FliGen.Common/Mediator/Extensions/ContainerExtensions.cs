@@ -29,12 +29,19 @@ namespace FliGen.Common.Mediator.Extensions
             builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(AbstractValidator<>));
             builder.Register<ServiceFactory>(ctx =>
             {
-                return t => ctx.Resolve<IComponentContext>().Resolve(t);
+                var context = ctx.Resolve<IComponentContext>();
+                return t => context.Resolve(t);
             });
             return builder;
         }
 
         public static ContainerBuilder AddRequestValidationDecorator(this ContainerBuilder builder)
+        {
+            builder.RegisterGenericDecorator(typeof(RequestValidationDecorator<,>), typeof(IRequestHandler<,>));
+            return builder;
+        }
+
+        public static ContainerBuilder AddRequestLogDecorator(this ContainerBuilder builder)
         {
             builder.RegisterGenericDecorator(typeof(RequestLogDecorator<,>), typeof(IRequestHandler<,>));
             return builder;

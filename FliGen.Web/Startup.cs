@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using FliGen.Common.Mediator.Extensions;
 
 namespace FliGen.Web
 {
@@ -42,13 +43,16 @@ namespace FliGen.Web
 
             services.AddMediatR(typeof(Startup))
                 .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
-
-
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
+
+            builder.AddMediator("FliGen.Application");
+            builder.AddRequestLogDecorator();
+            builder.AddRequestValidationDecorator();
+            builder.AddSerilogService();
         }
 
 
