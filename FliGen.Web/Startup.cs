@@ -42,6 +42,8 @@ namespace FliGen.Web
 
             services.AddMediatR(typeof(Startup))
                 .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
+
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
