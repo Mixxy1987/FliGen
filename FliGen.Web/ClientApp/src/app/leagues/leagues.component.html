@@ -1,0 +1,66 @@
+<h1 id="tableLabel">Лиги</h1>
+
+<p *ngIf="!leagues"><em>Загрузка...</em></p>
+
+<h2>Создание лиги</h2>
+<input type="button" value="Создать" class="btn btn-sm btn-success" (click)="create()" />
+<table *ngIf="tableMode; else create" class="table table-striped">
+  <thead>
+    <tr>
+      <td>Название</td>
+      <td>Описание</td>
+      <td>Тип</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let l of leagues">
+      <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
+        <td>{{l?.name}}</td>
+        <td>{{l?.description}}</td>
+        <td>{{l?.type.name}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editProduct(l)">Изменить</button>
+          <button class="btn btn-sm btn-danger" (click)="delete(l)">Удалить</button>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+  <td>
+    <input type="text" [(ngModel)]="league.name" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="league.description" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="league.type.name" class="form-control" />
+  </td>
+  <td>
+    <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+  </td>
+</ng-template>
+
+<!--шаблон для добавления-->
+<ng-template #create>
+  <div class="form-group">
+    <label>Название</label>
+    <input type="text" [(ngModel)]="league.name" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Описание</label>
+    <input type="text" [(ngModel)]="league.description" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Тип</label>
+    <input type="text" [(ngModel)]="league.type.name" class="form-control" />
+  </div>
+  <div>
+    <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+  </div>
+</ng-template>

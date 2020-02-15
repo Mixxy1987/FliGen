@@ -12,6 +12,9 @@ namespace FliGen.Persistence.Configurations
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.HasIndex(e => e.Name)
+                .IsUnique();
         }
     }
 }

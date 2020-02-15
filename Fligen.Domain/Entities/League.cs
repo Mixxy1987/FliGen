@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FliGen.Domain.Common;
+﻿using FliGen.Domain.Common;
+using System.Collections.Generic;
 
 namespace FliGen.Domain.Entities
 {
@@ -7,24 +7,36 @@ namespace FliGen.Domain.Entities
     {
         public string Name { get; }
         public string Description { get; }
-        public LeagueType LeagueType { get; }
+
+        public int LeagueTypeId {
+            get
+            {
+                return Type.Id;
+            }
+            set
+            {
+                Type = Enumeration.FromValue<LeagueType>(value);
+            }
+        }
+        public LeagueType Type { get; private set; }
+
         public List<Season> Seasons { get; }
 
         protected League()
         {
         }
 
-        private League(string name, string description, LeagueType leagueType) : this()
+        private League(string name, string description, LeagueType type) : this()
         {
             Name = name;
             Description = description;
-            LeagueType = leagueType;
+            Type = type;
             Seasons = new List<Season>();
         }
 
-        public static League Create(string name, string description, LeagueType leagueType)
+        public static League Create(string name, string description, LeagueType type)
         {
-            return new League(name, description, leagueType);
+            return new League(name, description, type);
         }
     }
 }

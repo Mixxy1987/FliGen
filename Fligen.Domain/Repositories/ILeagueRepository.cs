@@ -7,7 +7,8 @@ namespace FliGen.Domain.Repositories
 {
     public interface ILeagueRepository : IRepository<League>
     {
-        Task<IEnumerable<LeagueType>> GetTypes();
+        Task<IEnumerable<LeagueType>> GetLeagueTypesAsync();
+        Task<IEnumerable<League>> GetLeaguesAsync();
         Task<League> GetByIdAsync(int id);
         Task CreateAsync(League league);
         Task DeleteByIdAsync(int id);

@@ -1,7 +1,15 @@
 ﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200208074745_InitialCreate')
 BEGIN
-	INSERT INTO [League](Name)
-    VALUES('FLI')
+	INSERT INTO [LeagueType](Name)
+	VALUES
+	('None'),
+	('Football'),
+	('Hockey')
+
+	INSERT INTO [League](Name, Description, LeagueTypeId)
+	SELECT 'FLI', 'Best League in the world!', Id
+	FROM [LeagueType]
+	WHERE [LeagueType].[Name] = 'Football'
 	
 	INSERT INTO [Season](Start, Finish, LeagueId)
 	SELECT '01.01.2020','31.12.2020', Id

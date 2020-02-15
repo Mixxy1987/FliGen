@@ -20,9 +20,14 @@ namespace FliGen.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<LeagueType>> GetTypes()
+        public async Task<IEnumerable<LeagueType>> GetLeagueTypesAsync()
         {
             return await _context.LeagueTypes.ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<League>> GetLeaguesAsync()
+        {
+            return await _context.Leagues.ToArrayAsync();
         }
 
         public Task<League> GetByIdAsync(int id)

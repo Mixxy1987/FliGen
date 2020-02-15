@@ -12,6 +12,14 @@ namespace FliGen.Persistence.Configurations
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+            builder.Property(e => e.Description)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder
+                .Property(e => e.LeagueTypeId)
+                .IsRequired();
+
             builder.HasIndex(e => e.Name)
                 .IsUnique();
         }

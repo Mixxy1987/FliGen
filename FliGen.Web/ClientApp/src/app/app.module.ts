@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { PlayersComponent } from "./players/players.component";
+import { LeaguesComponent } from "./leagues/leagues.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    PlayersComponent
+    PlayersComponent,
+    LeaguesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -22,7 +24,8 @@ import { PlayersComponent } from "./players/players.component";
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'players', component: PlayersComponent }
+      { path: 'players', component: PlayersComponent },
+      { path: 'leagues', component: LeaguesComponent }
     ])
   ],
   providers: [],

@@ -20,9 +20,9 @@ namespace FliGen.Application.Queries.GetLeagueTypes
 
         public async Task<IEnumerable<Dto.LeagueType>> Handle(GetLeagueTypesQuery request, CancellationToken cancellationToken)
         {
-            var leagueTypes = await _repository.GetTypes();
+            var leagueTypes = await _repository.GetLeagueTypesAsync();
 
-            var result = leagueTypes.Select(x => new Dto.LeagueType(){Value = x.Name}).ToArray(); //todo:: automapper?
+            var result = leagueTypes.Select(x => new Dto.LeagueType(){ Name = x.Name }).ToArray(); //todo:: automapper?
 
             return result;
         }

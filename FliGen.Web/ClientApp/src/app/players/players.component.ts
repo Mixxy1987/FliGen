@@ -15,14 +15,13 @@ export class PlayersComponent implements OnInit {
   tableMode: boolean = true;
 
   constructor(
-    public http: HttpClient,
     private dataService: PlayersDataService) { }
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadPlayers();
   }
 
-  loadProducts() {
+  loadPlayers() {
     this.dataService.get().subscribe(result => {
       this.players = result;
     }, error => console.error(error));
@@ -35,14 +34,14 @@ export class PlayersComponent implements OnInit {
   save() {
     if (this.player.id == null) {
       this.dataService.create(this.player)
-          .subscribe((data: Player) => {
-              this.players.push(data);
-              this.loadProducts();
-          });
+        .subscribe((data: Player) => {
+          this.players.push(data);
+          this.loadPlayers();
+        });
     } else {
       this.dataService.update(this.player)
-        .subscribe(data => this.loadProducts());
-      }
+        .subscribe(data => this.loadPlayers());
+    }
     this.cancel();
   }
 
@@ -53,7 +52,7 @@ export class PlayersComponent implements OnInit {
 
   delete(p: Player) {
     this.dataService.delete(p.id)
-      .subscribe(data => this.loadProducts());
+      .subscribe(data => this.loadPlayers());
   }
 
   add() {

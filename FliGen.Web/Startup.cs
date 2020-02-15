@@ -48,6 +48,7 @@ namespace FliGen.Web
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
+            builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
 
             builder.AddMediator("FliGen.Application");
             builder.AddRequestLogDecorator();
