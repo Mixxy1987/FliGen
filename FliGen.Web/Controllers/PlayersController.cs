@@ -1,14 +1,14 @@
-﻿using System;
-using FliGen.Application.Queries;
+﻿using FliGen.Application.Commands.AddPlayer;
+using FliGen.Application.Dto;
+using FliGen.Application.Queries.GetPlayers;
 using FliGen.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using FliGen.Application.Commands;
-using FliGen.Application.Dto;
+using FliGen.Application.Commands.DeletePlayer;
+using FliGen.Application.Commands.UpdatePlayer;
 
 namespace FliGen.Web.Controllers
 {
@@ -26,6 +26,7 @@ namespace FliGen.Web.Controllers
         }
 
         [HttpGet]
+        [Produces(typeof(IEnumerable<PlayerWithRate>))]
         public async Task<IEnumerable<PlayerWithRate>> GetPlayers()
         {
             var players = await _mediatr.Send(new GetPlayersQuery());
@@ -33,14 +34,35 @@ namespace FliGen.Web.Controllers
             return players;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public async Task AddPlayer([FromBody]Player player)
         { 
             await _mediatr.Send(new AddPlayerCommand()
             {
                 FirstName = player.FirstName,
                 LastName = player.LastName,
-                Rate = double.Parse(player.Rate)
+                Rate = player.Rate
+            });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeletePlayer(int id)
+        {
+            await _mediatr.Send(new DeletePlayerCommand()
+            {
+               Id = id
+            });
+        }
+
+        [HttpPut("{id}")]
+        public async Task UpdatePlayer(int id, [FromBody]Player product)
+        {
+            await _mediatr.Send(new UpdatePlayerCommand()
+            {
+                Id = id,
+                FirstName = product.FirstName,
+                LastName = product.LastName,
+                Rate = product.Rate
             });
         }
     }

@@ -9,7 +9,7 @@ namespace FliGen.Domain.Repositories
     {
         Task<IEnumerable<Player>> GetAsync();
         Task AddAsync(Player player);
-        Task RemoveAsync(Player player);
+        Task DeleteByIdAsync(int id);
         Task UpdateAsync(Player player);
     }
 }

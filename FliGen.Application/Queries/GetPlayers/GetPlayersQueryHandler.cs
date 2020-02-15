@@ -1,14 +1,13 @@
-﻿using FliGen.Domain.Entities;
+﻿using FliGen.Application.Dto;
+using FliGen.Domain.Entities;
 using FliGen.Domain.Repositories;
-using FliGen.Application.Dto;
 using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using FluentValidation;
 
-namespace FliGen.Application.Queries
+namespace FliGen.Application.Queries.GetPlayers
 {
     public class GetPlayersQueryHandler: IRequestHandler<GetPlayersQuery, IEnumerable<PlayerWithRate>>
     {
@@ -25,9 +24,10 @@ namespace FliGen.Application.Queries
 
             return players.Select(x => new PlayerWithRate()
             {
+                Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Rate = 7.0//x.Rates.OrderBy(y => y.Date).First().Rate //todo::temp
+                Rate = x.Rates.OrderBy(y => y.Date).Last().Value
             });
         }
     }

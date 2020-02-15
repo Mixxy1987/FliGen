@@ -28,18 +28,20 @@ namespace FliGen.Persistence.Repositories
 
         public async Task AddAsync(Player player)
         {
-            var entityEntry = await _context.Players.AddAsync(player);
+            await _context.Players.AddAsync(player);
             await _context.SaveChangesAsync();
         }
 
-        public Task RemoveAsync(Player player)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            _context.Remove(_context.Players.Single(x => x.Id == id));
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(Player player)
+        public async Task UpdateAsync(Player player)
         {
-            throw new NotImplementedException();
+            _context.Players.Update(player);
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<Player> FindPlayers(Func<Player, bool> predicate)

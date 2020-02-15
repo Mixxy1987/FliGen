@@ -1,11 +1,11 @@
 ﻿using MediatR;
 
-namespace FliGen.Application.Commands
+namespace FliGen.Application.Commands.AddPlayer
 {
     public class AddPlayerCommand : IRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public double Rate { get; set; }
+        public string Rate { get; set; }
     }
 }

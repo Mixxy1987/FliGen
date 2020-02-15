@@ -38,7 +38,7 @@ namespace FliGen.Persistence.Helper
 	VALUES
     (@@lastName, @@firstName)
 
-    INSERT INTO [PlayerRate](Date, Rate, PlayerId)
+    INSERT INTO [PlayerRate](Date, Value, PlayerId)
 	SELECT '01.01.2020', @@rate, Id
 	FROM [Player]
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName

@@ -1,11 +1,9 @@
 <h1 id="tableLabel">Игроки</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
-
 <p *ngIf="!players"><em>Loading...</em></p>
 
-<h1>Список моделей</h1>
-<input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
+<h2>Добавление игрока</h2>
+<input type="button" value="Добавить" class="btn btn-sm btn-success" (click)="add()" />
 <table *ngIf="tableMode; else create" class="table table-striped">
   <thead>
   <tr>
@@ -16,28 +14,30 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let p of players">
-    <td>{{p?.firstName}}</td>
-    <td>{{p?.lastName}}</td>
-    <td>{{p?.rate}}</td>
-    <td>
-      <button class="btn btn-sm btn-primary" (click)="editProduct(p)">Изменить</button>
-      <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
-    </td>
-  </tr>
+    <tr *ngFor="let p of players">
+      <ng-template [ngIf]="player?.id != p.id" [ngIfElse]="edit">
+        <td>{{p?.firstName}}</td>
+        <td>{{p?.lastName}}</td>
+        <td>{{p?.rate}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editProduct(p)">Изменить</button>
+          <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+        </td>
+      </ng-template>
+    </tr>
   </tbody>
 </table>
 
 <!--шаблон для редактирования-->
 <ng-template #edit>
   <td>
-    <input type="text" [(ngModel)]="product.name" class="form-control" />
+    <input type="text" [(ngModel)]="player.firstName" class="form-control" />
   </td>
   <td>
-    <input type="text" [(ngModel)]="product.company" class="form-control" />
+    <input type="text" [(ngModel)]="player.lastName" class="form-control" />
   </td>
   <td>
-    <input type="text" [(ngModel)]="product.price" class="form-control" />
+    <input type="text" [(ngModel)]="player.rate" class="form-control" />
   </td>
   <td>
     <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
@@ -64,20 +64,3 @@
     <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
   </div>
 </ng-template>
-
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="players">
-  <thead>
-    <tr>
-      <th>Имя</th>
-      <th>Фамилия</th>
-      <th>Текущий рейтинг</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let player of players">
-      <td>{{ player.firstName }}</td>
-      <td>{{ player.lastName }}</td>
-      <td>{{ player.rate }}</td>
-    </tr>
-  </tbody>
-</table>

@@ -1,5 +1,6 @@
 using Autofac;
-using FliGen.Application.Commands;
+using FliGen.Application.Commands.AddPlayer;
+using FliGen.Common.Mediator.Extensions;
 using FliGen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
 using FliGen.Persistence.Repositories;
@@ -12,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
-using FliGen.Common.Mediator.Extensions;
 
 namespace FliGen.Web
 {

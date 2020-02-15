@@ -9,7 +9,7 @@ namespace FliGen.Persistence.Configurations
         public void Configure(EntityTypeBuilder<PlayerRate> builder)
         {
             builder.ToTable("PlayerRate");
-            builder.Property(e => e.Rate)
+            builder.Property(e => e.Value)
                 .IsRequired()
                 .HasMaxLength(3);
             builder.Property(e => e.Date)
