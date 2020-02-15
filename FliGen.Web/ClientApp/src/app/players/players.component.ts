@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Player } from "./player";
-import { PlayersDataService } from "./playersDataService";
+import { PlayersDataService } from "./players.data.service";
 
 @Component({
   selector: 'app-players',
