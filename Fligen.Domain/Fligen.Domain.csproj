@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
+  </ItemGroup>
+
 </Project>

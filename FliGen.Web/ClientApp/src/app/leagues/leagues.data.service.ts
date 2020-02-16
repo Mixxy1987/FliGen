@@ -17,14 +17,14 @@ export class LeaguesDataService {
   }
 
   create(league: League) {
-    return this.http.post<League>(this.baseUrl + 'leagues/', league);
+    return this.http.post<League>(this.baseUrl + 'leagues', league);
   }
 
   update(league: League) {
-    return this.http.put(this.baseUrl + 'leagues/' + league.id, league);
+    return this.http.put(this.baseUrl + 'leagues', league);
   }
 
   delete(id: number) {
-    return this.http.delete(this.baseUrl + 'leagues/' + id);
+      return this.http.delete(this.baseUrl + 'leagues/' + id);
   }
 }

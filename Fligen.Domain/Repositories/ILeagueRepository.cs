@@ -12,5 +12,6 @@ namespace FliGen.Domain.Repositories
         Task<League> GetByIdAsync(int id);
         Task CreateAsync(League league);
         Task DeleteByIdAsync(int id);
+        Task UpdateAsync(League league);
     }
 }

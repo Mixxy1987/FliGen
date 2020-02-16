@@ -12,14 +12,14 @@ export class PlayersDataService {
   }
 
   create(player: Player) {
-    return this.http.post<Player>(this.baseUrl + 'players/', player);
+    return this.http.post<Player>(this.baseUrl + 'players', player);
   }
 
   update(player: Player) {
-    return this.http.put(this.baseUrl + 'players/' + player.id, player);
+    return this.http.put(this.baseUrl + 'players', player);
   }
 
   delete(id: number) {
-    return this.http.delete(this.baseUrl + 'players/' + id);
+    return this.http.delete(this.baseUrl + 'players' + id);
   }
 }

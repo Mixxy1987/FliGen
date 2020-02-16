@@ -16,7 +16,10 @@ namespace FliGen.Application.Commands.Player.AddPlayer
 
         public async Task<Unit> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
         {
-            var player = Domain.Entities.Player.Create(request.FirstName, request.LastName, double.Parse(request.Rate));
+            var player = Domain.Entities.Player.Create(
+                request.FirstName,
+                request.LastName,
+                request.Rate);
             
             await _repository.AddAsync(player);
             

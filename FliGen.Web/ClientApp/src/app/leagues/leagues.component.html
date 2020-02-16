@@ -3,7 +3,7 @@
 <p *ngIf="!leagues"><em>Загрузка...</em></p>
 
 <h2>Создание лиги</h2>
-<input type="button" value="Создать" class="btn btn-sm btn-success" (click)="create()" />
+<input type="button" value="Создать" class="btn btn-sm btn-success" (click)="add()" />
 <table *ngIf="tableMode; else create" class="table table-striped">
   <thead>
     <tr>
@@ -18,9 +18,9 @@
       <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
         <td>{{l?.name}}</td>
         <td>{{l?.description}}</td>
-        <td>{{l?.type.name}}</td>
+        <td>{{l?.leagueType?.name}}</td>
         <td>
-          <button class="btn btn-sm btn-primary" (click)="editProduct(l)">Изменить</button>
+          <button class="btn btn-sm btn-primary" (click)="editLeague(l)">Изменить</button>
           <button class="btn btn-sm btn-danger" (click)="delete(l)">Удалить</button>
         </td>
       </ng-template>
@@ -37,7 +37,11 @@
     <input type="text" [(ngModel)]="league.description" class="form-control" />
   </td>
   <td>
-    <input type="text" [(ngModel)]="league.type.name" class="form-control" />
+    <div *ngIf="newLeagueType != null">
+      <select [(ngModel)]="newLeagueType">
+        <option *ngFor="let l of leagueTypes" [ngValue]="l">{{l.name}}</option>
+      </select>
+    </div>
   </td>
   <td>
     <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
@@ -57,7 +61,11 @@
   </div>
   <div class="form-group">
     <label>Тип</label>
-    <input type="text" [(ngModel)]="league.type.name" class="form-control" />
+    <div *ngIf="newLeagueType != null">
+      <select [(ngModel)]="newLeagueType">
+        <option *ngFor="let l of leagueTypes" [ngValue]="l" >{{l.name}}</option>
+      </select>
+    </div>
   </div>
   <div>
     <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FliGen.Domain.Common;
+using FliGen.Common.Mediator.Extensions;
 
 namespace FliGen.Domain.Entities
 {
@@ -22,14 +23,14 @@ namespace FliGen.Domain.Entities
             };
         }
 
-        public static Player Create(string firstName, string lastName, double rate)
+        public static Player Create(string firstName, string lastName, string rate)
         {
-            return new Player(firstName, lastName, rate);
+            return new Player(firstName, lastName, double.Parse(rate.DotToComma()));
         }
 
-        public static Player GetUpdated(int id, string firstName, string lastName, double rate)
+        public static Player GetUpdated(int id, string firstName, string lastName, string rate)
         {
-            return new Player(firstName, lastName, rate) { Id = id };
+            return new Player(firstName, lastName, double.Parse(rate.DotToComma())) { Id = id };
         }
     }
 }

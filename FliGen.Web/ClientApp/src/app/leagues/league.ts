@@ -4,5 +4,5 @@ export class League {
   id: number;
   name: string;
   description: string;
-  type: LeagueType;
+  leagueType: LeagueType;
 }

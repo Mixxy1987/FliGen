@@ -4,6 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using FliGen.Application.Commands.League.DeleteLeague;
+using FliGen.Application.Commands.League.UpdateLeague;
 using FliGen.Application.Dto;
 using FliGen.Application.Queries.GetLeagues;
 using FliGen.Application.Queries.GetLeagueTypes;
@@ -25,7 +27,7 @@ namespace FliGen.Web.Controllers
 
         [HttpGet("types")]
         [Produces(typeof(IEnumerable<LeagueType>))]
-        public async Task<IEnumerable<LeagueType>> GetLeagueTypes()
+        public async Task<IEnumerable<LeagueType>> GetTypes()
         {
             var leagueTypes = await _mediatr.Send(new GetLeagueTypesQuery());
 
@@ -34,7 +36,7 @@ namespace FliGen.Web.Controllers
         
         [HttpGet]
         [Produces(typeof(IEnumerable<League>))]
-        public async Task<IEnumerable<League>> GetLeagues()
+        public async Task<IEnumerable<League>> Get()
         {
             var leagueTypes = await _mediatr.Send(new GetLeaguesQuery());
 
@@ -44,6 +46,21 @@ namespace FliGen.Web.Controllers
         [HttpPost]
         public async Task Create([FromBody]CreateLeagueCommand cmd)
         { 
+            await _mediatr.Send(cmd);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _mediatr.Send(new DeleteLeagueCommand()
+            {
+                Id = id
+            });
+        }
+
+        [HttpPut]
+        public async Task Update([FromBody]UpdateLeagueCommand cmd)
+        {
             await _mediatr.Send(cmd);
         }
     }

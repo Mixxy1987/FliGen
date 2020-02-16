@@ -22,6 +22,8 @@ namespace FliGen.Persistence.Configurations
 
             builder.HasIndex(e => e.Name)
                 .IsUnique();
+
+            builder.Ignore(x => x.Type);
         }
     }
 }

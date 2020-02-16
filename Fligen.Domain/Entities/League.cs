@@ -38,5 +38,10 @@ namespace FliGen.Domain.Entities
         {
             return new League(name, description, type);
         }
+
+        public static League GetUpdated(int id, string firstName, string lastName, LeagueType type)
+        {
+            return new League(firstName, lastName, type) { Id = id };
+        }
     }
 }

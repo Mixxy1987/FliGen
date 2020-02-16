@@ -8,9 +8,9 @@ namespace FliGen.Application.Commands.League.DeleteLeague
 {
     public class DeleteLeagueCommandHandler : IRequestHandler<DeleteLeagueCommand>
     {
-        private readonly IPlayerRepository _repository;
+        private readonly ILeagueRepository _repository;
 
-        public DeleteLeagueCommandHandler(IPlayerRepository repository)
+        public DeleteLeagueCommandHandler(ILeagueRepository repository)
         {
             _repository = repository;
         }

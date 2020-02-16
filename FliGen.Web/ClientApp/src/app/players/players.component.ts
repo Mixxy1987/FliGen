@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Player } from "./player";
 import { PlayersDataService } from "./players.data.service";
 
@@ -27,7 +26,7 @@ export class PlayersComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  editProduct(p: Player) {
+  editPlayer(p: Player) {
     this.player = p;
   }
 

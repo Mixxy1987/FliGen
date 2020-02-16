@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FliGen.Common.Mediator.Extensions;
+using FluentValidation;
 
 namespace FliGen.Application.Commands.Player.UpdatePlayer
 {
@@ -9,6 +10,10 @@ namespace FliGen.Application.Commands.Player.UpdatePlayer
             RuleFor(c => c)
                 .NotEmpty()
                 .WithMessage("Не задана команда на обновление игрока");
+
+            RuleFor(c => c.Rate)
+                .Must(x => double.TryParse(x.DotToComma(), out double _))
+                .WithMessage("Неверный формат рейтинга игрока");
         }
     }
 }

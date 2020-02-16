@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
     <ProjectReference Include="..\FliGen.Domain\FliGen.Domain.csproj" />
   </ItemGroup>
 

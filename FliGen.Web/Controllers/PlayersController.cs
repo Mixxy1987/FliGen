@@ -34,14 +34,9 @@ namespace FliGen.Web.Controllers
         }
 
         [HttpPost]
-        public async Task Add([FromBody]Player player)
+        public async Task Add([FromBody]AddPlayerCommand cmd)
         { 
-            await _mediatr.Send(new AddPlayerCommand()
-            {
-                FirstName = player.FirstName,
-                LastName = player.LastName,
-                Rate = player.Rate
-            });
+            await _mediatr.Send(cmd);
         }
 
         [HttpDelete("{id}")]
@@ -53,16 +48,10 @@ namespace FliGen.Web.Controllers
             });
         }
 
-        [HttpPut("{id}")]
-        public async Task Update(int id, [FromBody]Player product)
+        [HttpPut]
+        public async Task Update([FromBody]UpdatePlayerCommand cmd)
         {
-            await _mediatr.Send(new UpdatePlayerCommand()
-            {
-                Id = id,
-                FirstName = product.FirstName,
-                LastName = product.LastName,
-                Rate = product.Rate
-            });
+            await _mediatr.Send(cmd);
         }
     }
 }

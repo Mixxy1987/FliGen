@@ -18,7 +18,10 @@ namespace FliGen.Application.Commands.League.CreateLeague
 
         public async Task<Unit> Handle(CreateLeagueCommand request, CancellationToken cancellationToken)
         {
-            var league = Domain.Entities.League.Create(request.Name, request.Description, Enumeration.FromDisplayName<LeagueType>(request.LeagueType));
+            var league = Domain.Entities.League.Create(
+                request.Name,
+                request.Description,
+                Enumeration.FromDisplayName<LeagueType>(request.LeagueType.Name));
             
             await _repository.CreateAsync(league);
             

@@ -46,5 +46,11 @@ namespace FliGen.Persistence.Repositories
             _context.Remove(_context.Leagues.Single(x => x.Id == id));
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(League league)
+        {
+            _context.Leagues.Update(league);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { League } from "./league";
 import { LeaguesDataService } from "./leagues.data.service";
 import { LeagueType } from "./leagueType";
@@ -14,10 +13,13 @@ export class LeaguesComponent implements OnInit {
   private league: League = new League();
   private leagues: League[];
   private leagueTypes: LeagueType[];
+  private newLeagueType: LeagueType;
   tableMode: boolean = true;
 
   constructor(
-    private dataService: LeaguesDataService) { }
+    private dataService: LeaguesDataService) {
+
+  }
 
   ngOnInit(): void {
     this.loadLeagues();
@@ -31,16 +33,18 @@ export class LeaguesComponent implements OnInit {
   }
 
   loadLeagueTypes() {
-      this.dataService.getLeagueTypes().subscribe(result => {
-          this.leagueTypes = result;
+    this.dataService.getLeagueTypes().subscribe(result => {
+      this.leagueTypes = result;
     }, error => console.error(error));
   }
 
-  /*editProduct(p: Player) {
-    this.player = p;
-  }*/
+  editLeague(l: League) {
+    this.newLeagueType = new LeagueType(this.leagueTypes[0].name);
+    this.league = l;
+  }
 
   save() {
+    this.league.leagueType = new LeagueType(this.newLeagueType.name);
     if (this.league.id == null) {
       this.dataService.create(this.league)
         .subscribe((data: League) => {
@@ -59,12 +63,13 @@ export class LeaguesComponent implements OnInit {
     this.tableMode = true;
   }
 
-  delete(p: League) {
-    this.dataService.delete(p.id)
+  delete(l: League) {
+    this.dataService.delete(l.id)
       .subscribe(data => this.loadLeagues());
   }
 
   add() {
+    this.newLeagueType = new LeagueType(this.leagueTypes[0].name);
     this.cancel();
     this.tableMode = false;
   }
