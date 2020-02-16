@@ -11,6 +11,11 @@ BEGIN
 	FROM [LeagueType]
 	WHERE [LeagueType].[Name] = 'Football'
 	
+	INSERT INTO [League](Name, Description, LeagueTypeId)
+	SELECT 'FLIHockey', 'Worst League in the world!', Id
+	FROM [LeagueType]
+	WHERE [LeagueType].[Name] = 'Hockey'
+
 	INSERT INTO [Season](Start, Finish, LeagueId)
 	SELECT '01.01.2020','31.12.2020', Id
 	FROM [League]

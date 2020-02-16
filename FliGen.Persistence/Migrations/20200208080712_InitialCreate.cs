@@ -11,6 +11,7 @@ namespace FliGen.Persistence.Migrations
             migrationBuilder.Sql(MigrationHelpers.GetDynamicSqlFromFile(@"SqlScripts/InitialFill.sql"));
 
             InitialFill.NamesAndRatesFill(migrationBuilder);
+            InitialFill.LeaguePlayerLinksFill(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

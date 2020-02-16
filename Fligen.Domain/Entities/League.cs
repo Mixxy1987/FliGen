@@ -7,7 +7,7 @@ namespace FliGen.Domain.Entities
     {
         public string Name { get; }
         public string Description { get; }
-
+        public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
         public int LeagueTypeId {
             get
             {

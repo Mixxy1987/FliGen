@@ -11,13 +11,14 @@ namespace FliGen.Domain.Entities
         public string LastName { get; }
         public List<PlayerRate> Rates { get; }
 
+        public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
         protected Player(){}
 
         private Player(string firstName, string lastName, double rate) : this()
         {
             FirstName = firstName;
             LastName = lastName;
-            Rates = new List<PlayerRate>()
+            Rates = new List<PlayerRate>
             {
                 new PlayerRate(DateTime.Now, rate)
             };
