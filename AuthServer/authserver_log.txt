@@ -1,0 +1,554 @@
+2020-02-16 14:55:31.858 +03:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-02-16 14:55:32.515 +03:00 [INF] Using the default authentication scheme Identity.Application for IdentityServer
+2020-02-16 14:55:32.545 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for authentication
+2020-02-16 14:55:32.584 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-in
+2020-02-16 14:55:32.614 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-out
+2020-02-16 14:55:32.636 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for challenge
+2020-02-16 14:55:32.644 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for forbid
+2020-02-16 14:55:33.150 +03:00 [DBG] Starting grant removal
+2020-02-16 14:55:33.260 +03:00 [WRN] Failed to determine the https port for redirect.
+2020-02-16 14:55:33.278 +03:00 [DBG] Login Url: /Account/Login
+2020-02-16 14:55:33.280 +03:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-16 14:55:33.284 +03:00 [DBG] Logout Url: /Account/Logout
+2020-02-16 14:55:33.288 +03:00 [DBG] ConsentUrl Url: /consent
+2020-02-16 14:55:33.291 +03:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-16 14:55:33.292 +03:00 [DBG] Error Url: /home/error
+2020-02-16 14:55:33.295 +03:00 [DBG] Error Id Parameter: errorId
+2020-02-16 14:56:04.396 +03:00 [INF] Removing 0 grants
+2020-02-16 14:56:34.476 +03:00 [INF] Removing 0 grants
+2020-02-16 14:57:04.502 +03:00 [INF] Removing 0 grants
+2020-02-16 14:57:34.524 +03:00 [INF] Removing 0 grants
+2020-02-16 14:58:02.107 +03:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-02-16 14:58:02.338 +03:00 [INF] Using the default authentication scheme Identity.Application for IdentityServer
+2020-02-16 14:58:02.340 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for authentication
+2020-02-16 14:58:02.344 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-in
+2020-02-16 14:58:02.346 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-out
+2020-02-16 14:58:02.349 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for challenge
+2020-02-16 14:58:02.351 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for forbid
+2020-02-16 14:58:02.585 +03:00 [DBG] Starting grant removal
+2020-02-16 14:58:02.647 +03:00 [WRN] Failed to determine the https port for redirect.
+2020-02-16 14:58:02.661 +03:00 [DBG] Login Url: /Account/Login
+2020-02-16 14:58:02.664 +03:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-16 14:58:02.667 +03:00 [DBG] Logout Url: /Account/Logout
+2020-02-16 14:58:02.669 +03:00 [DBG] ConsentUrl Url: /consent
+2020-02-16 14:58:02.671 +03:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-16 14:58:02.673 +03:00 [DBG] Error Url: /home/error
+2020-02-16 14:58:02.675 +03:00 [DBG] Error Id Parameter: errorId
+2020-02-16 14:58:34.587 +03:00 [INF] Removing 0 grants
+2020-02-16 14:58:36.557 +03:00 [DBG] CORS request made for path: /api/account from origin: http://localhost:4200 but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2020-02-16 14:58:36.689 +03:00 [WRN] User 682c7791-8a6d-448f-a0ac-ef0338e45cd4 password validation failed: PasswordRequiresNonAlphanumeric;PasswordRequiresUpper.
+2020-02-16 14:58:53.173 +03:00 [DBG] CORS request made for path: /api/account from origin: http://localhost:4200 but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2020-02-16 14:59:00.375 +03:00 [DBG] CORS request made for path: /.well-known/openid-configuration from origin: http://localhost:4200
+2020-02-16 14:59:00.386 +03:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2020-02-16 14:59:00.388 +03:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2020-02-16 14:59:00.395 +03:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2020-02-16 14:59:00.402 +03:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2020-02-16 14:59:00.405 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2020-02-16 14:59:00.409 +03:00 [DBG] Start discovery request
+2020-02-16 14:59:00.537 +03:00 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2020-02-16 14:59:00.543 +03:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2020-02-16 14:59:00.547 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2020-02-16 14:59:00.551 +03:00 [DBG] Start authorize request
+2020-02-16 14:59:00.558 +03:00 [DBG] No user present in authorize request
+2020-02-16 14:59:00.563 +03:00 [DBG] Start authorize request protocol validation
+2020-02-16 14:59:00.578 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:00.613 +03:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-16 14:59:00.649 +03:00 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"angular_spa","ClientName":"Angular SPA","RedirectUri":"http://localhost:4200/auth-callback","AllowedRedirectUris":["http://localhost:4200/auth-callback"],"SubjectId":"anonymous","ResponseType":"id_token token","ResponseMode":"fragment","GrantType":"implicit","RequestedScopes":"openid profile email api.read","State":"23c20e1ce43d45a686642158bd3c59fa","UiLocales":null,"Nonce":"ff4c4422ebd24aa895be52ba89b497b8","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"angular_spa","redirect_uri":"http://localhost:4200/auth-callback","response_type":"id_token token","scope":"openid profile email api.read","state":"23c20e1ce43d45a686642158bd3c59fa","nonce":"ff4c4422ebd24aa895be52ba89b497b8"},"$type":"AuthorizeRequestValidationLog"}
+2020-02-16 14:59:00.656 +03:00 [INF] Showing login: User is not authenticated
+2020-02-16 14:59:00.705 +03:00 [DBG] Start authorize request protocol validation
+2020-02-16 14:59:00.707 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:00.709 +03:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-16 14:59:00.715 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:04.612 +03:00 [INF] Removing 0 grants
+2020-02-16 14:59:34.635 +03:00 [INF] Removing 0 grants
+2020-02-16 14:59:50.015 +03:00 [DBG] Start authorize request protocol validation
+2020-02-16 14:59:50.019 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:50.022 +03:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-16 14:59:50.070 +03:00 [DBG] Augmenting SignInContext
+2020-02-16 14:59:50.073 +03:00 [DBG] Adding idp claim with value: local
+2020-02-16 14:59:50.075 +03:00 [DBG] Adding amr claim with value: pwd
+2020-02-16 14:59:50.092 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:50.123 +03:00 [DBG] Request path /connect/authorize/callback matched to endpoint type Authorize
+2020-02-16 14:59:50.126 +03:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint
+2020-02-16 14:59:50.128 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint for /connect/authorize/callback
+2020-02-16 14:59:50.136 +03:00 [DBG] Start authorize callback request
+2020-02-16 14:59:50.142 +03:00 [DBG] User in authorize request: 4992c994-6e23-4f3b-82f6-07f6ebb3f227
+2020-02-16 14:59:50.144 +03:00 [DBG] Start authorize request protocol validation
+2020-02-16 14:59:50.147 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:50.151 +03:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-16 14:59:50.155 +03:00 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"angular_spa","ClientName":"Angular SPA","RedirectUri":"http://localhost:4200/auth-callback","AllowedRedirectUris":["http://localhost:4200/auth-callback"],"SubjectId":"4992c994-6e23-4f3b-82f6-07f6ebb3f227","ResponseType":"id_token token","ResponseMode":"fragment","GrantType":"implicit","RequestedScopes":"openid profile email api.read","State":"23c20e1ce43d45a686642158bd3c59fa","UiLocales":null,"Nonce":"ff4c4422ebd24aa895be52ba89b497b8","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":"NB1Y-JS-dg1w0UxSx8Dcpg","Raw":{"client_id":"angular_spa","redirect_uri":"http://localhost:4200/auth-callback","response_type":"id_token token","scope":"openid profile email api.read","state":"23c20e1ce43d45a686642158bd3c59fa","nonce":"ff4c4422ebd24aa895be52ba89b497b8"},"$type":"AuthorizeRequestValidationLog"}
+2020-02-16 14:59:50.213 +03:00 [DBG] Client is configured to not require consent, no consent is required
+2020-02-16 14:59:50.218 +03:00 [DBG] Creating Implicit Flow response.
+2020-02-16 14:59:50.228 +03:00 [DBG] Getting claims for access token for client: angular_spa
+2020-02-16 14:59:50.231 +03:00 [DBG] Getting claims for access token for subject: 4992c994-6e23-4f3b-82f6-07f6ebb3f227
+2020-02-16 14:59:50.650 +03:00 [DBG] Getting claims for identity token for subject: 4992c994-6e23-4f3b-82f6-07f6ebb3f227 and client: angular_spa
+2020-02-16 14:59:50.653 +03:00 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2020-02-16 14:59:50.667 +03:00 [DBG] Authorize endpoint response
+{"SubjectId":"4992c994-6e23-4f3b-82f6-07f6ebb3f227","ClientId":"angular_spa","RedirectUri":"http://localhost:4200/auth-callback","State":"23c20e1ce43d45a686642158bd3c59fa","Scope":"openid profile email api.read","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2020-02-16 14:59:50.677 +03:00 [DBG] Augmenting SignInContext
+2020-02-16 14:59:52.474 +03:00 [DBG] CORS request made for path: /.well-known/openid-configuration from origin: http://localhost:4200
+2020-02-16 14:59:52.479 +03:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2020-02-16 14:59:52.486 +03:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2020-02-16 14:59:52.492 +03:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2020-02-16 14:59:52.494 +03:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2020-02-16 14:59:52.502 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2020-02-16 14:59:52.517 +03:00 [DBG] Start discovery request
+2020-02-16 14:59:52.560 +03:00 [DBG] CORS request made for path: /.well-known/openid-configuration/jwks from origin: http://localhost:4200
+2020-02-16 14:59:52.565 +03:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2020-02-16 14:59:52.568 +03:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2020-02-16 14:59:52.572 +03:00 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2020-02-16 14:59:52.577 +03:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2020-02-16 14:59:52.580 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2020-02-16 14:59:52.585 +03:00 [DBG] Start key discovery request
+2020-02-16 14:59:52.645 +03:00 [DBG] CORS request made for path: /connect/userinfo from origin: http://localhost:4200
+2020-02-16 14:59:52.648 +03:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2020-02-16 14:59:52.652 +03:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2020-02-16 14:59:52.657 +03:00 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2020-02-16 14:59:52.661 +03:00 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2020-02-16 14:59:52.663 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2020-02-16 14:59:52.679 +03:00 [DBG] Start userinfo request
+2020-02-16 14:59:52.696 +03:00 [DBG] Bearer token found in header
+2020-02-16 14:59:52.808 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:52.812 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 14:59:52.826 +03:00 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2020-02-16 14:59:52.836 +03:00 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1581854390,"exp":1581857990,"iss":"http://localhost:5000","aud":"resourceapi","client_id":"angular_spa","sub":"4992c994-6e23-4f3b-82f6-07f6ebb3f227","auth_time":1581854390,"idp":"local","given_name":"val","email":"mixxy@yandex.ru","http://schemas.microsoft.com/ws/2008/06/identity/claims/role":"consumer","scope":["openid","profile","email","api.read"],"amr":"pwd"},"$type":"TokenValidationLog"}
+2020-02-16 14:59:52.842 +03:00 [DBG] Creating userinfo response
+2020-02-16 14:59:52.847 +03:00 [DBG] Scopes in access token: openid profile email api.read
+2020-02-16 14:59:52.850 +03:00 [DBG] Scopes in access token: openid profile email api.read
+2020-02-16 14:59:52.854 +03:00 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at email email_verified
+2020-02-16 14:59:52.856 +03:00 [DBG] Scopes in access token: openid profile email api.read
+2020-02-16 14:59:52.872 +03:00 [INF] Profile service returned the following claim types: sub name email preferred_username email email_verified given_name email http://schemas.microsoft.com/ws/2008/06/identity/claims/role
+2020-02-16 14:59:52.874 +03:00 [DBG] End userinfo request
+2020-02-16 14:59:52.910 +03:00 [DBG] Request path /connect/checksession matched to endpoint type Checksession
+2020-02-16 14:59:52.923 +03:00 [DBG] Endpoint enabled: Checksession, successfully created handler: IdentityServer4.Endpoints.CheckSessionEndpoint
+2020-02-16 14:59:52.925 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.CheckSessionEndpoint for /connect/checksession
+2020-02-16 14:59:52.927 +03:00 [DBG] Rendering check session result
+2020-02-16 15:00:04.664 +03:00 [INF] Removing 0 grants
+2020-02-16 15:00:34.673 +03:00 [INF] Removing 0 grants
+2020-02-16 15:01:04.716 +03:00 [INF] Removing 0 grants
+2020-02-16 15:01:34.744 +03:00 [INF] Removing 0 grants
+2020-02-16 15:02:04.770 +03:00 [INF] Removing 0 grants
+2020-02-16 15:02:34.790 +03:00 [INF] Removing 0 grants
+2020-02-16 15:03:04.807 +03:00 [INF] Removing 0 grants
+2020-02-16 15:03:34.824 +03:00 [INF] Removing 0 grants
+2020-02-16 15:04:04.853 +03:00 [INF] Removing 0 grants
+2020-02-16 15:04:34.888 +03:00 [INF] Removing 0 grants
+2020-02-16 15:05:04.912 +03:00 [INF] Removing 0 grants
+2020-02-16 15:05:34.927 +03:00 [INF] Removing 0 grants
+2020-02-16 15:06:04.963 +03:00 [INF] Removing 0 grants
+2020-02-16 15:06:35.040 +03:00 [INF] Removing 0 grants
+2020-02-16 15:07:05.068 +03:00 [INF] Removing 0 grants
+2020-02-16 15:07:35.085 +03:00 [INF] Removing 0 grants
+2020-02-16 15:08:04.553 +03:00 [DBG] Request path /connect/endsession matched to endpoint type Endsession
+2020-02-16 15:08:04.559 +03:00 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionEndpoint
+2020-02-16 15:08:04.561 +03:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionEndpoint for /connect/endsession
+2020-02-16 15:08:04.565 +03:00 [DBG] Processing signout request for 4992c994-6e23-4f3b-82f6-07f6ebb3f227
+2020-02-16 15:08:04.570 +03:00 [DBG] Start end session request validation
+2020-02-16 15:08:04.579 +03:00 [DBG] Start identity token validation
+2020-02-16 15:08:04.583 +03:00 [DBG] client configuration validation for client angular_spa succeeded.
+2020-02-16 15:08:04.585 +03:00 [DBG] Client found: angular_spa / Angular SPA
+2020-02-16 15:08:04.608 +03:00 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2020-02-16 15:08:04.614 +03:00 [DBG] Token validation success
+{"ClientId":"angular_spa","ClientName":"Angular SPA","ValidateLifetime":false,"AccessTokenType":null,"ExpectedScope":null,"TokenHandle":null,"JwtId":null,"Claims":{"nbf":1581854390,"exp":1581854690,"iss":"http://localhost:5000","aud":"angular_spa","nonce":"ff4c4422ebd24aa895be52ba89b497b8","iat":1581854390,"at_hash":"6S74K-rv-vywuEdNuXrcAA","s_hash":"gGF9UtTyTY9FCwwuRIXPGg","sid":"NB1Y-JS-dg1w0UxSx8Dcpg","sub":"4992c994-6e23-4f3b-82f6-07f6ebb3f227","auth_time":1581854390,"idp":"local","amr":"pwd"},"$type":"TokenValidationLog"}
+2020-02-16 15:08:04.636 +03:00 [INF] End session request validation success
+{"ClientId":"angular_spa","ClientName":"Angular SPA","SubjectId":"4992c994-6e23-4f3b-82f6-07f6ebb3f227","PostLogOutUri":"http://localhost:4200/","State":null,"Raw":{"id_token_hint":"***REDACTED***","post_logout_redirect_uri":"http://localhost:4200/"},"$type":"EndSessionRequestValidationLog"}
+2020-02-16 15:08:04.644 +03:00 [DBG] Success validating end session request from angular_spa
+2020-02-16 15:08:05.160 +03:00 [INF] Removing 0 grants
+2020-02-16 15:08:35.178 +03:00 [INF] Removing 0 grants
+2020-02-16 15:09:05.201 +03:00 [INF] Removing 0 grants
+2020-02-16 15:09:35.229 +03:00 [INF] Removing 0 grants
+2020-02-16 15:10:05.256 +03:00 [INF] Removing 0 grants
+2020-02-16 15:10:35.271 +03:00 [INF] Removing 0 grants
+2020-02-16 15:11:05.292 +03:00 [INF] Removing 0 grants
+2020-02-16 15:11:35.316 +03:00 [INF] Removing 0 grants
+2020-02-16 15:12:05.335 +03:00 [INF] Removing 0 grants
+2020-02-16 15:12:35.345 +03:00 [INF] Removing 0 grants
+2020-02-16 15:13:05.363 +03:00 [INF] Removing 0 grants
+2020-02-16 15:13:35.377 +03:00 [INF] Removing 0 grants
+2020-02-16 15:14:05.394 +03:00 [INF] Removing 0 grants
+2020-02-16 15:14:35.410 +03:00 [INF] Removing 0 grants
+2020-02-16 15:15:05.428 +03:00 [INF] Removing 0 grants
+2020-02-16 15:15:35.447 +03:00 [INF] Removing 0 grants
+2020-02-16 15:16:05.476 +03:00 [INF] Removing 0 grants
+2020-02-16 15:16:35.483 +03:00 [INF] Removing 0 grants
+2020-02-16 15:17:05.510 +03:00 [INF] Removing 0 grants
+2020-02-16 15:17:35.519 +03:00 [INF] Removing 0 grants
+2020-02-16 15:18:05.541 +03:00 [INF] Removing 0 grants
+2020-02-16 15:18:35.551 +03:00 [INF] Removing 0 grants
+2020-02-16 15:19:05.649 +03:00 [INF] Removing 0 grants
+2020-02-16 15:19:35.655 +03:00 [INF] Removing 0 grants
+2020-02-16 15:20:05.679 +03:00 [INF] Removing 0 grants
+2020-02-16 15:20:35.688 +03:00 [INF] Removing 0 grants
+2020-02-16 15:21:05.696 +03:00 [INF] Removing 0 grants
+2020-02-16 15:21:35.709 +03:00 [INF] Removing 0 grants
+2020-02-16 15:22:05.723 +03:00 [INF] Removing 0 grants
+2020-02-16 15:22:35.736 +03:00 [INF] Removing 0 grants
+2020-02-16 15:23:05.756 +03:00 [INF] Removing 0 grants
+2020-02-16 15:23:35.774 +03:00 [INF] Removing 0 grants
+2020-02-16 15:24:05.782 +03:00 [INF] Removing 0 grants
+2020-02-16 15:24:35.791 +03:00 [INF] Removing 0 grants
+2020-02-16 15:25:05.804 +03:00 [INF] Removing 0 grants
+2020-02-16 15:25:35.811 +03:00 [INF] Removing 0 grants
+2020-02-16 15:26:05.834 +03:00 [INF] Removing 0 grants
+2020-02-16 15:26:35.850 +03:00 [INF] Removing 0 grants
+2020-02-16 15:27:05.869 +03:00 [INF] Removing 0 grants
+2020-02-16 15:27:35.890 +03:00 [INF] Removing 0 grants
+2020-02-16 15:28:05.913 +03:00 [INF] Removing 0 grants
+2020-02-16 15:28:35.927 +03:00 [INF] Removing 0 grants
+2020-02-16 15:29:05.941 +03:00 [INF] Removing 0 grants
+2020-02-16 15:29:35.957 +03:00 [INF] Removing 0 grants
+2020-02-16 15:30:05.975 +03:00 [INF] Removing 0 grants
+2020-02-16 15:30:35.985 +03:00 [INF] Removing 0 grants
+2020-02-16 15:31:06.004 +03:00 [INF] Removing 0 grants
+2020-02-16 15:31:36.017 +03:00 [INF] Removing 0 grants
+2020-02-16 15:32:06.036 +03:00 [INF] Removing 0 grants
+2020-02-16 15:32:36.049 +03:00 [INF] Removing 0 grants
+2020-02-16 15:33:06.065 +03:00 [INF] Removing 0 grants
+2020-02-16 15:33:36.081 +03:00 [INF] Removing 0 grants
+2020-02-16 15:34:06.097 +03:00 [INF] Removing 0 grants
+2020-02-16 15:34:36.116 +03:00 [INF] Removing 0 grants
+2020-02-16 15:35:06.141 +03:00 [INF] Removing 0 grants
+2020-02-16 15:35:36.158 +03:00 [INF] Removing 0 grants
+2020-02-16 15:36:06.179 +03:00 [INF] Removing 0 grants
+2020-02-16 15:36:36.195 +03:00 [INF] Removing 0 grants
+2020-02-16 15:37:06.205 +03:00 [INF] Removing 0 grants
+2020-02-16 15:37:36.229 +03:00 [INF] Removing 0 grants
+2020-02-16 15:38:06.250 +03:00 [INF] Removing 0 grants
+2020-02-16 15:38:36.262 +03:00 [INF] Removing 0 grants
+2020-02-16 15:39:06.298 +03:00 [INF] Removing 0 grants
+2020-02-16 15:39:36.331 +03:00 [INF] Removing 0 grants
+2020-02-16 15:40:06.349 +03:00 [INF] Removing 0 grants
+2020-02-16 15:40:36.372 +03:00 [INF] Removing 0 grants
+2020-02-16 15:41:06.393 +03:00 [INF] Removing 0 grants
+2020-02-16 15:41:36.407 +03:00 [INF] Removing 0 grants
+2020-02-16 15:42:06.434 +03:00 [INF] Removing 0 grants
+2020-02-16 15:42:36.452 +03:00 [INF] Removing 0 grants
+2020-02-16 15:43:06.472 +03:00 [INF] Removing 0 grants
+2020-02-16 15:43:36.500 +03:00 [INF] Removing 0 grants
+2020-02-16 15:44:06.527 +03:00 [INF] Removing 0 grants
+2020-02-16 15:44:36.553 +03:00 [INF] Removing 0 grants
+2020-02-16 15:45:06.591 +03:00 [INF] Removing 0 grants
+2020-02-16 15:45:36.608 +03:00 [INF] Removing 0 grants
+2020-02-16 15:46:06.649 +03:00 [INF] Removing 0 grants
+2020-02-16 15:47:13.427 +03:00 [INF] Removing 0 grants
+2020-02-16 15:47:43.439 +03:00 [INF] Removing 0 grants
+2020-02-16 15:48:13.466 +03:00 [INF] Removing 0 grants
+2020-02-16 15:48:43.494 +03:00 [INF] Removing 0 grants
+2020-02-16 15:49:13.512 +03:00 [INF] Removing 0 grants
+2020-02-16 15:49:43.540 +03:00 [INF] Removing 0 grants
+2020-02-16 15:50:13.563 +03:00 [INF] Removing 0 grants
+2020-02-16 15:50:43.583 +03:00 [INF] Removing 0 grants
+2020-02-16 15:51:13.602 +03:00 [INF] Removing 0 grants
+2020-02-16 15:51:43.623 +03:00 [INF] Removing 0 grants
+2020-02-16 15:52:13.672 +03:00 [INF] Removing 0 grants
+2020-02-16 15:52:43.686 +03:00 [INF] Removing 0 grants
+2020-02-16 15:53:13.722 +03:00 [INF] Removing 0 grants
+2020-02-16 15:53:43.744 +03:00 [INF] Removing 0 grants
+2020-02-16 15:54:13.771 +03:00 [INF] Removing 0 grants
+2020-02-16 15:54:43.791 +03:00 [INF] Removing 0 grants
+2020-02-16 15:55:13.826 +03:00 [INF] Removing 0 grants
+2020-02-16 15:55:43.853 +03:00 [INF] Removing 0 grants
+2020-02-16 15:56:13.882 +03:00 [INF] Removing 0 grants
+2020-02-16 15:56:43.906 +03:00 [INF] Removing 0 grants
+2020-02-16 15:57:13.948 +03:00 [INF] Removing 0 grants
+2020-02-16 15:57:43.971 +03:00 [INF] Removing 0 grants
+2020-02-16 15:58:14.008 +03:00 [INF] Removing 0 grants
+2020-02-16 15:58:44.033 +03:00 [INF] Removing 0 grants
+2020-02-16 15:59:14.063 +03:00 [INF] Removing 0 grants
+2020-02-16 15:59:44.088 +03:00 [INF] Removing 0 grants
+2020-02-16 16:00:14.107 +03:00 [INF] Removing 0 grants
+2020-02-16 16:00:44.144 +03:00 [INF] Removing 0 grants
+2020-02-16 16:01:14.157 +03:00 [INF] Removing 0 grants
+2020-02-16 16:01:44.178 +03:00 [INF] Removing 0 grants
+2020-02-16 16:02:14.190 +03:00 [INF] Removing 0 grants
+2020-02-16 16:02:44.216 +03:00 [INF] Removing 0 grants
+2020-02-16 16:03:14.245 +03:00 [INF] Removing 0 grants
+2020-02-16 16:03:44.278 +03:00 [INF] Removing 0 grants
+2020-02-16 16:04:14.313 +03:00 [INF] Removing 0 grants
+2020-02-16 16:04:44.351 +03:00 [INF] Removing 0 grants
+2020-02-16 16:05:14.362 +03:00 [INF] Removing 0 grants
+2020-02-16 16:05:44.384 +03:00 [INF] Removing 0 grants
+2020-02-16 16:06:14.400 +03:00 [INF] Removing 0 grants
+2020-02-16 16:06:44.411 +03:00 [INF] Removing 0 grants
+2020-02-16 16:07:14.432 +03:00 [INF] Removing 0 grants
+2020-02-16 16:07:44.458 +03:00 [INF] Removing 0 grants
+2020-02-16 16:08:14.477 +03:00 [INF] Removing 0 grants
+2020-02-16 16:08:44.500 +03:00 [INF] Removing 0 grants
+2020-02-16 16:09:14.530 +03:00 [INF] Removing 0 grants
+2020-02-16 16:09:44.552 +03:00 [INF] Removing 0 grants
+2020-02-16 16:10:14.567 +03:00 [INF] Removing 0 grants
+2020-02-16 16:10:44.591 +03:00 [INF] Removing 0 grants
+2020-02-16 16:11:14.625 +03:00 [INF] Removing 0 grants
+2020-02-16 16:11:44.663 +03:00 [INF] Removing 0 grants
+2020-02-16 16:12:14.683 +03:00 [INF] Removing 0 grants
+2020-02-16 16:12:44.698 +03:00 [INF] Removing 0 grants
+2020-02-16 16:13:14.711 +03:00 [INF] Removing 0 grants
+2020-02-16 16:13:44.749 +03:00 [INF] Removing 0 grants
+2020-02-16 16:14:14.782 +03:00 [INF] Removing 0 grants
+2020-02-16 16:14:44.800 +03:00 [INF] Removing 0 grants
+2020-02-16 16:15:14.822 +03:00 [INF] Removing 0 grants
+2020-02-16 16:15:44.836 +03:00 [INF] Removing 0 grants
+2020-02-16 16:16:14.865 +03:00 [INF] Removing 0 grants
+2020-02-16 16:16:44.883 +03:00 [INF] Removing 0 grants
+2020-02-16 16:17:14.915 +03:00 [INF] Removing 0 grants
+2020-02-16 16:17:51.487 +03:00 [INF] Removing 0 grants
+2020-02-16 16:18:21.505 +03:00 [INF] Removing 0 grants
+2020-02-16 16:18:51.524 +03:00 [INF] Removing 0 grants
+2020-02-16 16:19:21.537 +03:00 [INF] Removing 0 grants
+2020-02-16 16:19:51.564 +03:00 [INF] Removing 0 grants
+2020-02-16 16:20:21.596 +03:00 [INF] Removing 0 grants
+2020-02-16 16:20:51.613 +03:00 [INF] Removing 0 grants
+2020-02-16 16:21:21.629 +03:00 [INF] Removing 0 grants
+2020-02-16 16:21:51.654 +03:00 [INF] Removing 0 grants
+2020-02-16 16:22:21.696 +03:00 [INF] Removing 0 grants
+2020-02-16 16:22:51.731 +03:00 [INF] Removing 0 grants
+2020-02-16 16:23:21.762 +03:00 [INF] Removing 0 grants
+2020-02-16 16:23:51.783 +03:00 [INF] Removing 0 grants
+2020-02-16 16:24:21.823 +03:00 [INF] Removing 0 grants
+2020-02-16 16:24:51.853 +03:00 [INF] Removing 0 grants
+2020-02-16 16:25:21.877 +03:00 [INF] Removing 0 grants
+2020-02-16 16:25:51.901 +03:00 [INF] Removing 0 grants
+2020-02-16 16:26:21.918 +03:00 [INF] Removing 0 grants
+2020-02-16 16:26:51.935 +03:00 [INF] Removing 0 grants
+2020-02-16 16:27:21.961 +03:00 [INF] Removing 0 grants
+2020-02-16 16:27:51.978 +03:00 [INF] Removing 0 grants
+2020-02-16 16:28:22.003 +03:00 [INF] Removing 0 grants
+2020-02-16 16:28:52.016 +03:00 [INF] Removing 0 grants
+2020-02-16 16:29:22.056 +03:00 [INF] Removing 0 grants
+2020-02-16 16:29:52.081 +03:00 [INF] Removing 0 grants
+2020-02-16 16:30:22.102 +03:00 [INF] Removing 0 grants
+2020-02-16 16:30:52.116 +03:00 [INF] Removing 0 grants
+2020-02-16 16:31:22.139 +03:00 [INF] Removing 0 grants
+2020-02-16 16:31:52.157 +03:00 [INF] Removing 0 grants
+2020-02-16 16:32:22.182 +03:00 [INF] Removing 0 grants
+2020-02-16 16:32:52.210 +03:00 [INF] Removing 0 grants
+2020-02-16 16:33:22.241 +03:00 [INF] Removing 0 grants
+2020-02-16 16:33:52.254 +03:00 [INF] Removing 0 grants
+2020-02-16 16:34:22.278 +03:00 [INF] Removing 0 grants
+2020-02-16 16:34:52.308 +03:00 [INF] Removing 0 grants
+2020-02-16 16:35:22.332 +03:00 [INF] Removing 0 grants
+2020-02-16 16:35:52.341 +03:00 [INF] Removing 0 grants
+2020-02-16 16:36:22.366 +03:00 [INF] Removing 0 grants
+2020-02-16 16:36:52.389 +03:00 [INF] Removing 0 grants
+2020-02-16 16:37:22.400 +03:00 [INF] Removing 0 grants
+2020-02-16 16:37:52.431 +03:00 [INF] Removing 0 grants
+2020-02-16 16:38:22.462 +03:00 [INF] Removing 0 grants
+2020-02-16 16:38:52.470 +03:00 [INF] Removing 0 grants
+2020-02-16 16:39:22.496 +03:00 [INF] Removing 0 grants
+2020-02-16 16:39:52.525 +03:00 [INF] Removing 0 grants
+2020-02-16 16:40:22.566 +03:00 [INF] Removing 0 grants
+2020-02-16 16:40:52.600 +03:00 [INF] Removing 0 grants
+2020-02-16 16:41:22.632 +03:00 [INF] Removing 0 grants
+2020-02-16 16:41:52.669 +03:00 [INF] Removing 0 grants
+2020-02-16 16:42:22.699 +03:00 [INF] Removing 0 grants
+2020-02-16 16:42:52.712 +03:00 [INF] Removing 0 grants
+2020-02-16 16:43:22.753 +03:00 [INF] Removing 0 grants
+2020-02-16 16:43:52.760 +03:00 [INF] Removing 0 grants
+2020-02-16 16:44:22.796 +03:00 [INF] Removing 0 grants
+2020-02-16 16:44:52.819 +03:00 [INF] Removing 0 grants
+2020-02-16 16:45:22.843 +03:00 [INF] Removing 0 grants
+2020-02-16 16:45:52.854 +03:00 [INF] Removing 0 grants
+2020-02-16 16:46:22.870 +03:00 [INF] Removing 0 grants
+2020-02-16 16:46:52.888 +03:00 [INF] Removing 0 grants
+2020-02-16 16:47:22.906 +03:00 [INF] Removing 0 grants
+2020-02-16 16:47:52.926 +03:00 [INF] Removing 0 grants
+2020-02-16 16:49:07.973 +03:00 [INF] Removing 0 grants
+2020-02-16 16:49:37.987 +03:00 [INF] Removing 0 grants
+2020-02-16 16:50:08.006 +03:00 [INF] Removing 0 grants
+2020-02-16 16:50:38.013 +03:00 [INF] Removing 0 grants
+2020-02-16 16:51:08.025 +03:00 [INF] Removing 0 grants
+2020-02-16 16:51:38.046 +03:00 [INF] Removing 0 grants
+2020-02-16 16:52:08.069 +03:00 [INF] Removing 0 grants
+2020-02-16 16:52:38.090 +03:00 [INF] Removing 0 grants
+2020-02-16 16:53:08.127 +03:00 [INF] Removing 0 grants
+2020-02-16 16:53:38.153 +03:00 [INF] Removing 0 grants
+2020-02-16 16:54:08.185 +03:00 [INF] Removing 0 grants
+2020-02-16 16:54:38.209 +03:00 [INF] Removing 0 grants
+2020-02-16 16:55:08.240 +03:00 [INF] Removing 0 grants
+2020-02-16 16:55:38.258 +03:00 [INF] Removing 0 grants
+2020-02-16 16:56:08.272 +03:00 [INF] Removing 0 grants
+2020-02-16 16:56:38.292 +03:00 [INF] Removing 0 grants
+2020-02-16 16:57:08.318 +03:00 [INF] Removing 0 grants
+2020-02-16 16:57:38.334 +03:00 [INF] Removing 0 grants
+2020-02-16 16:58:08.368 +03:00 [INF] Removing 0 grants
+2020-02-16 16:58:38.386 +03:00 [INF] Removing 0 grants
+2020-02-16 16:59:08.424 +03:00 [INF] Removing 0 grants
+2020-02-16 16:59:38.437 +03:00 [INF] Removing 0 grants
+2020-02-16 17:00:08.455 +03:00 [INF] Removing 0 grants
+2020-02-16 17:00:38.490 +03:00 [INF] Removing 0 grants
+2020-02-16 17:01:08.522 +03:00 [INF] Removing 0 grants
+2020-02-16 17:01:38.543 +03:00 [INF] Removing 0 grants
+2020-02-16 17:02:08.561 +03:00 [INF] Removing 0 grants
+2020-02-16 17:02:38.586 +03:00 [INF] Removing 0 grants
+2020-02-16 17:03:08.609 +03:00 [INF] Removing 0 grants
+2020-02-16 17:03:38.641 +03:00 [INF] Removing 0 grants
+2020-02-16 17:04:08.669 +03:00 [INF] Removing 0 grants
+2020-02-16 17:04:38.683 +03:00 [INF] Removing 0 grants
+2020-02-16 17:05:08.695 +03:00 [INF] Removing 0 grants
+2020-02-16 17:05:38.715 +03:00 [INF] Removing 0 grants
+2020-02-16 17:06:08.738 +03:00 [INF] Removing 0 grants
+2020-02-16 17:06:38.771 +03:00 [INF] Removing 0 grants
+2020-02-16 17:07:08.812 +03:00 [INF] Removing 0 grants
+2020-02-16 17:07:38.847 +03:00 [INF] Removing 0 grants
+2020-02-16 17:08:08.873 +03:00 [INF] Removing 0 grants
+2020-02-16 17:08:38.891 +03:00 [INF] Removing 0 grants
+2020-02-16 17:09:08.904 +03:00 [INF] Removing 0 grants
+2020-02-16 17:09:38.923 +03:00 [INF] Removing 0 grants
+2020-02-16 17:10:08.940 +03:00 [INF] Removing 0 grants
+2020-02-16 17:10:38.962 +03:00 [INF] Removing 0 grants
+2020-02-16 17:11:08.982 +03:00 [INF] Removing 0 grants
+2020-02-16 17:11:39.008 +03:00 [INF] Removing 0 grants
+2020-02-16 17:12:09.036 +03:00 [INF] Removing 0 grants
+2020-02-16 17:12:39.055 +03:00 [INF] Removing 0 grants
+2020-02-16 17:13:09.067 +03:00 [INF] Removing 0 grants
+2020-02-16 17:13:39.083 +03:00 [INF] Removing 0 grants
+2020-02-16 17:14:09.104 +03:00 [INF] Removing 0 grants
+2020-02-16 17:14:39.113 +03:00 [INF] Removing 0 grants
+2020-02-16 17:15:09.141 +03:00 [INF] Removing 0 grants
+2020-02-16 17:15:39.166 +03:00 [INF] Removing 0 grants
+2020-02-16 17:16:09.179 +03:00 [INF] Removing 0 grants
+2020-02-16 17:16:39.201 +03:00 [INF] Removing 0 grants
+2020-02-16 17:17:09.222 +03:00 [INF] Removing 0 grants
+2020-02-16 17:17:39.251 +03:00 [INF] Removing 0 grants
+2020-02-16 17:18:09.279 +03:00 [INF] Removing 0 grants
+2020-02-16 17:18:39.311 +03:00 [INF] Removing 0 grants
+2020-02-16 17:19:09.338 +03:00 [INF] Removing 0 grants
+2020-02-16 17:19:56.426 +03:00 [INF] Removing 0 grants
+2020-02-16 17:20:26.442 +03:00 [INF] Removing 0 grants
+2020-02-16 17:20:56.460 +03:00 [INF] Removing 0 grants
+2020-02-16 17:21:26.474 +03:00 [INF] Removing 0 grants
+2020-02-16 17:21:56.496 +03:00 [INF] Removing 0 grants
+2020-02-16 17:22:26.507 +03:00 [INF] Removing 0 grants
+2020-02-16 17:22:56.517 +03:00 [INF] Removing 0 grants
+2020-02-16 17:23:26.532 +03:00 [INF] Removing 0 grants
+2020-02-16 17:23:56.547 +03:00 [INF] Removing 0 grants
+2020-02-16 17:24:26.582 +03:00 [INF] Removing 0 grants
+2020-02-16 17:24:56.597 +03:00 [INF] Removing 0 grants
+2020-02-16 17:25:26.609 +03:00 [INF] Removing 0 grants
+2020-02-16 17:25:56.622 +03:00 [INF] Removing 0 grants
+2020-02-16 17:26:26.651 +03:00 [INF] Removing 0 grants
+2020-02-16 17:26:56.671 +03:00 [INF] Removing 0 grants
+2020-02-16 17:27:26.708 +03:00 [INF] Removing 0 grants
+2020-02-16 17:27:56.724 +03:00 [INF] Removing 0 grants
+2020-02-16 17:28:26.766 +03:00 [INF] Removing 0 grants
+2020-02-16 17:28:56.782 +03:00 [INF] Removing 0 grants
+2020-02-16 17:29:26.801 +03:00 [INF] Removing 0 grants
+2020-02-16 17:29:56.810 +03:00 [INF] Removing 0 grants
+2020-02-16 17:30:26.834 +03:00 [INF] Removing 0 grants
+2020-02-16 17:30:56.851 +03:00 [INF] Removing 0 grants
+2020-02-16 17:31:26.878 +03:00 [INF] Removing 0 grants
+2020-02-16 17:31:56.905 +03:00 [INF] Removing 0 grants
+2020-02-16 17:32:26.928 +03:00 [INF] Removing 0 grants
+2020-02-16 17:32:56.953 +03:00 [INF] Removing 0 grants
+2020-02-16 17:33:26.992 +03:00 [INF] Removing 0 grants
+2020-02-16 17:33:57.002 +03:00 [INF] Removing 0 grants
+2020-02-16 17:34:27.023 +03:00 [INF] Removing 0 grants
+2020-02-16 17:34:57.036 +03:00 [INF] Removing 0 grants
+2020-02-16 17:35:27.052 +03:00 [INF] Removing 0 grants
+2020-02-16 17:35:57.075 +03:00 [INF] Removing 0 grants
+2020-02-16 17:36:27.102 +03:00 [INF] Removing 0 grants
+2020-02-16 17:36:57.138 +03:00 [INF] Removing 0 grants
+2020-02-16 17:37:27.166 +03:00 [INF] Removing 0 grants
+2020-02-16 17:37:57.195 +03:00 [INF] Removing 0 grants
+2020-02-16 17:38:27.215 +03:00 [INF] Removing 0 grants
+2020-02-16 17:38:57.230 +03:00 [INF] Removing 0 grants
+2020-02-16 17:39:27.247 +03:00 [INF] Removing 0 grants
+2020-02-16 17:39:57.260 +03:00 [INF] Removing 0 grants
+2020-02-16 17:40:27.280 +03:00 [INF] Removing 0 grants
+2020-02-16 17:40:57.299 +03:00 [INF] Removing 0 grants
+2020-02-16 17:41:27.336 +03:00 [INF] Removing 0 grants
+2020-02-16 17:41:57.354 +03:00 [INF] Removing 0 grants
+2020-02-16 17:42:27.383 +03:00 [INF] Removing 0 grants
+2020-02-16 17:42:57.397 +03:00 [INF] Removing 0 grants
+2020-02-16 17:43:27.410 +03:00 [INF] Removing 0 grants
+2020-02-16 17:43:57.431 +03:00 [INF] Removing 0 grants
+2020-02-16 17:44:27.443 +03:00 [INF] Removing 0 grants
+2020-02-16 17:44:57.465 +03:00 [INF] Removing 0 grants
+2020-02-16 17:45:27.482 +03:00 [INF] Removing 0 grants
+2020-02-16 17:45:57.526 +03:00 [INF] Removing 0 grants
+2020-02-16 17:46:27.554 +03:00 [INF] Removing 0 grants
+2020-02-16 17:46:57.575 +03:00 [INF] Removing 0 grants
+2020-02-16 17:47:27.606 +03:00 [INF] Removing 0 grants
+2020-02-16 17:47:57.624 +03:00 [INF] Removing 0 grants
+2020-02-16 17:48:27.650 +03:00 [INF] Removing 0 grants
+2020-02-16 17:48:57.664 +03:00 [INF] Removing 0 grants
+2020-02-16 17:49:27.695 +03:00 [INF] Removing 0 grants
+2020-02-16 17:49:57.710 +03:00 [INF] Removing 0 grants
+2020-02-16 17:51:11.786 +03:00 [INF] Removing 0 grants
+2020-02-16 17:51:41.806 +03:00 [INF] Removing 0 grants
+2020-02-16 17:52:11.829 +03:00 [INF] Removing 0 grants
+2020-02-16 17:52:41.850 +03:00 [INF] Removing 0 grants
+2020-02-16 17:53:11.861 +03:00 [INF] Removing 0 grants
+2020-02-16 17:53:41.877 +03:00 [INF] Removing 0 grants
+2020-02-16 17:54:11.904 +03:00 [INF] Removing 0 grants
+2020-02-16 17:54:41.924 +03:00 [INF] Removing 0 grants
+2020-02-16 17:55:11.945 +03:00 [INF] Removing 0 grants
+2020-02-16 17:55:41.980 +03:00 [INF] Removing 0 grants
+2020-02-16 17:56:12.014 +03:00 [INF] Removing 0 grants
+2020-02-16 17:56:42.030 +03:00 [INF] Removing 0 grants
+2020-02-16 17:57:12.047 +03:00 [INF] Removing 0 grants
+2020-02-16 17:57:42.067 +03:00 [INF] Removing 0 grants
+2020-02-16 17:58:12.099 +03:00 [INF] Removing 0 grants
+2020-02-16 17:58:42.124 +03:00 [INF] Removing 0 grants
+2020-02-16 17:59:12.138 +03:00 [INF] Removing 0 grants
+2020-02-16 17:59:42.163 +03:00 [INF] Removing 0 grants
+2020-02-16 18:00:12.189 +03:00 [INF] Removing 0 grants
+2020-02-16 18:00:42.209 +03:00 [INF] Removing 0 grants
+2020-02-16 18:01:12.227 +03:00 [INF] Removing 0 grants
+2020-02-16 18:01:42.238 +03:00 [INF] Removing 0 grants
+2020-02-16 18:02:12.256 +03:00 [INF] Removing 0 grants
+2020-02-16 18:02:42.268 +03:00 [INF] Removing 0 grants
+2020-02-16 18:03:12.284 +03:00 [INF] Removing 0 grants
+2020-02-16 18:03:42.292 +03:00 [INF] Removing 0 grants
+2020-02-16 18:04:12.313 +03:00 [INF] Removing 0 grants
+2020-02-16 18:04:42.335 +03:00 [INF] Removing 0 grants
+2020-02-16 18:05:12.354 +03:00 [INF] Removing 0 grants
+2020-02-16 18:05:42.368 +03:00 [INF] Removing 0 grants
+2020-02-16 18:06:12.388 +03:00 [INF] Removing 0 grants
+2020-02-16 18:06:42.402 +03:00 [INF] Removing 0 grants
+2020-02-16 18:07:12.424 +03:00 [INF] Removing 0 grants
+2020-02-16 18:07:42.453 +03:00 [INF] Removing 0 grants
+2020-02-16 18:08:12.477 +03:00 [INF] Removing 0 grants
+2020-02-16 18:08:42.493 +03:00 [INF] Removing 0 grants
+2020-02-16 18:09:12.518 +03:00 [INF] Removing 0 grants
+2020-02-16 18:09:42.542 +03:00 [INF] Removing 0 grants
+2020-02-16 18:10:12.561 +03:00 [INF] Removing 0 grants
+2020-02-16 18:10:42.581 +03:00 [INF] Removing 0 grants
+2020-02-16 18:11:12.591 +03:00 [INF] Removing 0 grants
+2020-02-16 18:11:42.610 +03:00 [INF] Removing 0 grants
+2020-02-16 18:12:12.629 +03:00 [INF] Removing 0 grants
+2020-02-17 21:02:49.300 +03:00 [INF] Starting IdentityServer4 version 3.1.1.0
+2020-02-17 21:02:49.775 +03:00 [INF] Using the default authentication scheme Identity.Application for IdentityServer
+2020-02-17 21:02:49.784 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for authentication
+2020-02-17 21:02:49.804 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-in
+2020-02-17 21:02:49.820 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-out
+2020-02-17 21:02:49.823 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for challenge
+2020-02-17 21:02:49.825 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for forbid
+2020-02-17 21:02:50.458 +03:00 [WRN] Failed to determine the https port for redirect.
+2020-02-17 21:02:50.472 +03:00 [DBG] Login Url: /Account/Login
+2020-02-17 21:02:50.474 +03:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-17 21:02:50.475 +03:00 [DBG] Logout Url: /Account/Logout
+2020-02-17 21:02:50.477 +03:00 [DBG] ConsentUrl Url: /consent
+2020-02-17 21:02:50.479 +03:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-17 21:02:50.482 +03:00 [DBG] Error Url: /home/error
+2020-02-17 21:02:50.483 +03:00 [DBG] Error Id Parameter: errorId
+2020-02-17 21:05:56.914 +03:00 [INF] Starting IdentityServer4 version 3.1.1.0
+2020-02-17 21:05:57.104 +03:00 [INF] Using the default authentication scheme Identity.Application for IdentityServer
+2020-02-17 21:05:57.106 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for authentication
+2020-02-17 21:05:57.108 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-in
+2020-02-17 21:05:57.110 +03:00 [DBG] Using Identity.External as default ASP.NET Core scheme for sign-out
+2020-02-17 21:05:57.111 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for challenge
+2020-02-17 21:05:57.113 +03:00 [DBG] Using Identity.Application as default ASP.NET Core scheme for forbid
+2020-02-17 21:05:57.363 +03:00 [WRN] Failed to determine the https port for redirect.
+2020-02-17 21:05:57.376 +03:00 [DBG] Login Url: /Account/Login
+2020-02-17 21:05:57.377 +03:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-17 21:05:57.380 +03:00 [DBG] Logout Url: /Account/Logout
+2020-02-17 21:05:57.381 +03:00 [DBG] ConsentUrl Url: /consent
+2020-02-17 21:05:57.383 +03:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-17 21:05:57.385 +03:00 [DBG] Error Url: /home/error
+2020-02-17 21:05:57.386 +03:00 [DBG] Error Id Parameter: errorId
+2020-02-17 21:06:30.164 +03:00 [INF] Removing 0 grants
+2020-02-17 21:06:30.198 +03:00 [INF] Removing 0 device flow codes

@@ -1,4 +1,4 @@
-﻿namespace FliGen.Common.Mediator.Extensions
+﻿namespace FliGen.Common.Extensions
 {
     public static class StringExtensions
     {

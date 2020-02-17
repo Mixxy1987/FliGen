@@ -13,7 +13,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Application", "FliGe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Infrastructure", "FliGen.Infrastructure\FliGen.Infrastructure.csproj", "{37C4183E-EF35-4891-A35E-8949AF13A330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Web", "FliGen.Web\FliGen.Web.csproj", "{60E30C16-215A-4DA5-A68D-8A967032E094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Web", "FliGen.Web\FliGen.Web.csproj", "{60E30C16-215A-4DA5-A68D-8A967032E094}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthServer", "AuthServer", "{CA375811-B46A-45FC-9A96-25A416BCC10E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer", "AuthServer\AuthServer.csproj", "{3D050231-4C0F-42E5-904F-1D02A6778AD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Infrastructure", "AuthServer.Infrastructure\AuthServer.Infrastructure.csproj", "{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Persistence", "AuthServer.Persistence\AuthServer.Persistence.csproj", "{993E64EE-1BCE-4193-AD40-CB11EC0489FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Domain", "AuthServer.Domain\AuthServer.Domain.csproj", "{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +55,31 @@ Global
 		{60E30C16-215A-4DA5-A68D-8A967032E094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E30C16-215A-4DA5-A68D-8A967032E094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E30C16-215A-4DA5-A68D-8A967032E094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D050231-4C0F-42E5-904F-1D02A6778AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D050231-4C0F-42E5-904F-1D02A6778AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D050231-4C0F-42E5-904F-1D02A6778AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D050231-4C0F-42E5-904F-1D02A6778AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993E64EE-1BCE-4193-AD40-CB11EC0489FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993E64EE-1BCE-4193-AD40-CB11EC0489FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993E64EE-1BCE-4193-AD40-CB11EC0489FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993E64EE-1BCE-4193-AD40-CB11EC0489FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3D050231-4C0F-42E5-904F-1D02A6778AD5} = {CA375811-B46A-45FC-9A96-25A416BCC10E}
+		{6D0508F2-BBCA-40B5-99F5-D0AE7D68777F} = {CA375811-B46A-45FC-9A96-25A416BCC10E}
+		{993E64EE-1BCE-4193-AD40-CB11EC0489FA} = {CA375811-B46A-45FC-9A96-25A416BCC10E}
+		{95E89C12-603E-4FCF-99DB-32EFDA2EB6E9} = {CA375811-B46A-45FC-9A96-25A416BCC10E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4F4FC9-5251-45DB-8C41-967CFEBF4FC3}

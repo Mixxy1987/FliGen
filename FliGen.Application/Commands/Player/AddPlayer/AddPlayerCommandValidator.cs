@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FliGen.Common.Extensions;
+using FluentValidation;
 using FliGen.Common.Mediator.Extensions;
 
 namespace FliGen.Application.Commands.Player.AddPlayer

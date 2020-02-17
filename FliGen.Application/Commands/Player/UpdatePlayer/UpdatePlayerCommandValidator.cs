@@ -1,4 +1,5 @@
-﻿using FliGen.Common.Mediator.Extensions;
+﻿using FliGen.Common.Extensions;
+using FliGen.Common.Mediator.Extensions;
 using FluentValidation;
 
 namespace FliGen.Application.Commands.Player.UpdatePlayer

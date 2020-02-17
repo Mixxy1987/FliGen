@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FliGen.Common.Extensions;
 using FliGen.Domain.Common;
-using FliGen.Common.Mediator.Extensions;
+using System;
+using System.Collections.Generic;
 
 namespace FliGen.Domain.Entities
 {
