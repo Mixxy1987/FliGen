@@ -1,5 +1,4 @@
-﻿using FliGen.Domain.Entities;
-using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

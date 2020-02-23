@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FliGen.Application\FliGen.Application.csproj" />
     <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
+    <ProjectReference Include="..\FliGen.Domain\FliGen.Domain.csproj" />
     <ProjectReference Include="..\FliGen.Persistence\FliGen.Persistence.csproj" />
   </ItemGroup>
 
