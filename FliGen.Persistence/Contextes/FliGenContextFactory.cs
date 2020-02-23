@@ -8,7 +8,7 @@ namespace FliGen.Persistence.Contextes
         public FliGenContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FliGenContext>();
-            optionsBuilder.UseSqlServer("Server=DESKTOP-11ILQKQ; Database=FliGen; Trusted_Connection=True; MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-JFMM0PK; Database=FliGen; Trusted_Connection=True; MultipleActiveResultSets=true");
             return new FliGenContext(optionsBuilder.Options);
         }
     }
