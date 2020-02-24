@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Persistence.Migrations
 {
     [DbContext(typeof(FliGenContext))]
-    [Migration("20200208080712_InitialCreate")]
+    [Migration("20200224070824_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,14 @@ namespace FliGen.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("LeagueTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -35,7 +43,25 @@ namespace FliGen.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("League");
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeaguePlayerLink", b =>
+                {
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId", "LeagueId");
+
+                    b.HasIndex("LeagueId");
+
+                    b.ToTable("LeaguePlayerLinks");
                 });
 
             modelBuilder.Entity("FliGen.Domain.Entities.LeagueSeasonLink", b =>
@@ -49,6 +75,26 @@ namespace FliGen.Persistence.Migrations
                     b.HasKey("SeasonId", "LeagueId");
 
                     b.ToTable("LeagueSeasonLinks");
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("LeagueType");
                 });
 
             modelBuilder.Entity("FliGen.Domain.Entities.Player", b =>
@@ -68,9 +114,6 @@ namespace FliGen.Persistence.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<int>("PlayerRateId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Player");
@@ -86,11 +129,16 @@ namespace FliGen.Persistence.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Rate")
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
                         .HasColumnType("float")
                         .HasMaxLength(3);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("PlayerRate");
                 });
@@ -110,13 +158,23 @@ namespace FliGen.Persistence.Migrations
 
             modelBuilder.Entity("FliGen.Domain.Entities.Season", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Finish")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.HasKey("Start", "End");
+                    b.HasIndex("LeagueId");
 
                     b.ToTable("Season");
                 });
@@ -185,12 +243,59 @@ namespace FliGen.Persistence.Migrations
                     b.Property<int>("HomeTeamId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SeasonId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TourDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SeasonId");
+
                     b.ToTable("Tour");
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeaguePlayerLink", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.League", "League")
+                        .WithMany("LeaguePlayerLinks")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FliGen.Domain.Entities.Player", "Player")
+                        .WithMany("LeaguePlayerLinks")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.PlayerRate", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.Player", "Player")
+                        .WithMany("Rates")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.Season", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.League", "League")
+                        .WithMany("Seasons")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.Tour", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.Season", "Season")
+                        .WithMany("Tours")
+                        .HasForeignKey("SeasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using FliGen.Persistence.Helper;
+﻿using FliGen.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
+
 namespace FliGen.Persistence.Migrations
 {
     public partial class InitialCreate : Migration
