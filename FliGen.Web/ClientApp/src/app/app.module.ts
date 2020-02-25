@@ -9,6 +9,8 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { PlayersComponent } from "./players/players.component";
 import { LeaguesComponent } from "./leagues/leagues.component";
+import { ApiAuthorizationModule } from "./api-authorization/api-authorization.module";
+import { AuthorizeInterceptor } from "./api-authorization/authorize.interceptor";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { LeaguesComponent } from "./leagues/leagues.component";
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    ApiAuthorizationModule,
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -28,7 +31,8 @@ import { LeaguesComponent } from "./leagues/leagues.component";
       { path: 'leagues', component: LeaguesComponent }
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
