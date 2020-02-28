@@ -17,8 +17,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
-using FliGen.Persistence.Models;
-using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.Models;
 
 namespace FliGen.Web
@@ -51,11 +49,12 @@ namespace FliGen.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
-
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<AppUser>()
+	            .AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+                .AddApiAuthorization<AppUser, ApplicationDbContext>(options =>
                     {
                         var apiResource = options.ApiResources.First();
                         apiResource.UserClaims = new[] { "hasUsersGroup" };
