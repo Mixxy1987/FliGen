@@ -11,6 +11,9 @@ import { PlayersComponent } from "./players/players.component";
 import { LeaguesComponent } from "./leagues/leagues.component";
 import { ApiAuthorizationModule } from "./api-authorization/api-authorization.module";
 import { AuthorizeInterceptor } from "./api-authorization/authorize.interceptor";
+import { AppRoutingModule } from "./app-routing.module";
+//import { DataComponent } from "./data/data.component";
+//import { InternalDataComponent } from "./internal-data/internal-data.component";
 
 @NgModule({
   declarations: [
@@ -18,18 +21,16 @@ import { AuthorizeInterceptor } from "./api-authorization/authorize.interceptor"
     NavMenuComponent,
     HomeComponent,
     PlayersComponent,
-    LeaguesComponent
+    LeaguesComponent/*,
+    DataComponent,
+    InternalDataComponent*/
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     ApiAuthorizationModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'players', component: PlayersComponent },
-      { path: 'leagues', component: LeaguesComponent }
-    ])
+    AppRoutingModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],

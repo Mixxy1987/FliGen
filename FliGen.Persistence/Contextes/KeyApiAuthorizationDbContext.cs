@@ -17,7 +17,7 @@ namespace FliGen.Persistence.Contextes
     /// <typeparam name="TUser"></typeparam>
     /// <typeparam name="TRole"></typeparam>
     /// <typeparam name="TKey">Key of the IdentityUser entity</typeparam>
-    public class KeyApiAuthorizationDbContext<TUser, TRole, TKey> : IdentityDbContext<TUser, TRole, TKey>, IPersistedGrantDbContext
+    /*public class KeyApiAuthorizationDbContext<TUser, TRole, TKey> : IdentityDbContext<TUser, TRole, TKey>, IPersistedGrantDbContext
         where TUser : IdentityUser<TKey>
         where TRole : IdentityRole<TKey>
         where TKey : IEquatable<TKey>
@@ -75,5 +75,5 @@ namespace FliGen.Persistence.Contextes
             : base(options, operationalStoreOptions)
         {
         }
-    }
+    }*/
 }

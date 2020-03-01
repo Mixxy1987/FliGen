@@ -36,13 +36,6 @@ namespace FliGen.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
-
             services.AddDbContext<FliGenContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -50,7 +43,7 @@ namespace FliGen.Web
                 options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
             services.AddDefaultIdentity<AppUser>()
-	            .AddRoles<AppRole>()
+	            //.AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -83,6 +76,20 @@ namespace FliGen.Web
                         o.CallbackPath = "/signin-google";
                     })
                 .AddIdentityServerJwt();
+
+            services.AddControllersWithViews();
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddRazorPages();
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ShouldHasUsersGroup", policy => { policy.RequireClaim("hasUsersGroup"); });
+            });
 
             services.AddMediatR(typeof(Startup))
                 .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
@@ -136,6 +143,7 @@ namespace FliGen.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
