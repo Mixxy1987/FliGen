@@ -26,12 +26,12 @@ namespace FliGen.Domain.Entities
 
         public static Player Create(string firstName, string lastName, string rate)
         {
-            return new Player(firstName, lastName, double.Parse(rate.DotToComma()));
+            return new Player(firstName, lastName, double.Parse(rate.CommaToDot()));
         }
 
         public static Player GetUpdated(int id, string firstName, string lastName, string rate)
         {
-            return new Player(firstName, lastName, double.Parse(rate.DotToComma())) { Id = id };
+            return new Player(firstName, lastName, double.Parse(rate.CommaToDot())) { Id = id };
         }
     }
 }

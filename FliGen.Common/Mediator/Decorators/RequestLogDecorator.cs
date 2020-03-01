@@ -32,7 +32,7 @@ namespace FliGen.Common.Mediator.Decorators
                     _logService.Trace(innerType, "Request {request} returned null", requestType.Name);
                 return response;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _logService.Error(innerType, "Error at {name}", requestType.Name);
                 throw;
