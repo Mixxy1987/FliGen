@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -12,8 +11,9 @@ import { LeaguesComponent } from "./leagues/leagues.component";
 import { ApiAuthorizationModule } from "./api-authorization/api-authorization.module";
 import { AuthorizeInterceptor } from "./api-authorization/authorize.interceptor";
 import { AppRoutingModule } from "./app-routing.module";
-//import { DataComponent } from "./data/data.component";
-//import { InternalDataComponent } from "./internal-data/internal-data.component";
+import { DataComponent } from "./data/data.component";
+import { InternalDataComponent } from "./internal-data/internal-data.component";
+import { ExchangeRateComponent } from "./exchange-rate/exchange-rate.component";
 
 @NgModule({
   declarations: [
@@ -21,9 +21,10 @@ import { AppRoutingModule } from "./app-routing.module";
     NavMenuComponent,
     HomeComponent,
     PlayersComponent,
-    LeaguesComponent/*,
+    LeaguesComponent,
     DataComponent,
-    InternalDataComponent*/
+    ExchangeRateComponent,
+    InternalDataComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
