@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FliGen.Persistence.Configurations
 {
-    public class LeagueTypeConfiguration : IEntityTypeConfiguration<LeagueType>
+    public class LeaguePlayerRoleConfiguration : IEntityTypeConfiguration<LeaguePlayerRole>
     {
-        public void Configure(EntityTypeBuilder<LeagueType> builder)
+        public void Configure(EntityTypeBuilder<LeaguePlayerRole> builder)
         {
-            builder.ToTable("LeagueType");
+            builder.ToTable("LeaguePlayerRole");
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50);

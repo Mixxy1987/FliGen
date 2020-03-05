@@ -6,7 +6,7 @@ namespace FliGen.Persistence.Helper
 {
     public static class InitialFill
     {
-        static List<string> dict = new List<string>
+        static readonly List<string> Dict = new List<string>
         {
             {"Матюнин Валентин 7.2"},
             {"Волчков Вячеслав 7.1"},
@@ -42,7 +42,7 @@ namespace FliGen.Persistence.Helper
 	FROM [Player]
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName
 ";
-            foreach (var kv in dict)
+            foreach (var kv in Dict)
             {
                 var kvSplitted = kv.Split(' ');
 
@@ -76,8 +76,8 @@ namespace FliGen.Persistence.Helper
 
 
             const string lpQuery = @"
-    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId)
-	SELECT league.Id, player.Id
+    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId, JoinTime, LeaguePlayerRoleId)
+	SELECT league.Id, player.Id, @@joinTime, 2
 	FROM [Player] as player, [League] as league
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName AND [League].Name=@@leagueName
 ";
@@ -88,7 +88,7 @@ namespace FliGen.Persistence.Helper
                 FillLeagueFromList(migrationBuilder, "FLIHockey", kv, lpQuery);
             }
 
-            foreach (var kv in dict)
+            foreach (var kv in Dict)
             {
                 FillLeagueFromList(migrationBuilder, "FLI", kv, lpQuery);
             }
@@ -104,7 +104,8 @@ namespace FliGen.Persistence.Helper
                 {
                     new KeyValuePair<string, object>("@@lastName", kvSplitted[0]),
                     new KeyValuePair<string, object>("@@firstName", kvSplitted[1]),
-                    new KeyValuePair<string, object>("@@leagueName", leagueName)
+                    new KeyValuePair<string, object>("@@leagueName", leagueName),
+                    new KeyValuePair<string, object>("@@joinTime", "2020-01-01")
                 }
             );
             migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(query));

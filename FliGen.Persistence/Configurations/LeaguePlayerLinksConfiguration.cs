@@ -18,7 +18,17 @@ namespace FliGen.Persistence.Configurations
                 .WithMany(c => c.LeaguePlayerLinks)
                 .HasForeignKey(pc => pc.PlayerId);
 
+            builder.Property(e => e.JoinTime)
+                .IsRequired();
+
+            builder.Property(e => e.LeaveTime);
+
             builder.HasKey(e => new {e.PlayerId, e.LeagueId});
+
+            builder.Property(e => e.LeaguePlayerRoleId)
+                .IsRequired();
+
+            builder.Ignore(x => x.Role);
         }
     }
 }

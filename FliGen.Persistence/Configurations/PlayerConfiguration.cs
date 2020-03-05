@@ -15,6 +15,9 @@ namespace FliGen.Persistence.Configurations
             builder.Property(e => e.LastName)
                 .IsRequired()
                 .HasMaxLength(20);
+
+            builder.Property(e => e.ExternalId)
+                .HasMaxLength(450);
         }
     }
 }

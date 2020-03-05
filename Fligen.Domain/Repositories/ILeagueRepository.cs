@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using FliGen.Domain.Common;
 using FliGen.Domain.Entities;
+using FliGen.Domain.Entities.Enum;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Domain.Common;
 
 namespace FliGen.Domain.Repositories
 {

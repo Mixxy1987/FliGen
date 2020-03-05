@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FliGen.Domain.Common;
+﻿using FliGen.Domain.Common;
 using FliGen.Domain.Entities;
+using FliGen.Domain.Entities.Enum;
 using FliGen.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FliGen.Persistence.Contextes
 {

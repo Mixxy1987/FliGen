@@ -1,9 +1,9 @@
-﻿using FliGen.Domain.Entities;
+﻿using FliGen.Domain.Common;
+using FliGen.Domain.Entities.Enum;
 using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Domain.Common;
 
 namespace FliGen.Application.Commands.League.UpdateLeague
 {

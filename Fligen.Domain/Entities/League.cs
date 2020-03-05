@@ -1,4 +1,5 @@
 ﻿using FliGen.Domain.Common;
+using FliGen.Domain.Entities.Enum;
 using System.Collections.Generic;
 
 namespace FliGen.Domain.Entities

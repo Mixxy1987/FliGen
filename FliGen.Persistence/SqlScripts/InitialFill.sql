@@ -1,10 +1,15 @@
-﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200224070824_InitialCreate')
+﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200305190239_InitialCreate')
 BEGIN
 	INSERT INTO [LeagueType](Name)
 	VALUES
 	('None'),
 	('Football'),
 	('Hockey')
+
+	INSERT INTO [LeaguePlayerRole](Name)
+	VALUES
+	('User'),
+	('Admin')
 
 	INSERT INTO [League](Name, Description, LeagueTypeId)
 	SELECT 'FLI', 'Best League in the world!', Id

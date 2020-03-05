@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using FliGen.Domain.Common;
 using FliGen.Domain.Entities;
+using FliGen.Domain.Entities.Enum;
 using FliGen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FliGen.Domain.Common;
 
 namespace FliGen.Persistence.Repositories
 {
