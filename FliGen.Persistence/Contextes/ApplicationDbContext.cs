@@ -11,15 +11,7 @@ namespace FliGen.Persistence.Contextes
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
-	        Database.EnsureCreated();
-		}
-
-	    protected override void OnModelCreating(ModelBuilder builder)
-	    {
-
-		    base.OnModelCreating(builder);
-
-			builder.Entity<AppUser>(entity => { entity.ToTable("User"); });
+	        //Database.EnsureCreated();
 		}
     }
 }
