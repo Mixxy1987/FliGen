@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Application.Commands.Player.UpdatePlayer;
 using FliGen.Application.Commands.Player.DeletePlayer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FliGen.Web.Controllers
 {
+	[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PlayersController : ControllerBase

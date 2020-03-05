@@ -5,7 +5,7 @@ using FliGen.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer4WebApp.Controller
+namespace FliGen.Web.Controllers
 {
 	[Authorize]
 	[ApiController]

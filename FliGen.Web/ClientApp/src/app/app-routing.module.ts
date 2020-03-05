@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'data', component: DataComponent, canActivate: [AuthorizeGuard] },
   { path: 'internaldata', component: InternalDataComponent, canActivate: [AuthorizeWindowsGroupGuardGuard] },
-  { path: 'players', component: PlayersComponent },
+  { path: 'players', component: PlayersComponent, canActivate: [AuthorizeGuard]  },
   { path: 'leagues', component: LeaguesComponent }
 ];
 
