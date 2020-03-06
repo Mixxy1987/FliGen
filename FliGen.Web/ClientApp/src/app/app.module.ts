@@ -14,6 +14,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { DataComponent } from "./data/data.component";
 import { InternalDataComponent } from "./internal-data/internal-data.component";
 import { ExchangeRateComponent } from "./exchange-rate/exchange-rate.component";
+import { MyLeaguesComponent } from "./myleagues/myleagues.component";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ExchangeRateComponent } from "./exchange-rate/exchange-rate.component";
     HomeComponent,
     PlayersComponent,
     LeaguesComponent,
+    MyLeaguesComponent,
     DataComponent,
     ExchangeRateComponent,
     InternalDataComponent

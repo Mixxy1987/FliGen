@@ -1,0 +1,19 @@
+<h1 id="tableLabel">Мои лиги</h1>
+
+<p *ngIf="!leagues"><em>Загрузка...</em></p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <td>Название</td>
+      <td>Описание</td>
+      <td>Тип</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let l of leagues">
+      <td>{{l?.name}}</td>
+      <td>{{l?.description}}</td>
+      <td>{{l?.leagueType?.name}}</td>
+    </tr>
+  </tbody>
+</table>

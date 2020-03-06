@@ -7,6 +7,7 @@ import { PlayersComponent } from "./players/players.component";
 import { LeaguesComponent } from "./leagues/leagues.component";
 import { DataComponent } from "./data/data.component";
 import { InternalDataComponent } from "./internal-data/internal-data.component";
+import { MyLeaguesComponent } from "./myleagues/myleagues.component";
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'data', component: DataComponent, canActivate: [AuthorizeGuard] },
   { path: 'internaldata', component: InternalDataComponent, canActivate: [AuthorizeWindowsGroupGuardGuard] },
   { path: 'players', component: PlayersComponent, canActivate: [AuthorizeGuard]  },
-  { path: 'leagues', component: LeaguesComponent }
+  { path: 'leagues', component: LeaguesComponent },
+  { path: 'myleagues', component: MyLeaguesComponent, canActivate: [AuthorizeGuard] }
 ];
 
 

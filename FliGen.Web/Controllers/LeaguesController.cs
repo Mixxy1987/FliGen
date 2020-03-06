@@ -27,20 +27,16 @@ namespace FliGen.Web.Controllers
 
         [HttpGet("types")]
         [Produces(typeof(IEnumerable<LeagueType>))]
-        public async Task<IEnumerable<LeagueType>> GetTypes()
+        public Task<IEnumerable<LeagueType>> GetTypes()
         {
-            var leagueTypes = await _mediatr.Send(new GetLeagueTypesQuery());
-
-            return leagueTypes;
+            return _mediatr.Send(new GetLeagueTypesQuery());
         }
         
         [HttpGet]
         [Produces(typeof(IEnumerable<League>))]
-        public async Task<IEnumerable<League>> Get()
+        public Task<IEnumerable<League>> Get()
         {
-            var leagueTypes = await _mediatr.Send(new GetLeaguesQuery());
-
-            return leagueTypes;
+            return _mediatr.Send(new GetLeaguesQuery());
         }
 
         [HttpPost]

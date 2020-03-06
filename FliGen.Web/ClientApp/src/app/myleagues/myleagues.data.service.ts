@@ -4,27 +4,15 @@ import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
 
 @Injectable()
-export class LeaguesDataService {
+export class MyLeaguesDataService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   getLeagues() {
-    return this.http.get<League[]>(this.baseUrl + 'leagues');
+    return this.http.get<League[]>(this.baseUrl + 'myleagues');
   }
 
   getLeagueTypes() {
     return this.http.get<LeagueType[]>(this.baseUrl + 'leagues/types');
-  }
-
-  create(league: League) {
-    return this.http.post<League>(this.baseUrl + 'leagues', league);
-  }
-
-  update(league: League) {
-    return this.http.put(this.baseUrl + 'leagues', league);
-  }
-
-  delete(id: number) {
-      return this.http.delete(this.baseUrl + 'leagues/' + id);
   }
 }

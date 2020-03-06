@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { League } from "./league";
 import { LeaguesDataService } from "./leagues.data.service";
-import { LeagueType } from "./leagueType";
+import { League } from "../common/league";
+import { LeagueType } from "../common/leagueType";
 
 @Component({
   selector: 'app-leagues',
