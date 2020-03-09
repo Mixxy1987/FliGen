@@ -1,10 +1,9 @@
-﻿using System;
-using FliGen.Persistence.Helper;
+﻿using FliGen.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FliGen.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,6 +14,7 @@ namespace FliGen.Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
         }
     }
 }

@@ -38,6 +38,12 @@ namespace FliGen.Persistence.Migrations.ApplicationDb
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -121,8 +127,6 @@ namespace FliGen.Persistence.Migrations.ApplicationDb
                     b.HasIndex("DeviceCode")
                         .IsUnique();
 
-                    b.HasIndex("Expiration");
-
                     b.ToTable("DeviceCodes");
                 });
 
@@ -158,8 +162,6 @@ namespace FliGen.Persistence.Migrations.ApplicationDb
                         .HasMaxLength(50);
 
                     b.HasKey("Key");
-
-                    b.HasIndex("Expiration");
 
                     b.HasIndex("SubjectId", "ClientId", "Type");
 

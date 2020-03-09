@@ -1,4 +1,4 @@
-﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200305190239_InitialCreate')
+﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200309100228_Initial')
 BEGIN
 	INSERT INTO [LeagueType](Name)
 	VALUES

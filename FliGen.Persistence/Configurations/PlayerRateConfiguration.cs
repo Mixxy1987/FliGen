@@ -18,7 +18,7 @@ namespace FliGen.Persistence.Configurations
             builder.HasOne(e => e.Player)
                 .WithMany(e => e.Rates)
                 .HasForeignKey(e => e.PlayerId)
-                .IsRequired(true)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

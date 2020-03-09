@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Persistence.Migrations
 {
     [DbContext(typeof(FliGenContext))]
-    [Migration("20200305191256_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200309100228_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -124,6 +124,30 @@ namespace FliGen.Persistence.Migrations
                     b.HasKey("SeasonId", "LeagueId");
 
                     b.ToTable("LeagueSeasonLinks");
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("RequireConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId")
+                        .IsUnique();
+
+                    b.ToTable("LeagueSettings");
                 });
 
             modelBuilder.Entity("FliGen.Domain.Entities.Player", b =>
@@ -300,6 +324,15 @@ namespace FliGen.Persistence.Migrations
                     b.HasOne("FliGen.Domain.Entities.Player", "Player")
                         .WithMany("LeaguePlayerLinks")
                         .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSettings", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.League", "League")
+                        .WithOne("LeagueSettings")
+                        .HasForeignKey("FliGen.Domain.Entities.LeagueSettings", "LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

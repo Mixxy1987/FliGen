@@ -11,7 +11,7 @@ namespace FliGen.Persistence.Contextes
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
-	        //Database.EnsureCreated();
+	        Database.EnsureCreated();
 		}
     }
 }

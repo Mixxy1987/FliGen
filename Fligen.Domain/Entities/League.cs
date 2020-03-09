@@ -8,7 +8,8 @@ namespace FliGen.Domain.Entities
     {
         public string Name { get; }
         public string Description { get; }
-        public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
+        
+        public LeagueSettings LeagueSettings { get; }
         public int LeagueTypeId {
             get
             {
@@ -21,6 +22,7 @@ namespace FliGen.Domain.Entities
         }
         public LeagueType Type { get; private set; }
 
+        public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
         public List<Season> Seasons { get; }
 
         protected League()
@@ -33,6 +35,7 @@ namespace FliGen.Domain.Entities
             Description = description;
             Type = type;
             Seasons = new List<Season>();
+            LeagueSettings = new LeagueSettings(true, false);
         }
 
         public static League Create(string name, string description, LeagueType type)

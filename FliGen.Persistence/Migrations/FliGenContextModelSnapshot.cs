@@ -124,6 +124,30 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("LeagueSeasonLinks");
                 });
 
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("RequireConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId")
+                        .IsUnique();
+
+                    b.ToTable("LeagueSettings");
+                });
+
             modelBuilder.Entity("FliGen.Domain.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -298,6 +322,15 @@ namespace FliGen.Persistence.Migrations
                     b.HasOne("FliGen.Domain.Entities.Player", "Player")
                         .WithMany("LeaguePlayerLinks")
                         .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSettings", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.League", "League")
+                        .WithOne("LeagueSettings")
+                        .HasForeignKey("FliGen.Domain.Entities.LeagueSettings", "LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
