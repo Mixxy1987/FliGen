@@ -19,7 +19,7 @@ namespace FliGen.Application.Commands.Player.AddPlayer
             var player = Domain.Entities.Player.Create(
                 request.FirstName,
                 request.LastName,
-                request.Rate);
+                rate: request.Rate);
             
             await _repository.AddAsync(player);
             

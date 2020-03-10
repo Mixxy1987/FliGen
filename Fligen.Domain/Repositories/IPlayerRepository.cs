@@ -11,5 +11,6 @@ namespace FliGen.Domain.Repositories
         Task AddAsync(Player player);
         Task DeleteByIdAsync(int id);
         Task UpdateAsync(Player player);
+        Task UpdateByParametersAsync(Player player);
     }
 }

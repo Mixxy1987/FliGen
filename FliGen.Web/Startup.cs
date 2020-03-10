@@ -1,9 +1,16 @@
+using System;
+using System.Collections.Generic;
 using Autofac;
+using EventBus.Base.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Options;
 using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
 using FliGen.Persistence.Repositories;
+using FliGen.Web.Extensions;
+using IdentityServer4.Models;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +24,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
-using IdentityServer4.Models;
+using Autofac.Extensions.DependencyInjection;
+using EventBus.Base.Standard;
+using FliGen.Application.Events;
+using FliGen.Application.Events.PlayerRegistered;
 
 namespace FliGen.Web
 {
@@ -40,7 +50,6 @@ namespace FliGen.Web
                 options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
             services.AddDefaultIdentity<AppUser>()
-	            //.AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -88,13 +97,24 @@ namespace FliGen.Web
                 options.AddPolicy("ShouldHasUsersGroup", policy => { policy.RequireClaim("hasUsersGroup"); });
             });
 
+
             services.AddMediatR(typeof(Startup))
-                .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
+	            .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
+
+            services.AddTransient<IPlayerRepository, PlayerRepository>();
+            services.AddTransient<ItemCreatedIntegrationEventHandler>();
+            services.AddTransient<PlayerRegisteredIntegrationEventHandler>();
+
+            var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
+
+            services.AddRabbitMqConnection(rabbitMqOptions);
+            services.AddRabbitMqRegistration(rabbitMqOptions);
+            //services.AddEventBusHandling(EventBusExtension.GetHandlers());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
+            //builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
             builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
 
             builder.AddMediator("FliGen.Application");
@@ -143,6 +163,9 @@ namespace FliGen.Web
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
+
+            //Event Bus
+            app.SubscribeToEvents();
 
             app.UseSpa(spa =>
             {

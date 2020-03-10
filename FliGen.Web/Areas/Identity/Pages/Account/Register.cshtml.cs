@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using EventBus.Base.Standard;
+using FliGen.Application.Events;
+using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Persistence.Contextes;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +28,7 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly IEventBus _eventBus;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
 
         public RegisterModel(
@@ -33,13 +36,15 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAuthenticationSchemeProvider schemeProvider)
+            IAuthenticationSchemeProvider schemeProvider,
+            IEventBus eventBus)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _schemeProvider = schemeProvider;
+            _eventBus = eventBus;
         }
 
         [BindProperty]
@@ -106,6 +111,9 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+	                var message = new PlayerRegisteredIntegrationEvent(user.Id, user.FirstName, user.LastName);
+	                _eventBus.Publish(message);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

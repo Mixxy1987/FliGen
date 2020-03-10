@@ -40,8 +40,27 @@ namespace FliGen.Persistence.Repositories
 
         public async Task UpdateAsync(Player player)
         {
-            _context.Players.Update(player);
+	        _context.Players.Update(player);
+
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateByParametersAsync(Player player)
+        {
+	        Player foundPlayer = await _context.Players.AsNoTracking().Include(x => x.Rates).
+		        SingleOrDefaultAsync(x =>
+			        x.FirstName == player.FirstName &&
+			        x.LastName == player.LastName);
+
+            if (foundPlayer == null)
+	        {
+		        await AddAsync(player);
+	        }
+	        else
+	        {
+                player = Player.GetUpdated(player, foundPlayer.Id);
+		        await UpdateAsync(player);
+	        }
         }
 
         public IEnumerable<Player> FindPlayers(Func<Player, bool> predicate)

@@ -7,31 +7,38 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FliGen.Persistence.Contextes;
+using Microsoft.AspNetCore.Identity;
 
 namespace FliGen.Web.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    public class MyLeaguesController : ControllerBase
-    {
-        private readonly ILogger<LeaguesController> _logger;
-        private readonly IMediator _mediatr;
+	[Authorize]
+	[ApiController]
+	[Route("[controller]")]
+	public class MyLeaguesController : ControllerBase
+	{
+		private readonly ILogger<LeaguesController> _logger;
+		private readonly IMediator _mediatr;
+		private readonly UserManager<AppUser> _userManager;
 
-        public MyLeaguesController(ILogger<LeaguesController> logger, IMediator mediatr)
-        {
-            _logger = logger;
-            _mediatr = mediatr;
-        }
+		public MyLeaguesController(ILogger<LeaguesController> logger, IMediator mediatr, UserManager<AppUser> userManager)
+		{
+			_logger = logger;
+			_mediatr = mediatr;
+			_userManager = userManager;
+		}
 
-        [HttpGet]
-        [Produces(typeof(IEnumerable<League>))]
-        public async Task<IEnumerable<League>> Get()
-        {
-	        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var leagues = await _mediatr.Send(new GetMyLeaguesQuery(userId));
+		[HttpGet]
+		[Produces(typeof(IEnumerable<League>))]
+		public async Task<IEnumerable<League>> Get()
+		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return leagues;
-        }
-    }
+			//var user = await _userManager.FindByIdAsync(userId);
+
+			var leagues = await _mediatr.Send(new GetMyLeaguesQuery(userId));
+
+			return leagues;
+		}
+	}
 }
