@@ -12,5 +12,7 @@ namespace FliGen.Domain.Repositories
         Task DeleteByIdAsync(int id);
         Task UpdateAsync(Player player);
         Task UpdateByParametersAsync(Player player);
+        Task<Player> GetByExternalId(string externalId);
+        Task<Player> GetByExternalIdOrThrowAsync(string externalId);
     }
 }

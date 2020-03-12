@@ -27,4 +27,8 @@ export class LeaguesDataService {
   delete(id: number) {
       return this.http.delete(this.baseUrl + 'leagues/' + id);
   }
+
+  join(id: number) {
+    return this.http.post(this.baseUrl + 'myleagues/join', id);
+  }
 }

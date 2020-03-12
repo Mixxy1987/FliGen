@@ -11,8 +11,10 @@ namespace FliGen.Domain.Repositories
         Task<IEnumerable<LeagueType>> GetLeagueTypesAsync();
         Task<IEnumerable<League>> GetLeaguesAsync();
         Task<League> GetByIdAsync(int id);
+        Task<League> GetByIdOrThrowAsync(int id);
         Task CreateAsync(League league);
         Task DeleteByIdAsync(int id);
         Task UpdateAsync(League league);
+        Task JoinLeagueAsync(LeaguePlayerLink link);
     }
 }

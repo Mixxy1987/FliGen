@@ -4,6 +4,7 @@ using FliGen.Persistence.Contextes;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FliGen.Domain.Common;
@@ -65,7 +66,24 @@ namespace FliGen.Persistence.Repositories
 
         public IEnumerable<Player> FindPlayers(Func<Player, bool> predicate)
         {
-            return _context.Players.Include(x => x.Rates).Where(predicate);
+	        return _context.Players.Include(x => x.Rates).Where(predicate);
+        }
+
+        public Task<Player> GetByExternalId(string externalId)
+        {
+	        return GetPlayerInternalAsync(externalId);
+        }
+
+        public async Task<Player> GetByExternalIdOrThrowAsync(string externalId)
+        {
+	        return await GetPlayerInternalAsync(externalId) ??
+	               throw new InvalidDataException("Invalid players externalId - no such player");
+        }
+
+
+        private Task<Player> GetPlayerInternalAsync(string externalId)
+        {
+	        return _context.Players.Include(x => x.LeaguePlayerLinks).SingleAsync(x => x.ExternalId == externalId);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace FliGen.Persistence.Configurations
 
             builder.Property(e => e.LeaveTime);
 
-            builder.HasKey(e => new {e.PlayerId, e.LeagueId});
+            builder.HasKey(e => new {e.PlayerId, e.LeagueId, e.JoinTime});
 
             builder.Property(e => e.LeaguePlayerRoleId)
                 .IsRequired();

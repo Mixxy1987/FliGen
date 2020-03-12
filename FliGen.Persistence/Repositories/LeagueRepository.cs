@@ -1,10 +1,12 @@
-﻿using FliGen.Domain.Common;
+﻿using System;
+using FliGen.Domain.Common;
 using FliGen.Domain.Entities;
 using FliGen.Domain.Entities.Enum;
 using FliGen.Domain.Repositories;
 using FliGen.Persistence.Contextes;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +35,13 @@ namespace FliGen.Persistence.Repositories
 
         public Task<League> GetByIdAsync(int id)
         {
-            return _context.Leagues.SingleAsync(x => x.Id == id);
+            return GetLeagueInternalAsync(id);
+        }
+
+        public async Task<League> GetByIdOrThrowAsync(int id)
+        {
+	        return await GetLeagueInternalAsync(id) ??
+	               throw new InvalidDataException("Invalid league id - no such league");
         }
 
         public async Task CreateAsync(League league)
@@ -52,6 +60,17 @@ namespace FliGen.Persistence.Repositories
         {
             _context.Leagues.Update(league);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task JoinLeagueAsync(LeaguePlayerLink link)
+        {
+	        _context.LeaguePlayerLinks.Add(link);
+	        await _context.SaveChangesAsync();
+        }
+        
+        private Task<League> GetLeagueInternalAsync(int id)
+        {
+	        return _context.Leagues.Include(x => x.LeaguePlayerLinks).SingleAsync(x => x.Id == id);
         }
     }
 }

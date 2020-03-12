@@ -20,6 +20,7 @@
         <td>{{l?.description}}</td>
         <td>{{l?.leagueType?.name}}</td>
         <td>
+          <button class="btn btn-sm btn-primary" (click)="joinLeague(l)">Вступить</button>
           <button class="btn btn-sm btn-primary" (click)="editLeague(l)">Изменить</button>
           <button class="btn btn-sm btn-danger" (click)="delete(l)">Удалить</button>
         </td>
