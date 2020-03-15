@@ -1,19 +1,19 @@
 ﻿using FliGen.Domain.Common;
 using FliGen.Domain.Entities.Enum;
-using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Domain.Common.Repository;
 
 namespace FliGen.Application.Commands.League.CreateLeague
 {
     public class CreateLeagueCommandHandler : IRequestHandler<CreateLeagueCommand>
     {
-        private readonly ILeagueRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public CreateLeagueCommandHandler(ILeagueRepository repository)
+        public CreateLeagueCommandHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(CreateLeagueCommand request, CancellationToken cancellationToken)
@@ -22,9 +22,13 @@ namespace FliGen.Application.Commands.League.CreateLeague
                 request.Name,
                 request.Description,
                 Enumeration.FromDisplayName<LeagueType>(request.LeagueType.Name));
-            
-            await _repository.CreateAsync(league);
-            
+
+            var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
+
+            await repo.AddAsync(league, cancellationToken);
+
+            var result = _uow.SaveChanges();
+
             return Unit.Value;
         }
     }

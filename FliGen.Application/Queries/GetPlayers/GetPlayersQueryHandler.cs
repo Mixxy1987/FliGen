@@ -1,27 +1,34 @@
 ﻿using FliGen.Application.Dto;
-using FliGen.Domain.Repositories;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Domain.Common.Repository;
+using FliGen.Domain.Common.Repository.Paging;
+using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Application.Queries.GetPlayers
 {
     public class GetPlayersQueryHandler: IRequestHandler<GetPlayersQuery, IEnumerable<PlayerWithRate>>
     {
-        private readonly IPlayerRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public GetPlayersQueryHandler(IPlayerRepository repository)
+        public GetPlayersQueryHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<IEnumerable<PlayerWithRate>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
         {
-            var players = await _repository.GetAsync();
+            var repo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
 
-            return players.Select(x => new PlayerWithRate()
+            IPaginate<Domain.Entities.Player> players = await repo.GetListAsync(
+                include: source => source.Include(a => a.Rates),
+                size: 30,
+                cancellationToken: cancellationToken);
+
+            return players.Items.Select(x => new PlayerWithRate()
             {
                 Id = x.Id,
                 FirstName = x.FirstName,

@@ -8,7 +8,7 @@ namespace FliGen.Application.Commands.League.JoinLeague
         {
             RuleFor(c => c)
                 .NotEmpty()
-                .WithMessage("Не задана команда на создание лиги");
+                .WithMessage("Не задана команда вступление в лигу");
         }
     }
 }

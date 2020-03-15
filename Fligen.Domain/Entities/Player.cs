@@ -42,9 +42,9 @@ namespace FliGen.Domain.Entities
             return new Player(firstName, lastName, double.Parse(rate.CommaToDot()), externalId);
         }
 
-        public static Player GetUpdated(int id, string firstName, string lastName, string rate, string externalId = null)
+        public static Player GetUpdated(int id, string firstName, string lastName, string externalId = null)
         {
-            return new Player(firstName, lastName, double.Parse(rate.CommaToDot()), externalId)
+            return new Player(firstName, lastName, null, externalId)
             {
                 Id = id
             };

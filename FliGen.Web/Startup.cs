@@ -4,9 +4,9 @@ using EventBus.RabbitMQ.Standard.Options;
 using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Common.Mediator.Extensions;
-using FliGen.Domain.Repositories;
+using FliGen.Domain.Common.Repository.DependencyInjection;
 using FliGen.Persistence.Contextes;
-using FliGen.Persistence.Repositories;
+//using FliGen.Persistence.Repositories;
 using FliGen.Web.Extensions;
 using IdentityServer4.Models;
 using MediatR;
@@ -38,10 +38,10 @@ namespace FliGen.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FliGenContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<FliGenContext>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));//.AddUnitOfWork<ApplicationDbContext>();
 
             services.AddDefaultIdentity<AppUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -95,7 +95,7 @@ namespace FliGen.Web
             services.AddMediatR(typeof(Startup))
 	            .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
 
-            services.AddTransient<IPlayerRepository, PlayerRepository>();
+            //services.AddTransient<IPlayerRepository, PlayerRepository>();
             services.AddTransient<PlayerRegisteredIntegrationEventHandler>();
 
             var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
@@ -108,7 +108,7 @@ namespace FliGen.Web
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
-            builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
+            //builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
 
             builder.AddMediator("FliGen.Application");
             builder.AddRequestLogDecorator();

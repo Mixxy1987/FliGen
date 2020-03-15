@@ -8,10 +8,5 @@ namespace FliGen.Application.Commands.Player.AddPlayer
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Rate { get; set; }
-
-        internal string DotToComma()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

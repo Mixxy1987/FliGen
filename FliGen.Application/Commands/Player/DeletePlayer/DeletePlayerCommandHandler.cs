@@ -1,4 +1,4 @@
-﻿using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Common.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,18 +7,21 @@ namespace FliGen.Application.Commands.Player.DeletePlayer
 {
     public class DeletePlayerCommandHandler : IRequestHandler<DeletePlayerCommand>
     {
-        private readonly IPlayerRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public DeletePlayerCommandHandler(IPlayerRepository repository)
+        public DeletePlayerCommandHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
-        public async Task<Unit> Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteByIdAsync(request.Id);
-            
-            return Unit.Value;
+            var repo = _uow.GetRepository<Domain.Entities.Player>();
+            repo.Delete(request.Id);
+
+            var result = _uow.SaveChanges();
+
+            return Task.FromResult(Unit.Value);
         }
     }
 }

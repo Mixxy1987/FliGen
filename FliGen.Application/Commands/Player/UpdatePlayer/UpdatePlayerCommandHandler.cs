@@ -1,28 +1,51 @@
-﻿using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Common.Repository;
+using FliGen.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Common.Mediator.Extensions;
 
 namespace FliGen.Application.Commands.Player.UpdatePlayer
 {
     public class UpdatePlayerCommandHandler : IRequestHandler<UpdatePlayerCommand>
     {
-        private readonly IPlayerRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public UpdatePlayerCommandHandler(IPlayerRepository repository)
+        public UpdatePlayerCommandHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
         {
-            await _repository.UpdateAsync(Domain.Entities.Player.GetUpdated(
-                request.Id,
-                request.FirstName,
-                request.LastName,
-                request.Rate));
-            
+            var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+
+            /*Domain.Entities.Player player = (await playerRepo.GetListAsync(
+                predicate: x => x.Id == request.Id,
+                include: source => source.Include(a => a.Rates),
+                size : 1,
+                cancellationToken : cancellationToken)).Items[0];*/
+
+            Domain.Entities.Player player = await playerRepo.SingleAsync(
+                predicate: x => x.Id == request.Id,
+                include: source => source.Include(a => a.Rates));
+
+            double playerRate = player.Rates.OrderBy(y => y.Date).Last().Value;
+
+            if (playerRate.ToString("F2") != request.Rate)
+            {
+                PlayerRate newPlayerRate = new PlayerRate(DateTime.Now, request.Rate, player.Id);
+                var playerRatesRepo = _uow.GetRepositoryAsync<PlayerRate>();
+                await playerRatesRepo.AddAsync(newPlayerRate, cancellationToken);
+            }
+
+            playerRepo.UpdateAsync(Domain.Entities.Player.GetUpdated(
+                player.Id, request.FirstName, request.LastName, player.ExternalId));
+
+            var result = _uow.SaveChanges();
+
             return Unit.Value;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FliGen.Common.Extensions;
 using FliGen.Domain.Common;
 
 namespace FliGen.Domain.Entities
@@ -18,6 +19,14 @@ namespace FliGen.Domain.Entities
             //todo:: validation?
             Date = date;
             Value = rate;
+        }
+
+        public PlayerRate(DateTime date, string rate, int playerId) : this()
+        {
+            //todo:: validation?
+            Date = date;
+            Value = double.Parse(rate.CommaToDot());
+            PlayerId = playerId;
         }
     }
 }

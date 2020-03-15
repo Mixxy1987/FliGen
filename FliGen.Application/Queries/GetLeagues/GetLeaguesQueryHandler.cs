@@ -1,6 +1,5 @@
-﻿using FliGen.Application.Dto;
-using FliGen.Domain.Entities;
-using FliGen.Domain.Repositories;
+﻿using FliGen.Domain.Common.Repository;
+using FliGen.Domain.Common.Repository.Paging;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +8,22 @@ using System.Threading.Tasks;
 
 namespace FliGen.Application.Queries.GetLeagues
 {
-    public class GetLeagueTypesQueryHandler : IRequestHandler<GetLeaguesQuery, IEnumerable<Dto.League>>
+    public class GetLeaguesQueryHandler : IRequestHandler<GetLeaguesQuery, IEnumerable<Dto.League>>
     {
-        private readonly ILeagueRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public GetLeagueTypesQueryHandler(ILeagueRepository repository)
+        public GetLeaguesQueryHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<IEnumerable<Dto.League>> Handle(GetLeaguesQuery request, CancellationToken cancellationToken)
         {
-            var leagues = await _repository.GetLeaguesAsync();
+            var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
-            var result = leagues.Select(x => new Dto.League()
+            IPaginate<Domain.Entities.League> leagues = await repo.GetListAsync(cancellationToken : cancellationToken);
+
+            var result = leagues.Items.Select(x => new Dto.League() //todo:: paging
             {
                 Id = x.Id,
                 Name = x.Name,

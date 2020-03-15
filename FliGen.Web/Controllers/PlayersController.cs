@@ -53,6 +53,8 @@ namespace FliGen.Web.Controllers
         [HttpPut]
         public async Task Update([FromBody]UpdatePlayerCommand cmd)
         {
+
+
             await _mediatr.Send(cmd);
         }
     }

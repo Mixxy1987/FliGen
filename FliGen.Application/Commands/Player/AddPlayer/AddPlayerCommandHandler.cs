@@ -1,17 +1,17 @@
-﻿using FliGen.Domain.Repositories;
-using MediatR;
+﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Domain.Common.Repository;
 
 namespace FliGen.Application.Commands.Player.AddPlayer
 {
     public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand>
     {
-        private readonly IPlayerRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public AddPlayerCommandHandler(IPlayerRepository repository)
+        public AddPlayerCommandHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
@@ -20,9 +20,13 @@ namespace FliGen.Application.Commands.Player.AddPlayer
                 request.FirstName,
                 request.LastName,
                 rate: request.Rate);
-            
-            await _repository.AddAsync(player);
-            
+
+            var repo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+
+            await repo.AddAsync(player, cancellationToken);
+
+            var result = _uow.SaveChanges();
+
             return Unit.Value;
         }
     }

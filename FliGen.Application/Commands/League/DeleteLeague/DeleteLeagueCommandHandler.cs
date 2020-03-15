@@ -1,25 +1,28 @@
 ﻿using FliGen.Domain.Entities;
-using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Domain.Common.Repository;
 
 namespace FliGen.Application.Commands.League.DeleteLeague
 {
     public class DeleteLeagueCommandHandler : IRequestHandler<DeleteLeagueCommand>
     {
-        private readonly ILeagueRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public DeleteLeagueCommandHandler(ILeagueRepository repository)
+        public DeleteLeagueCommandHandler(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
-        public async Task<Unit> Handle(DeleteLeagueCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(DeleteLeagueCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteByIdAsync(request.Id);
-            
-            return Unit.Value;
+            var repo = _uow.GetRepository<Domain.Entities.League>();
+            repo.Delete(request.Id);
+
+            var result = _uow.SaveChanges();
+
+            return Task.FromResult(Unit.Value);
         }
     }
 }

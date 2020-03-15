@@ -1,8 +1,8 @@
 ﻿using System;
-using FliGen.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Domain.Common.Repository;
 using FliGen.Domain.Entities;
 using FliGen.Domain.Entities.Enum;
 
@@ -10,31 +10,36 @@ namespace FliGen.Application.Commands.League.JoinLeague
 {
     public class JoinLeagueCommandHandler : IRequestHandler<JoinLeagueCommand>
     {
-        private readonly ILeagueRepository _leagueRepository;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IUnitOfWork _uow;
 
-        public JoinLeagueCommandHandler(ILeagueRepository leagueRepository, IPlayerRepository playerRepository)
+        public JoinLeagueCommandHandler(IUnitOfWork uow)
         {
-	        _leagueRepository = leagueRepository;
-	        _playerRepository = playerRepository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(JoinLeagueCommand request, CancellationToken cancellationToken)
         {
-	        var league = await _leagueRepository.GetByIdOrThrowAsync(request.LeagueId);
+            var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
-            var player = await _playerRepository.GetByExternalIdOrThrowAsync(request.PlayerExternalId);
+            var league = await leagueRepo.SingleAsync(predicate: x => x.Id == request.LeagueId);
+
+            var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+
+            var player = await playerRepo.SingleAsync(predicate: x => x.ExternalId == request.PlayerExternalId);
+
+            var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
 
             var link = new LeaguePlayerLink()
             {
-	            LeagueId = league.Id,
-	            PlayerId = player.Id,
-	            JoinTime = DateTime.Now,
-	            LeaguePlayerRoleId = LeaguePlayerRole.User.Id
+                LeagueId = league.Id,
+                PlayerId = player.Id,
+                JoinTime = DateTime.Now,
+                LeaguePlayerRoleId = LeaguePlayerRole.User.Id
             };
 
-            await _leagueRepository.JoinLeagueAsync(link);
-            
+            await lpRepo.AddAsync(link, cancellationToken);
+          
+            var result = _uow.SaveChanges();
             return Unit.Value;
         }
     }
