@@ -21,11 +21,11 @@ namespace FliGen.Application.Commands.League.JoinLeague
         {
             var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
-            var league = await leagueRepo.SingleAsync(predicate: x => x.Id == request.LeagueId);
+            Domain.Entities.League league = await leagueRepo.SingleAsync(predicate: x => x.Id == request.LeagueId);
 
             var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
 
-            var player = await playerRepo.SingleAsync(predicate: x => x.ExternalId == request.PlayerExternalId);
+            Domain.Entities.Player player = await playerRepo.SingleAsync(predicate: x => x.ExternalId == request.PlayerExternalId);
 
             var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
 

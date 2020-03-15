@@ -33,7 +33,7 @@ namespace FliGen.Web.Controllers
 		[Produces(typeof(IEnumerable<League>))]
 		public async Task<IEnumerable<League>> Get()
 		{
-			var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 			//var user = await _userManager.FindByIdAsync(userId);
 

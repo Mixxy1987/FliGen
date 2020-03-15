@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using FliGen.Application.Commands.League.CreateLeague;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,8 @@ using FliGen.Application.Commands.League.UpdateLeague;
 using FliGen.Application.Dto;
 using FliGen.Application.Queries.GetLeagues;
 using FliGen.Application.Queries.GetLeagueTypes;
+using FliGen.Persistence.Contextes;
+using Microsoft.AspNetCore.Identity;
 
 namespace FliGen.Web.Controllers
 {
@@ -36,7 +39,9 @@ namespace FliGen.Web.Controllers
         [Produces(typeof(IEnumerable<League>))]
         public Task<IEnumerable<League>> Get()
         {
-            return _mediatr.Send(new GetLeaguesQuery());
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return _mediatr.Send(new GetLeaguesQuery(userId));
         }
 
         [HttpPost]

@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Application.Dto;
+using Microsoft.EntityFrameworkCore;
+using League = FliGen.Domain.Entities.League;
+using Player = FliGen.Domain.Entities.Player;
 
 namespace FliGen.Application.Queries.GetLeagues
 {
@@ -19,22 +23,57 @@ namespace FliGen.Application.Queries.GetLeagues
 
         public async Task<IEnumerable<Dto.League>> Handle(GetLeaguesQuery request, CancellationToken cancellationToken)
         {
-            var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
+            var leagueRepo = _uow.GetRepositoryAsync<League>();
 
-            IPaginate<Domain.Entities.League> leagues = await repo.GetListAsync(cancellationToken : cancellationToken);
+            IPaginate<League> leagues = await leagueRepo.GetListAsync(cancellationToken : cancellationToken);
 
-            var result = leagues.Items.Select(x => new Dto.League() //todo:: paging
+            var resultLeagues = leagues.Items.Select(x => new Dto.League() //todo:: paging
             {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                LeagueType = new Dto.LeagueType()
+                LeagueType = new LeagueType()
                 {
                     Name = x.Type.Name
                 }
-            }).ToArray(); //todo:: automapper?
+            }).ToList(); //todo:: automapper?
 
-            return result;
+            if (request.UserId != null)
+            {
+                var playerRepo = _uow.GetRepositoryAsync<Player>();
+
+                Player player = await playerRepo.SingleAsync(
+                    predicate: x => x.ExternalId == request.UserId,
+                    include: source => source.Include(a => a.LeaguePlayerLinks));
+
+                if (player == null)
+                {
+                    return resultLeagues;
+                }
+
+                var leagueStatus = new Dictionary<int, JoinStatus>();
+
+                foreach (var links in player.LeaguePlayerLinks.OrderByDescending(x => x.JoinTime))
+                {
+                    if (leagueStatus.ContainsKey(links.LeagueId)) continue;
+
+                    if (links.JoinTime == null)
+                    {
+                        leagueStatus[links.LeagueId] = JoinStatus.Waiting;
+                    }
+                    else if (links.LeaveTime == null)
+                    {
+                        leagueStatus[links.LeagueId] = JoinStatus.Joined;
+                    }
+                }
+
+                foreach (var league in leagueStatus)
+                {
+                    resultLeagues.Single(x => x.Id == league.Key).JoinStatus = league.Value;
+                }
+            }
+
+            return resultLeagues;
         }
     }
 }

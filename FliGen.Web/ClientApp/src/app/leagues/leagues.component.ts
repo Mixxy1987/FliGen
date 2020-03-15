@@ -2,26 +2,35 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { LeaguesDataService } from "./leagues.data.service";
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
+import { AuthorizeService } from "../api-authorization/authorize.service";
+import { Observable } from "rxjs";
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-leagues',
   templateUrl: './leagues.component.html',
   providers: [LeaguesDataService]
 })
-export class LeaguesComponent implements OnInit {
 
+export class LeaguesComponent implements OnInit {
   private league: League = new League();
   private leagues: League[];
   private leagueTypes: LeagueType[];
   private newLeagueType: LeagueType;
+
   tableMode: boolean = true;
+  isAuthenticated: boolean;
+  count: number = 1;
 
   constructor(
-    private dataService: LeaguesDataService) {
-
+    private dataService: LeaguesDataService,
+    private authorizeService: AuthorizeService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.isAuthenticated = await this.authorizeService.isAuthenticated().pipe(
+      take(1)
+    ).toPromise();
     this.loadLeagues();
     this.loadLeagueTypes();
   }

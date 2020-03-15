@@ -34,6 +34,9 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="ClientApp\src\app\common\joinStatus.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FliGen.Application\FliGen.Application.csproj" />
     <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
     <ProjectReference Include="..\FliGen.Domain\FliGen.Domain.csproj" />
@@ -41,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClientApp\src\app\tours\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\common\joinStatus.ts" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

@@ -6,6 +6,11 @@ namespace FliGen.Application.Queries.GetLeagues
 {
     public class GetLeaguesQuery : IRequest<IEnumerable<League>>
     {
-        
+        public string UserId { get; }
+
+        public GetLeaguesQuery(string userId)
+        {
+            UserId = userId;
+        }
     }
 }
