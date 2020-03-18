@@ -95,7 +95,10 @@ namespace FliGen.Persistence.Migrations
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("JoinTime")
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("JoinTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LeaguePlayerRoleId")
@@ -104,7 +107,7 @@ namespace FliGen.Persistence.Migrations
                     b.Property<DateTime?>("LeaveTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PlayerId", "LeagueId", "JoinTime");
+                    b.HasKey("PlayerId", "LeagueId", "CreationTime");
 
                     b.HasIndex("LeagueId");
 

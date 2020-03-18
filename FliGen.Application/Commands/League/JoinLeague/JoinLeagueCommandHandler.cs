@@ -52,7 +52,7 @@ namespace FliGen.Application.Commands.League.JoinLeague
 		            LeaguePlayerLink.UpdateToLeftLink(lastLink);
 	            lpRepo.UpdateAsync(link);
             }
-            //todo CHECK;
+
             var result = _uow.SaveChanges();
             return Unit.Value;
         }

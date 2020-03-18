@@ -76,8 +76,8 @@ namespace FliGen.Persistence.Helper
 
 
             const string lpQuery = @"
-    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId, JoinTime, LeaguePlayerRoleId)
-	SELECT league.Id, player.Id, @@joinTime, 2
+    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId, CreationTime, JoinTime, LeaguePlayerRoleId)
+	SELECT league.Id, player.Id, @@creationTime, @@joinTime, 2
 	FROM [Player] as player, [League] as league
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName AND [League].Name=@@leagueName
 ";
@@ -105,6 +105,7 @@ namespace FliGen.Persistence.Helper
                     new KeyValuePair<string, object>("@@lastName", kvSplitted[0]),
                     new KeyValuePair<string, object>("@@firstName", kvSplitted[1]),
                     new KeyValuePair<string, object>("@@leagueName", leagueName),
+                    new KeyValuePair<string, object>("@@creationTime", "2020-01-01"),
                     new KeyValuePair<string, object>("@@joinTime", "2020-01-01")
                 }
             );

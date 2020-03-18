@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FliGen.Persistence.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,6 @@ namespace FliGen.Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            
         }
     }
 }

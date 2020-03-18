@@ -4,7 +4,7 @@ using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Domain.Entities
 {
-    public class LeaguePlayerLink : Entity
+    public class LeaguePlayerLink
     {
         public int LeagueId { get; }
         public League League { get; }
@@ -27,6 +27,10 @@ namespace FliGen.Domain.Entities
         }
 
         public LeaguePlayerRole Role { get; private set; }
+
+        protected LeaguePlayerLink()
+        {
+        }
 
         private LeaguePlayerLink(
 	        int leagueId, 
