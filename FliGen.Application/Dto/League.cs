@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public LeagueType LeagueType { get; set; }
-        public JoinStatus JoinStatus { get; set; } = JoinStatus.None;
+        public PlayerLeagueJoinStatus PlayerLeagueJoinStatus { get; set; } = PlayerLeagueJoinStatus.None;
     }
 }

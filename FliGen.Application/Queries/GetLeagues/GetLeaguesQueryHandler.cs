@@ -51,7 +51,7 @@ namespace FliGen.Application.Queries.GetLeagues
                     return resultLeagues;
                 }
 
-                var leagueStatus = new Dictionary<int, JoinStatus>();
+                var leagueStatus = new Dictionary<int, PlayerLeagueJoinStatus>();
 
                 foreach (var links in player.LeaguePlayerLinks.OrderByDescending(x => x.JoinTime))
                 {
@@ -59,17 +59,17 @@ namespace FliGen.Application.Queries.GetLeagues
 
                     if (links.JoinTime == null)
                     {
-                        leagueStatus[links.LeagueId] = JoinStatus.Waiting;
+                        leagueStatus[links.LeagueId] = PlayerLeagueJoinStatus.Waiting;
                     }
                     else if (links.LeaveTime == null)
                     {
-                        leagueStatus[links.LeagueId] = JoinStatus.Joined;
+                        leagueStatus[links.LeagueId] = PlayerLeagueJoinStatus.Joined;
                     }
                 }
 
                 foreach (var league in leagueStatus)
                 {
-                    resultLeagues.Single(x => x.Id == league.Key).JoinStatus = league.Value;
+                    resultLeagues.Single(x => x.Id == league.Key).PlayerLeagueJoinStatus = league.Value;
                 }
             }
 

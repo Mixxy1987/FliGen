@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using FliGen.Domain.Common.Repository;
+using FliGen.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Entities;
-using FliGen.Domain.Entities.Enum;
-using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Application.Commands.League.JoinLeague
 {
@@ -31,11 +29,11 @@ namespace FliGen.Application.Commands.League.JoinLeague
 
             Domain.Entities.Player player = await playerRepo.SingleAsync(
 	            predicate: x => x.ExternalId == request.PlayerExternalId,
-	            include: x => x.Include(y => y.LeaguePlayerLinks.Where(z => z.LeagueId == league.Id)));
+	            include: x => x.Include(y => y.LeaguePlayerLinks));
 
             var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
 
-            var lastLink = player.LeaguePlayerLinks.OrderBy(x => x.CreationTime).Last(); //todo:: check
+            var lastLink = player.LeaguePlayerLinks.Where(z => z.LeagueId == league.Id).OrderBy(x => x.CreationTime).Last(); //todo:: check
 
             if (lastLink.JoinTime != null && lastLink.LeaveTime != null)
             {
@@ -47,10 +45,16 @@ namespace FliGen.Application.Commands.League.JoinLeague
             }
             else
             {
-	            LeaguePlayerLink link = lastLink.JoinTime == null ?
-		            LeaguePlayerLink.UpdateToJoinedLink(lastLink) :
-		            LeaguePlayerLink.UpdateToLeftLink(lastLink);
-	            lpRepo.UpdateAsync(link);
+                if (lastLink.JoinTime == null)
+                {
+                    lastLink.UpdateToJoined();
+                }
+                else
+                {
+                    lastLink.UpdateToLeft();
+                }
+
+	            lpRepo.UpdateAsync(lastLink);
             }
 
             var result = _uow.SaveChanges();

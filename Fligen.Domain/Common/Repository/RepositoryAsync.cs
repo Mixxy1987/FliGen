@@ -83,6 +83,7 @@ namespace FliGen.Domain.Common.Repository
 
         public void UpdateAsync(T entity)
         {
+            //_dbContext.Entry(entity).State = EntityState.Modified; 
             _dbSet.Update(entity);
         }
 

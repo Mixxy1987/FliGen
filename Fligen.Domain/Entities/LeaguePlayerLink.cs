@@ -9,10 +9,10 @@ namespace FliGen.Domain.Entities
         public int LeagueId { get; }
         public League League { get; }
         public int PlayerId { get; }
-        public Player Player { get; }
+        public Player Player { get; set; }
         public DateTime CreationTime { get; }
-        public DateTime? JoinTime { get; }
-        public DateTime? LeaveTime { get; }
+        public DateTime? JoinTime { get; private set; }
+        public DateTime? LeaveTime { get; private set; }
 
         public int LeaguePlayerRoleId
         {
@@ -42,6 +42,7 @@ namespace FliGen.Domain.Entities
 	        LeagueId = leagueId;
 	        PlayerId = playerId;
 	        LeaguePlayerRoleId = roleId;
+            CreationTime = DateTime.Now;
             JoinTime = joinTime;
 	        LeaveTime = leaveTime;
         }
@@ -60,23 +61,14 @@ namespace FliGen.Domain.Entities
 		        DateTime.Now);
         }
 
-        public static LeaguePlayerLink UpdateToJoinedLink(LeaguePlayerLink link)
+        public void UpdateToJoined()
         {
-	        return new LeaguePlayerLink(
-		        link.LeagueId,
-		        link.PlayerId,
-		        link.LeaguePlayerRoleId,
-		        DateTime.Now);
+           JoinTime = DateTime.Now;
         }
 
-        public static LeaguePlayerLink UpdateToLeftLink(LeaguePlayerLink link)
+        public void UpdateToLeft()
         {
-	        return new LeaguePlayerLink(
-		        link.LeagueId,
-		        link.PlayerId,
-		        link.LeaguePlayerRoleId,
-		        link.JoinTime, 
-		        DateTime.Now);
+            LeaveTime = DateTime.Now;
         }
     }
 }
