@@ -4,14 +4,15 @@ using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Domain.Entities
 {
-    public class LeaguePlayerLink
+    public class LeaguePlayerLink : Entity
     {
-        public int LeagueId { get; set; }
-        public League League { get; set; }
-        public int PlayerId { get; set; }
-        public Player Player { get; set; }
-        public DateTime JoinTime { get; set; }
-        public DateTime? LeaveTime { get; set; }
+        public int LeagueId { get; }
+        public League League { get; }
+        public int PlayerId { get; }
+        public Player Player { get; }
+        public DateTime CreationTime { get; }
+        public DateTime? JoinTime { get; }
+        public DateTime? LeaveTime { get; }
 
         public int LeaguePlayerRoleId
         {
@@ -24,6 +25,54 @@ namespace FliGen.Domain.Entities
                 Role = Enumeration.FromValue<LeaguePlayerRole>(value);
             }
         }
+
         public LeaguePlayerRole Role { get; private set; }
+
+        private LeaguePlayerLink(
+	        int leagueId, 
+	        int playerId,
+	        int roleId,
+	        DateTime? joinTime = null,
+	        DateTime? leaveTime = null)
+        {
+	        LeagueId = leagueId;
+	        PlayerId = playerId;
+	        LeaguePlayerRoleId = roleId;
+            JoinTime = joinTime;
+	        LeaveTime = leaveTime;
+        }
+
+        public static LeaguePlayerLink CreateWaitingLink(int leagueId, int playerId)
+        {
+	        return new LeaguePlayerLink(leagueId, playerId, LeaguePlayerRole.User.Id);
+        }
+
+        public static LeaguePlayerLink CreateJoinedLink(int leagueId, int playerId)
+        {
+	        return new LeaguePlayerLink(
+                leagueId,
+                playerId,
+                LeaguePlayerRole.User.Id,
+		        DateTime.Now);
+        }
+
+        public static LeaguePlayerLink UpdateToJoinedLink(LeaguePlayerLink link)
+        {
+	        return new LeaguePlayerLink(
+		        link.LeagueId,
+		        link.PlayerId,
+		        link.LeaguePlayerRoleId,
+		        DateTime.Now);
+        }
+
+        public static LeaguePlayerLink UpdateToLeftLink(LeaguePlayerLink link)
+        {
+	        return new LeaguePlayerLink(
+		        link.LeagueId,
+		        link.PlayerId,
+		        link.LeaguePlayerRoleId,
+		        link.JoinTime, 
+		        DateTime.Now);
+        }
     }
 }

@@ -25,6 +25,9 @@ namespace FliGen.Domain.Entities
         public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
         public List<Season> Seasons { get; }
 
+        public bool IsVisible() => LeagueSettings.Visibility;
+        public bool IsRequireConfirmation() => LeagueSettings.RequireConfirmation;
+
         protected League()
         {
         }

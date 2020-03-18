@@ -1,10 +1,10 @@
 import { LeagueType } from "./leagueType";
-import { JoinStatus } from "./joinStatus";
+import { PlayerLeagueJoinStatus } from "./playerLeagueJoinStatus";
 
 export class League {
   id: number;
   name: string;
   description: string;
   leagueType: LeagueType;
-  joinStatus: JoinStatus;
+  joinStatus: PlayerLeagueJoinStatus;
 }
