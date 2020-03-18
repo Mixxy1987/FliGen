@@ -1,4 +1,4 @@
-﻿IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200309100228_Initial')
+IF NOT EXISTS (SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20200309100228_Initial')
 BEGIN
 	INSERT INTO [LeagueType](Name)
 	VALUES
@@ -20,6 +20,16 @@ BEGIN
 	SELECT 'FLIHockey', 'Worst League in the world!', Id
 	FROM [LeagueType]
 	WHERE [LeagueType].[Name] = 'Hockey'
+
+    INSERT INTO [LeagueSettings](LeagueId, Visibility, RequireConfirmation)
+	SELECT Id, 1, 0
+	FROM [League]
+	WHERE [League].[Name] = 'FLI'
+
+	INSERT INTO [LeagueSettings](LeagueId, Visibility, RequireConfirmation)
+	SELECT Id, 1, 1
+	FROM [League]
+	WHERE [League].[Name] = 'FLIHockey'
 
 	INSERT INTO [Season](Start, Finish, LeagueId)
 	SELECT '2020-01-01','2020-12-31', Id
