@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 using FliGen.Common.Filters;
+using FliGen.Web.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,11 +34,11 @@ namespace FliGen.Web
         {
             var mapperConfig = new MapperConfiguration(cfg =>
             {
-                //todo::
+	            cfg.AddProfile<LeaguesProfile>();
             });
 
             builder.RegisterInstance(mapperConfig).AsSelf().SingleInstance();
-            builder.RegisterInstance(mapperConfig).As<IMapper>().SingleInstance();
+            builder.RegisterInstance(mapperConfig.CreateMapper()).As<IMapper>().SingleInstance();
         }
 
         public static void AddModules(this ContainerBuilder builder)

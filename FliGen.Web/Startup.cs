@@ -22,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
+using Autofac.Extensions.DependencyInjection;
 
 namespace FliGen.Web
 {
@@ -95,7 +96,6 @@ namespace FliGen.Web
             services.AddMediatR(typeof(Startup))
 	            .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
 
-            //services.AddTransient<IPlayerRepository, PlayerRepository>();
             services.AddTransient<PlayerRegisteredIntegrationEventHandler>();
 
             var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
@@ -107,9 +107,7 @@ namespace FliGen.Web
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
-            //builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
-
+            builder.AddAutoMapper();
             builder.AddMediator("FliGen.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();

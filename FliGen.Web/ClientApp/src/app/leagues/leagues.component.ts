@@ -3,7 +3,6 @@ import { LeaguesDataService } from "./leagues.data.service";
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
 import { AuthorizeService } from "../api-authorization/authorize.service";
-import { Observable } from "rxjs";
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -20,7 +19,6 @@ export class LeaguesComponent implements OnInit {
 
   tableMode: boolean = true;
   isAuthenticated: boolean;
-  count: number = 1;
 
   constructor(
     private dataService: LeaguesDataService,

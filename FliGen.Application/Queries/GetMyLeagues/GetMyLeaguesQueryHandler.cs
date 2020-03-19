@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using FliGen.Application.CommonLogic;
 using FliGen.Domain.Common.Repository;
 using FliGen.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,42 +14,44 @@ namespace FliGen.Application.Queries.GetMyLeagues
     public class GetMyLeaguesQueryHandler : IRequestHandler<GetMyLeaguesQuery, IEnumerable<Dto.League>>
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public GetMyLeaguesQueryHandler(IUnitOfWork uow)
+        public GetMyLeaguesQueryHandler(IUnitOfWork uow, IMapper mapper)
         {
-            _uow = uow;
+	        _uow = uow;
+	        _mapper = mapper;
         }
 
         public async Task<IEnumerable<Dto.League>> Handle(GetMyLeaguesQuery request, CancellationToken cancellationToken)
         {
             var playerRepo = _uow.GetRepositoryAsync<Player>();
+            var leagueRepo = _uow.GetRepositoryAsync<League>();
 
             Player player = await playerRepo.SingleAsync(
                 predicate: x => x.ExternalId == request.UserId,
                 include: source => source.Include(a => a.LeaguePlayerLinks));
 
-            var leagueRepo = _uow.GetRepositoryAsync<League>();
+            List<LeaguePlayerLink> distinctLinks = player.LeaguePlayerLinks
+                 .OrderBy(p => p.CreationTime)
+                 .Where(l => !l.InLeftStatus())
+                 .GroupBy(p => p.LeagueId)
+                 .Select(g => g.Last())
+                 .ToList();
 
             var leagues = new List<League>();
 
-            foreach (var link in player.LeaguePlayerLinks)
+            foreach (var link in distinctLinks)
             {
-                leagues.Add(await leagueRepo.SingleAsync(
-                    predicate: x => x.Id == link.LeagueId));
+                leagues.Add(await leagueRepo.SingleAsync(x => x.Id == link.LeagueId));
             }
 
-            var result = leagues.Select(x => new Dto.League() //todo::
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                LeagueType = new Dto.LeagueType()
-                {
-                    Name = x.Type.Name
-                }
-            }).ToArray(); //todo:: automapper?
+            List<Dto.League> resultLeagues = leagues
+                .Select(x => _mapper.Map<Dto.League>(x))
+	            .ToList();
 
-            return result;
+            resultLeagues.EnrichByPlayerLeagueJoinStatus(distinctLinks);
+
+            return resultLeagues;
         }
     }
 }

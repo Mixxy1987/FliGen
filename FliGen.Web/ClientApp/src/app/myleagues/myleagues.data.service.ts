@@ -15,4 +15,8 @@ export class MyLeaguesDataService {
   getLeagueTypes() {
     return this.http.get<LeagueType[]>(this.baseUrl + 'leagues/types');
   }
+
+  join(id: number) {
+    return this.http.post(this.baseUrl + 'myleagues/join', id);
+  }
 }

@@ -20,20 +20,21 @@ namespace FliGen.Application.Commands.League.JoinLeague
         public async Task<Unit> Handle(JoinLeagueCommand request, CancellationToken cancellationToken)
         {
             var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
+            var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+            var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
 
             Domain.Entities.League league = await leagueRepo.SingleAsync(
 	            predicate: x => x.Id == request.LeagueId,
 	            include: x => x.Include(y => y.LeagueSettings));
 
-            var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
-
             Domain.Entities.Player player = await playerRepo.SingleAsync(
 	            predicate: x => x.ExternalId == request.PlayerExternalId,
 	            include: x => x.Include(y => y.LeaguePlayerLinks));
 
-            var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
-
-            var lastLink = player.LeaguePlayerLinks.Where(z => z.LeagueId == league.Id).OrderBy(x => x.CreationTime).Last();
+            LeaguePlayerLink lastLink = player.LeaguePlayerLinks
+	            .Where(z => z.LeagueId == league.Id)
+	            .OrderBy(x => x.CreationTime)
+	            .Last();
 
             if (lastLink == null || 
                 lastLink.InLeftStatus())
