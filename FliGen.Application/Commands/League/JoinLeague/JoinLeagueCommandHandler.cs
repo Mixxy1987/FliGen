@@ -33,9 +33,10 @@ namespace FliGen.Application.Commands.League.JoinLeague
 
             var lpRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();
 
-            var lastLink = player.LeaguePlayerLinks.Where(z => z.LeagueId == league.Id).OrderBy(x => x.CreationTime).Last(); //todo:: check
+            var lastLink = player.LeaguePlayerLinks.Where(z => z.LeagueId == league.Id).OrderBy(x => x.CreationTime).Last();
 
-            if (lastLink.JoinTime != null && lastLink.LeaveTime != null)
+            if (lastLink == null || 
+                lastLink.InLeftStatus())
             {
 	            LeaguePlayerLink link = league.IsRequireConfirmation()
 		            ? LeaguePlayerLink.CreateWaitingLink(league.Id, player.Id)
@@ -43,17 +44,21 @@ namespace FliGen.Application.Commands.League.JoinLeague
 
 	            await lpRepo.AddAsync(link, cancellationToken);
             }
-            else
+            else if (lastLink.JoinTime == null)
             {
-                if (lastLink.JoinTime == null)
+                if (league.IsRequireConfirmation())
                 {
-                    lastLink.UpdateToJoined();
+	                lpRepo.RemoveAsync(lastLink);
                 }
                 else
                 {
-                    lastLink.UpdateToLeft();
+	                lastLink.UpdateToJoined();
+	                lpRepo.UpdateAsync(lastLink);
                 }
-
+            }
+            else
+            {
+	            lastLink.UpdateToLeft();
 	            lpRepo.UpdateAsync(lastLink);
             }
 

@@ -33,5 +33,6 @@ namespace FliGen.Domain.Common.Repository
         Task AddAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken));
 
         void UpdateAsync(T entity);
+        void RemoveAsync(T entity);
     }
 }

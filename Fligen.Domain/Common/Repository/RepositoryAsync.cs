@@ -87,6 +87,11 @@ namespace FliGen.Domain.Common.Repository
             _dbSet.Update(entity);
         }
 
+        public void RemoveAsync(T entity)
+        {
+	        _dbSet.Remove(entity);
+        }
+
         public Task AddAsync(T entity)
         {
             return AddAsync(entity, new CancellationToken());
