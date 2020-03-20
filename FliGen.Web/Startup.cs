@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Web.Services;
 
 namespace FliGen.Web
 {
@@ -97,12 +98,12 @@ namespace FliGen.Web
 	            .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
 
             services.AddTransient<PlayerRegisteredIntegrationEventHandler>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
 
             services.AddRabbitMqConnection(rabbitMqOptions);
             services.AddRabbitMqRegistration(rabbitMqOptions);
-            //services.AddEventBusHandling(EventBusExtension.GetHandlers());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
