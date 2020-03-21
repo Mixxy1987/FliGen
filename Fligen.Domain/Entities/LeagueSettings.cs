@@ -4,7 +4,7 @@ namespace FliGen.Domain.Entities
 {
     public class LeagueSettings : Entity
     {
-        public int LeagueId { get; set; }
+        public int LeagueId { get; private set; }
         public League League { get; set; }
 
         public bool Visibility { get; }
@@ -16,6 +16,15 @@ namespace FliGen.Domain.Entities
         {
             Visibility = visibility;
             RequireConfirmation = requireConfirmation;
+        }
+
+        public static LeagueSettings GetUpdated(LeagueSettings oldSettings, bool visibility, bool requireConfirmation)
+        {
+            return new LeagueSettings(visibility, requireConfirmation)
+            {
+                Id = oldSettings.Id,
+                LeagueId = oldSettings.LeagueId
+            };
         }
     }
 }

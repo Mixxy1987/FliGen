@@ -1,6 +1,5 @@
 ﻿using FliGen.Application.Commands.League.CreateLeague;
 using FliGen.Application.Commands.League.DeleteLeague;
-using FliGen.Application.Commands.League.UpdateLeague;
 using FliGen.Application.Dto;
 using FliGen.Application.Queries.GetLeagues;
 using FliGen.Application.Queries.GetLeagueTypes;
@@ -60,12 +59,6 @@ namespace FliGen.Web.Controllers
             {
                 Id = id
             });
-        }
-
-        [HttpPut]
-        public async Task Update([FromBody]UpdateLeagueCommand cmd)
-        {
-            await _mediatr.Send(cmd);
         }
     }
 }

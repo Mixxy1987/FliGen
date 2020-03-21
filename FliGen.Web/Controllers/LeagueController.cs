@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using FliGen.Application.Commands.League.UpdateLeagueSettings;
 using FliGen.Application.Queries.League.LeagueInformation;
 
 namespace FliGen.Web.Controllers
@@ -50,6 +51,12 @@ namespace FliGen.Web.Controllers
             {
                 Id = id
             });
+        }
+
+        [HttpPut("changeSettings")]
+        public async Task Update([FromBody]UpdateLeagueSettingsCommand cmd)
+        {
+            await _mediatr.Send(cmd);
         }
 
         [HttpPut]

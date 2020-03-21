@@ -2,6 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatSlideToggleModule } from '@angular/material';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { Platform } from '@angular/cdk/platform';
+import { ContentObserver } from '@angular/cdk/observers';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -37,10 +41,14 @@ import { LeagueSettingsComponent } from "./league-detail/league-settings/league-
     HttpClientModule,
     ApiAuthorizationModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSlideToggleModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    FocusMonitor,
+    Platform,
+    ContentObserver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

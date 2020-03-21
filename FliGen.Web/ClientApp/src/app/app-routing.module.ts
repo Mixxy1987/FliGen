@@ -20,7 +20,8 @@ const routes: Routes = [
   { path: 'leagues', component: LeaguesComponent },
   { path: 'leagues/:id', component: LeagueDetailComponent },
   { path: 'leagues/:id/settings', component: LeagueSettingsComponent },
-  { path: 'myleagues', component: MyLeaguesComponent, canActivate: [AuthorizeGuard] }
+  { path: 'myleagues', component: MyLeaguesComponent, canActivate: [AuthorizeGuard] },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

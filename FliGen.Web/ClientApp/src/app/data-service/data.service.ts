@@ -33,7 +33,8 @@ export class DataService {
   }
 
   updateLeague(league: League) {
-    return this.http.put(this.leaguesUrl, league);
+    debugger;
+    return this.http.put(this.leagueUrl, league);
   }
 
   deleteLeague(id: number) {
@@ -46,10 +47,6 @@ export class DataService {
 
   getLeagueInformation(id: number) {
     return this.http.get<LeagueInformation>(this.leagueUrl + "/" + id);
-  }
-
-  getLeagueSettings(id: number) {
-    return this.http.get<LeagueSettings>(this.leagueUrl + "/settings/" + id);
   }
 
   getPlayers() {
@@ -66,5 +63,14 @@ export class DataService {
 
   deletePlayer(id: number) {
     return this.http.delete(this.playersUrl + "/" + id);
+  }
+
+  getLeagueSettings(id: number) {
+    return this.http.get<LeagueSettings>(this.leagueUrl + "/settings/" + id);
+  }
+
+  updateLeagueSettings(leagueSettings: LeagueSettings) {
+    debugger;
+    return this.http.put(this.leagueUrl + "/changeSettings", leagueSettings);
   }
 }

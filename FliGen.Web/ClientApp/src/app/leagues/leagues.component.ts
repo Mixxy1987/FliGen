@@ -86,8 +86,4 @@ export class LeaguesComponent implements OnInit {
     this.dataService.join(l.id)
       .subscribe(data => this.loadLeagues());
   }
-
-  goToLeagueProfile(l: League)
-  {
-  }
 }
