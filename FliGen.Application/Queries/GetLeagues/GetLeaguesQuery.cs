@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using FliGen.Application.Dto;
-using MediatR;
+﻿using MediatR;
+using System.Collections.Generic;
 
 namespace FliGen.Application.Queries.GetLeagues
 {
-    public class GetLeaguesQuery : IRequest<IEnumerable<League>>
+    public class GetLeaguesQuery : IRequest<IEnumerable<Dto.League>>
     {
         public string UserId { get; }
 

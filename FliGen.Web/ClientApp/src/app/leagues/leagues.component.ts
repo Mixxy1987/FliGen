@@ -10,7 +10,6 @@ import { take } from 'rxjs/operators';
   templateUrl: './leagues.component.html',
   providers: [LeaguesDataService]
 })
-
 export class LeaguesComponent implements OnInit {
   private league: League = new League();
   private leagues: League[];
@@ -35,14 +34,16 @@ export class LeaguesComponent implements OnInit {
 
   loadLeagues() {
     this.dataService.getLeagues().subscribe(result => {
-      this.leagues = result;
-    }, error => console.error(error));
+        this.leagues = result;
+      },
+      error => console.error(error));
   }
 
   loadLeagueTypes() {
     this.dataService.getLeagueTypes().subscribe(result => {
-      this.leagueTypes = result;
-    }, error => console.error(error));
+        this.leagueTypes = result;
+      },
+      error => console.error(error));
   }
 
   editLeague(l: League) {
@@ -84,5 +85,9 @@ export class LeaguesComponent implements OnInit {
   joinLeague(l: League) {
     this.dataService.join(l.id)
       .subscribe(data => this.loadLeagues());
+  }
+
+  goToLeagueProfile(l: League)
+  {
   }
 }

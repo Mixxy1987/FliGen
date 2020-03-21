@@ -15,6 +15,8 @@ import { DataComponent } from "./data/data.component";
 import { InternalDataComponent } from "./internal-data/internal-data.component";
 import { ExchangeRateComponent } from "./exchange-rate/exchange-rate.component";
 import { MyLeaguesComponent } from "./myleagues/myleagues.component";
+import { LeagueDetailComponent } from "./league-detail/league-detail.component";
+import { LeagueSettingsComponent } from "./league-detail/league-settings/league-settings.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { MyLeaguesComponent } from "./myleagues/myleagues.component";
     MyLeaguesComponent,
     DataComponent,
     ExchangeRateComponent,
-    InternalDataComponent
+    InternalDataComponent,
+    LeagueDetailComponent,
+    LeagueSettingsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

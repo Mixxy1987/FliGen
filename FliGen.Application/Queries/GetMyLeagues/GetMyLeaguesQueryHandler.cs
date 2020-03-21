@@ -25,7 +25,7 @@ namespace FliGen.Application.Queries.GetMyLeagues
         public async Task<IEnumerable<Dto.League>> Handle(GetMyLeaguesQuery request, CancellationToken cancellationToken)
         {
             var playerRepo = _uow.GetRepositoryAsync<Player>();
-            var leagueRepo = _uow.GetRepositoryAsync<League>();
+            var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
             Player player = await playerRepo.SingleAsync(
                 predicate: x => x.ExternalId == request.UserId,
@@ -38,7 +38,7 @@ namespace FliGen.Application.Queries.GetMyLeagues
                  .Select(g => g.Last())
                  .ToList();
 
-            var leagues = new List<League>();
+            var leagues = new List<Domain.Entities.League>();
 
             foreach (var link in distinctLinks)
             {

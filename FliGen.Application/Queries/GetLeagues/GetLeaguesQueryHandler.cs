@@ -1,18 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using FliGen.Application.CommonLogic;
 using FliGen.Domain.Common.Repository;
 using FliGen.Domain.Common.Repository.Paging;
+using FliGen.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Application.CommonLogic;
-using FliGen.Application.Dto;
-using FliGen.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using League = FliGen.Domain.Entities.League;
 using Player = FliGen.Domain.Entities.Player;
-using AutoMapper;
 
 namespace FliGen.Application.Queries.GetLeagues
 {
@@ -29,9 +26,9 @@ namespace FliGen.Application.Queries.GetLeagues
 
         public async Task<IEnumerable<Dto.League>> Handle(GetLeaguesQuery request, CancellationToken cancellationToken)
         {
-            var leagueRepo = _uow.GetRepositoryAsync<League>();
+            var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
-            IPaginate<League> leagues = await leagueRepo.GetListAsync(cancellationToken : cancellationToken);
+            IPaginate<Domain.Entities.League> leagues = await leagueRepo.GetListAsync(cancellationToken : cancellationToken);
 
 
             List<Dto.League> resultLeagues = leagues.Items

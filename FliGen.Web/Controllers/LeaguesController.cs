@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using FliGen.Application.Commands.League.CreateLeague;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+﻿using FliGen.Application.Commands.League.CreateLeague;
 using FliGen.Application.Commands.League.DeleteLeague;
 using FliGen.Application.Commands.League.UpdateLeague;
 using FliGen.Application.Dto;
 using FliGen.Application.Queries.GetLeagues;
 using FliGen.Application.Queries.GetLeagueTypes;
-using FliGen.Persistence.Contextes;
-using Microsoft.AspNetCore.Identity;
+using FliGen.Web.Services;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FliGen.Web.Controllers
 {
@@ -21,11 +19,16 @@ namespace FliGen.Web.Controllers
     {
         private readonly ILogger<LeaguesController> _logger;
         private readonly IMediator _mediatr;
+        private readonly IIdentityService _identityService;
 
-        public LeaguesController(ILogger<LeaguesController> logger, IMediator mediatr)
+        public LeaguesController(
+            ILogger<LeaguesController> logger,
+            IMediator mediatr,
+            IIdentityService identityService)
         {
             _logger = logger;
             _mediatr = mediatr;
+            _identityService = identityService;
         }
 
         [HttpGet("types")]
@@ -34,12 +37,12 @@ namespace FliGen.Web.Controllers
         {
             return _mediatr.Send(new GetLeagueTypesQuery());
         }
-        
+
         [HttpGet]
         [Produces(typeof(IEnumerable<League>))]
         public Task<IEnumerable<League>> Get()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = _identityService.GetUserIdentity();
 
             return _mediatr.Send(new GetLeaguesQuery(userId));
         }

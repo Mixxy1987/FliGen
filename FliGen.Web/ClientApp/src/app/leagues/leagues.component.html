@@ -16,7 +16,7 @@
   <tbody>
     <tr *ngFor="let l of leagues">
       <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
-        <td>{{l?.name}}</td>
+        <td><a [routerLink]="[l.id]" class="nav-link">{{l?.name}}</a></td>
         <td>{{l?.description}}</td>
         <td>{{l?.leagueType?.name}}</td>
         <ng-template [ngIf]="isAuthenticated">

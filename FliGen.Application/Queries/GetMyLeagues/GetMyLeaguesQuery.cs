@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FliGen.Application.Queries.GetMyLeagues
 {
-    public class GetMyLeaguesQuery : IRequest<IEnumerable<League>>
+    public class GetMyLeaguesQuery : IRequest<IEnumerable<Dto.League>>
     {
         public string UserId { get;}
 
