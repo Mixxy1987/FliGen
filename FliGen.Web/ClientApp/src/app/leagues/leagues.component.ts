@@ -1,14 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { LeaguesDataService } from "./leagues.data.service";
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { AuthorizeService } from "../api-authorization/authorize.service";
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
-import { AuthorizeService } from "../api-authorization/authorize.service";
-import { take } from 'rxjs/operators';
+import { DataService } from "../data-service/data.service";
 
 @Component({
   selector: 'app-leagues',
   templateUrl: './leagues.component.html',
-  providers: [LeaguesDataService]
+  providers: [DataService]
 })
 export class LeaguesComponent implements OnInit {
   private league: League = new League();
@@ -20,7 +20,7 @@ export class LeaguesComponent implements OnInit {
   isAuthenticated: boolean;
 
   constructor(
-    private dataService: LeaguesDataService,
+    private dataService: DataService,
     private authorizeService: AuthorizeService) {
   }
 
@@ -54,13 +54,13 @@ export class LeaguesComponent implements OnInit {
   save() {
     this.league.leagueType = new LeagueType(this.newLeagueType.name);
     if (this.league.id == null) {
-      this.dataService.create(this.league)
+      this.dataService.createLeague(this.league)
         .subscribe((data: League) => {
           this.leagues.push(data);
           this.loadLeagues();
         });
     } else {
-      this.dataService.update(this.league)
+      this.dataService.updateLeague(this.league)
         .subscribe(data => this.loadLeagues());
     }
     this.cancel();
@@ -72,7 +72,7 @@ export class LeaguesComponent implements OnInit {
   }
 
   delete(l: League) {
-    this.dataService.delete(l.id)
+    this.dataService.deleteLeague(l.id)
       .subscribe(data => this.loadLeagues());
   }
 

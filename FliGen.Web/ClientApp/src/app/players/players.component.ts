@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from "../data-service/data.service";
 import { Player } from "./player";
-import { PlayersDataService } from "./players.data.service";
 
 @Component({
   selector: 'app-players',
   templateUrl: './players.component.html',
-  providers: [PlayersDataService]
+  providers: [DataService]
 })
 export class PlayersComponent implements OnInit {
 
@@ -14,14 +14,14 @@ export class PlayersComponent implements OnInit {
   tableMode: boolean = true;
 
   constructor(
-    private dataService: PlayersDataService) { }
+    private dataService: DataService) { }
 
   ngOnInit(): void {
     this.loadPlayers();
   }
 
   loadPlayers() {
-    this.dataService.get().subscribe(result => {
+    this.dataService.getPlayers().subscribe(result => {
       this.players = result;
     }, error => console.error(error));
   }
@@ -32,13 +32,13 @@ export class PlayersComponent implements OnInit {
 
   save() {
     if (this.player.id == null) {
-      this.dataService.create(this.player)
+      this.dataService.createPlayer(this.player)
         .subscribe((data: Player) => {
           this.players.push(data);
           this.loadPlayers();
         });
     } else {
-      this.dataService.update(this.player)
+      this.dataService.updatePlayer(this.player)
         .subscribe(data => this.loadPlayers());
     }
     this.cancel();
@@ -50,7 +50,7 @@ export class PlayersComponent implements OnInit {
   }
 
   delete(p: Player) {
-    this.dataService.delete(p.id)
+    this.dataService.deletePlayer(p.id)
       .subscribe(data => this.loadPlayers());
   }
 

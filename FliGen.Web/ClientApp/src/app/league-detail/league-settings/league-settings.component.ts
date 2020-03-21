@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { LeagueDataService } from "../league-data.service";
-import { LeagueSettings } from "../../common/leagueSettings";
+import { take } from 'rxjs/operators';
 import { AuthorizeService } from "../../api-authorization/authorize.service";
+import { LeagueSettings } from "../../common/leagueSettings";
+import { DataService } from "../../data-service/data.service";
 
 @Component({
   selector: 'app-league-settings',
   templateUrl: './league-settings.component.html',
-  providers: [LeagueDataService]
+  providers: [DataService]
 })
 export class LeagueSettingsComponent implements OnInit {
   isAuthenticated: boolean;
@@ -17,7 +17,7 @@ export class LeagueSettingsComponent implements OnInit {
   loaded: boolean = false;
 
   constructor(
-    private dataService: LeagueDataService,
+    private dataService: DataService,
     activeRoute: ActivatedRoute,
     private authorizeService: AuthorizeService)
   {
