@@ -41,6 +41,15 @@ namespace FliGen.Domain.Entities
             LeagueSettings = new LeagueSettings(true, false);
         }
 
+        private League(string name, string description, LeagueType type, LeagueSettings settings = null) : this()
+        {
+            Name = name;
+            Description = description;
+            Type = type;
+            Seasons = new List<Season>();
+            LeagueSettings = settings;
+        }
+
         public static League Create(string name, string description, LeagueType type)
         {
             return new League(name, description, type);
@@ -48,7 +57,7 @@ namespace FliGen.Domain.Entities
 
         public static League GetUpdated(int id, string firstName, string lastName, LeagueType type)
         {
-            return new League(firstName, lastName, type) { Id = id };
+            return new League(firstName, lastName, type, null) { Id = id };
         }
     }
 }
