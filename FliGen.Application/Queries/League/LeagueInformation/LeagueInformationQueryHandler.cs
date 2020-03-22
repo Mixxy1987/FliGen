@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FliGen.Domain.Common.Repository;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Application.Queries.League.LeagueInformation
 {
@@ -13,15 +14,23 @@ namespace FliGen.Application.Queries.League.LeagueInformation
 
         public LeagueInformationQueryHandler(IUnitOfWork uow, IMapper mapper)
         {
-	        _uow = uow;
-	        _mapper = mapper;
+            _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<Dto.LeagueInformation> Handle(LeagueInformationQuery request, CancellationToken cancellationToken)
         {
             var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
-            return _mapper.Map<Dto.LeagueInformation>(await leagueRepo.SingleAsync(x => x.Id == request.LeagueId));
+            Domain.Entities.League league = await leagueRepo.SingleAsync(
+                predicate: l => l.Id == request.LeagueId,
+                include: q => q
+                    .Include(l => l.Seasons)
+                    .ThenInclude(s => s.Tours)
+                    .ThenInclude(t => t.Teams));
+
+
+            return _mapper.Map<Dto.LeagueInformation>(league);
         }
     }
 }
