@@ -1,4 +1,5 @@
 import { LeagueType } from "./leagueType";
+import { Season } from "./season";
 
 export class LeagueInformation {
   name: string;
@@ -6,4 +7,5 @@ export class LeagueInformation {
   leagueType: LeagueType;
   seasonsCount: number;
   toursCount: number;
+  currentSeason: Season;
 }

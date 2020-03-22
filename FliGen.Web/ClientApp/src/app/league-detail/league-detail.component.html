@@ -6,8 +6,9 @@
     <p><b>Всего сезонов сыграно:</b> {{leagueInformation.seasonsCount}} </p>
     <p><b>Всего туров сыграно:</b> {{leagueInformation.toursCount}}</p>
 
-    <p><b>Текущий сезон:</b> </p>
-    <p><b>Последний сыгранный тур:</b> </p>
+    <p><b>Текущий сезон начат:</b> {{leagueInformation.currentSeason.start}}</p>
+    <p><b>В текущем сезоне туров сыграно:</b> {{leagueInformation.currentSeason.toursPlayed}}</p>
+    <p><b>Последний тур был:</b> {{leagueInformation.currentSeason.lastTour.date}}</p>
     <p><b>Следующий тур:</b> </p>
 
     <p><b><a [routerLink]="'settings'" class="nav-link">Настройки</a></b></p>
