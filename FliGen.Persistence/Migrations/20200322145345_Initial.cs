@@ -14,6 +14,7 @@ namespace FliGen.Persistence.Migrations
             InitialFillSeasons.SeasonsAndToursFill(migrationBuilder);
             InitialFillTours.ToursFill(migrationBuilder);
             InitialFillTeams.TeamsFill(migrationBuilder);
+            InitialFillTeamsPlayers.TeamPlayersFill(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

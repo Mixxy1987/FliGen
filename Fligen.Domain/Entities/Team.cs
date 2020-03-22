@@ -4,7 +4,7 @@ using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Domain.Entities
 {
-    public class Team
+    public class Team : Entity
     {
         public string Name { get; set; }
 
@@ -21,6 +21,8 @@ namespace FliGen.Domain.Entities
         }
 
         public TeamRole TeamRole { get; private set; }
+
+        public int PlayersCount { get; set; }
 
         public int TourId { get; set; }
         public Tour Tour { get; set; }

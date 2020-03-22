@@ -15,60 +15,63 @@ namespace FliGen.Persistence.Helper
             {"Матюнин Валентин 7.2"},
             {"Волчков Вячеслав 7.1"},
             {"Никитин Евгений 7.1"},
-            {"Алтухов Антон 7.2" },
-            {"Виноходов Игорь 7.3" },
-            {"Галицкий Вячеслав 7.2" },
-            {"Косенков Олег 7.5" },
-            {"Мухин Иван 7.3" },
-            {"Попов Александр 7.4" },
-            {"Попов Артем 7.4" },
-            {"Растаев Дмитрий 7.4" },
-            {"Филинов Павел 7.3" },
-            {"Масюк Родион 7.3" },
-            {"Дубцов Максим 7.2" },
-            {"Ахтямов Руслан 6.9" },
-            {"Яшин Анатолий 7.1" },
-            {"Зырянов Егор 7.1" },
-            {"Сгибнев Андрей 7.2" },
-            {"Ляшук Алексей 6.5" },
-            {"Ларичкин Алексей 7.0" },
-            {"Абушахмин Роман 7.4" },
-            {"Абрамов Дмитрий 7.4" },
-            {"Алтухов Илья 7.4" },
-            {"Аль-Махлай Виталий 7.4" },
-            {"Антипов Илья 7.4" },
-            {"Арабей Евгений 7.4" },
-            {"Аскаров Ришат 7.4" },
-            {"Богачев Николай 7.4" },
-            {"Биляуэр Константин 7.4" },
-            {"Гриднев Виталий 7.4" },
-            {"Гугняев Антон 7.4" },
-            {"Гусев Павел 7.4" },
-            {"Демидов Дмитрий 7.4" },
-            {"Дорожко Никита 7.4" },
-            {"Дубенский Андрей 7.4" },
-            {"Захаревич Дмитрий 7.4" },
-            {"Егоров Роман 7.4" },
-            {"Добряков Аскар 7.4" },
-            {"Дутлов Леонид 7.4" },
-            {"Казанцев Павел 7.4" },
-            {"Зайцев Сергей 7.4" },
-            {"Захаревич Олег 7.4" },
-            {"Иванов Александр 7.4" },
-            {"Иванов Павел 7.2" },
-            {"Камзалаков Иван 7.1" },
-            {"Ларионов Олег 7.9" },
-            {"Кувшинов Максим 7.1" },
-            {"Кувшинов Роман 7.2" },
-            {"Кухахметов Марат 7.2" },
-            {"Лаврега Игорь 7.1" }
-        };
-        public static readonly List<string> Leagues = new List<string> { "FLI", "FLIHockey" };
+            {"Алтухов Антон 7.2"},
+            {"Виноходов Игорь 7.3"},
+            {"Галицкий Вячеслав 7.2"},
+            {"Косенков Олег 7.5"},
+            {"Мухин Иван 7.3"},
+            {"Попов Александр 7.4"},
+            {"Попов Артем 7.4"},
+            {"Растаев Дмитрий 7.4"},
+            {"Филинов Павел 7.3"},
+            {"Масюк Родион 7.3"},
+            {"Дубцов Максим 7.2"},
+            {"Ахтямов Руслан 6.9"},
+            {"Яшин Анатолий 7.1"},
+            {"Зырянов Егор 7.1"},
+            {"Сгибнев Андрей 7.2"},
+            {"Ляшук Алексей 6.5"},
+            {"Ларичкин Алексей 7.0"},
+            {"Абушахмин Роман 7.4"},
+            {"Абрамов Дмитрий 7.4"},
+            {"Алтухов Илья 7.4"},
+            {"Аль-Махлай Виталий 7.4"},
+            {"Антипов Илья 7.4"},
+            {"Арабей Евгений 7.4"},
+            {"Аскаров Ришат 7.4"},
+            {"Богачев Николай 7.4"},
+            {"Биляуэр Константин 7.4"},
+            {"Гриднев Виталий 7.4"},
+            {"Гугняев Антон 7.4"},
+            {"Гусев Павел 7.4"},
+            {"Демидов Дмитрий 7.4"},
+            {"Дорожко Никита 7.4"},
+            {"Дубенский Андрей 7.4"},
+            {"Захаревич Дмитрий 7.4"},
+            {"Егоров Роман 7.4"},
+            {"Добряков Аскар 7.4"},
+            {"Дутлов Леонид 7.4"},
+            {"Казанцев Павел 7.4"},
+            {"Зайцев Сергей 7.4"},
+            {"Захаревич Олег 7.4"},
+            {"Иванов Александр 7.4"},
+            {"Иванов Павел 7.2"},
+            {"Камзалаков Иван 7.1"},
+            {"Ларионов Олег 7.9"},
+            {"Кувшинов Максим 7.1"},
+            {"Кувшинов Роман 7.2"},
+            {"Кухахметов Марат 7.2"},
+            {"Лаврега Игорь 7.1"}
+        }; // 50 players
+
+        public static readonly List<string> Leagues = new List<string> {"FLI", "FLIHockey"};
+
         public static readonly List<(string, string)> TeamCombinations = new List<(string, string)>
         {
             ("Лазурные", "Красные"),
             ("Красные", "Лазурные")
         };
+
         public static readonly List<(string, string)> SeasonDates = new List<(string, string)>
         {
             ("2015-01-01", "2015-12-31"),
@@ -78,10 +81,15 @@ namespace FliGen.Persistence.Helper
             ("2019-01-01", "2019-12-31"),
             ("2020-01-01", "2020-12-31")
         };
+
+        public const int HockeyLeaguePlayers = 50;
+        public const int FootballLeaguePlayers = 50;
         public const int ToursInSeasonCount = 50;
         public const int ToursOverall = 450; // 50 * 9;
         public const int MaxGoals = 16;
+        public const int TeamPlayersCount = 8;
     }
+
     public static class InitialFillPlayers
     {
         public static void NamesAndRatesFill(MigrationBuilder migrationBuilder)
@@ -122,10 +130,11 @@ namespace FliGen.Persistence.Helper
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName AND [League].Name=@@leagueName
 ";
             InsertLeague(migrationBuilder, InitialFillData.Players, InitialFillData.Leagues[0], lpQuery);
-            InsertLeague(migrationBuilder, InitialFillData.Players.Take(15), InitialFillData.Leagues[1], lpQuery);
+            InsertLeague(migrationBuilder, InitialFillData.Players.Take(InitialFillData.HockeyLeaguePlayers), InitialFillData.Leagues[1], lpQuery);
         }
 
-        private static void InsertLeague(MigrationBuilder migrationBuilder, IEnumerable<string> players, string leagueName, string query)
+        private static void InsertLeague(MigrationBuilder migrationBuilder, IEnumerable<string> players,
+            string leagueName, string query)
         {
             foreach (var kv in players)
             {
@@ -134,7 +143,8 @@ namespace FliGen.Persistence.Helper
         }
 
 
-        private static void InsertLeagueFromList(MigrationBuilder migrationBuilder, string leagueName, string kvPlayer, string query)
+        private static void InsertLeagueFromList(MigrationBuilder migrationBuilder, string leagueName, string kvPlayer,
+            string query)
         {
             var firstNameLastName = kvPlayer.Split(' ');
 
@@ -152,6 +162,7 @@ namespace FliGen.Persistence.Helper
             migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(q));
         }
     }
+
     public static class InitialFillSeasons
     {
         public static void SeasonsAndToursFill(MigrationBuilder migrationBuilder)
@@ -163,11 +174,14 @@ namespace FliGen.Persistence.Helper
 	WHERE [League].[Name] = @@leagueName
     ";
 
-            InsertSeasons(migrationBuilder, InitialFillData.SeasonDates, InitialFillData.Leagues[0], insertSeasonsQuery);
-            InsertSeasons(migrationBuilder, InitialFillData.SeasonDates.TakeLast(3), InitialFillData.Leagues[1], insertSeasonsQuery);
+            InsertSeasons(migrationBuilder, InitialFillData.SeasonDates, InitialFillData.Leagues[0],
+                insertSeasonsQuery);
+            InsertSeasons(migrationBuilder, InitialFillData.SeasonDates.TakeLast(3), InitialFillData.Leagues[1],
+                insertSeasonsQuery);
         }
 
-        private static void InsertSeasons(MigrationBuilder migrationBuilder, IEnumerable<(string, string)> dates, string leagueName, string query)
+        private static void InsertSeasons(MigrationBuilder migrationBuilder, IEnumerable<(string, string)> dates,
+            string leagueName, string query)
         {
             foreach (var (startDate, finishDate) in dates)
             {
@@ -175,7 +189,8 @@ namespace FliGen.Persistence.Helper
             }
         }
 
-        private static void InsertSeasonsFromList(MigrationBuilder migrationBuilder, string leagueName, string startDate, string finishDate, string query)
+        private static void InsertSeasonsFromList(MigrationBuilder migrationBuilder, string leagueName,
+            string startDate, string finishDate, string query)
         {
             string q = MigrationHelpers.ReplaceVariablesWithValues(
                 query,
@@ -192,7 +207,7 @@ namespace FliGen.Persistence.Helper
 
     public static class InitialFillTours
     {
-   
+
 
         public static void ToursFill(MigrationBuilder migrationBuilder)
         {
@@ -220,7 +235,8 @@ namespace FliGen.Persistence.Helper
             }
         }
 
-        private static void InsertToursFromList(MigrationBuilder migrationBuilder, string seasonStartDate, string tourDate, string query)
+        private static void InsertToursFromList(MigrationBuilder migrationBuilder, string seasonStartDate,
+            string tourDate, string query)
         {
             var random = new Random();
 
@@ -243,8 +259,8 @@ namespace FliGen.Persistence.Helper
         public static void TeamsFill(MigrationBuilder migrationBuilder)
         {
             const string insertTeamsQuery = @"
-    INSERT INTO [Team](TeamRoleId, TourId, Name)
-	SELECT @@teamRoleId, @@tourId, @@name
+    INSERT INTO [Team](TeamRoleId, TourId, Name, PlayersCount)
+	SELECT @@teamRoleId, @@tourId, @@name, @@playersCount
     ";
 
             InsertTeams(migrationBuilder, insertTeamsQuery);
@@ -257,12 +273,15 @@ namespace FliGen.Persistence.Helper
             for (int tourId = 1; tourId <= InitialFillData.ToursOverall; tourId++)
             {
                 int rnd = random.Next(0, InitialFillData.TeamCombinations.Count);
-                InsertTeam(migrationBuilder, roles[0].Id, tourId, InitialFillData.TeamCombinations[rnd].Item1, query); // home team
-                InsertTeam(migrationBuilder, roles[1].Id, tourId, InitialFillData.TeamCombinations[rnd].Item2, query); // guest team
+                InsertTeam(migrationBuilder, roles[0].Id, tourId, InitialFillData.TeamCombinations[rnd].Item1,
+                    query); // home team
+                InsertTeam(migrationBuilder, roles[1].Id, tourId, InitialFillData.TeamCombinations[rnd].Item2,
+                    query); // guest team
             }
         }
 
-        private static void InsertTeam(MigrationBuilder migrationBuilder, int roleId, int tourId, string teamName, string query)
+        private static void InsertTeam(MigrationBuilder migrationBuilder, int roleId, int tourId, string teamName,
+            string query)
         {
             string q = MigrationHelpers.ReplaceVariablesWithValues(
                 query,
@@ -271,6 +290,56 @@ namespace FliGen.Persistence.Helper
                     new KeyValuePair<string, object>("@@teamRoleId", roleId),
                     new KeyValuePair<string, object>("@@tourId", tourId),
                     new KeyValuePair<string, object>("@@name", teamName),
+                    new KeyValuePair<string, object>("@@playersCount", InitialFillData.TeamPlayersCount),
+                }
+            );
+            migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(q));
+        }
+    }
+
+    public static class InitialFillTeamsPlayers
+    {
+        public static void TeamPlayersFill(MigrationBuilder migrationBuilder)
+        {
+            const string insertTeamsQuery = @"
+    INSERT INTO [TeamPlayerLinks](TeamId, PlayerId)
+	SELECT @@teamId, @@playerId
+    ";
+
+            InsertTeamPlayers(migrationBuilder, insertTeamsQuery);
+        }
+
+        private static void InsertTeamPlayers(MigrationBuilder migrationBuilder, string query)
+        {
+            Random rnd = new Random();
+            for (int teamId = 1; teamId <= InitialFillData.ToursOverall * 2; teamId++)
+            {
+                List<int> playerIds =
+                    Enumerable.Range(1, InitialFillData.FootballLeaguePlayers)
+                        .OrderBy(x => rnd.Next())
+                        .Take(InitialFillData.TeamPlayersCount * 2)
+                        .ToList();
+
+                foreach (var playerId in playerIds.Take(InitialFillData.TeamPlayersCount))
+                {
+                    InsertTeamPlayer(migrationBuilder, playerId, teamId, query);
+                }
+                foreach (var playerId in playerIds.TakeLast(InitialFillData.TeamPlayersCount))
+                {
+                    InsertTeamPlayer(migrationBuilder, playerId, teamId, query);
+                }
+            }
+
+
+        }
+        private static void InsertTeamPlayer(MigrationBuilder migrationBuilder, int playerId, int teamId, string query)
+        {
+            string q = MigrationHelpers.ReplaceVariablesWithValues(
+                query,
+                new List<KeyValuePair<string, object>>()
+                {
+                    new KeyValuePair<string, object>("@@playerId", playerId),
+                    new KeyValuePair<string, object>("@@teamId", teamId)
                 }
             );
             migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(q));

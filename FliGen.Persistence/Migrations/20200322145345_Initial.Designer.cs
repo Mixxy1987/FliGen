@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Persistence.Migrations
 {
     [DbContext(typeof(FliGenContext))]
-    [Migration("20200322101736_Initial")]
+    [Migration("20200322145345_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,17 +261,27 @@ namespace FliGen.Persistence.Migrations
 
             modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
                 {
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamRoleId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TourId", "TeamRoleId");
+                    b.Property<int>("PlayersCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId", "TeamRoleId");
 
                     b.ToTable("Team");
                 });

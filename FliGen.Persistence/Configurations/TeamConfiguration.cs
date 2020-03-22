@@ -17,13 +17,16 @@ namespace FliGen.Persistence.Configurations
 
             builder.Ignore(x => x.TeamRole);
 
+            builder.Property(e => e.PlayersCount)
+                .IsRequired();
+
             builder.HasOne(e => e.Tour)
                 .WithMany(e => e.Teams)
                 .HasForeignKey(e => e.TourId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasKey(e => new { e.TourId, e.TeamRoleId });
+            builder.HasIndex(e => new { e.TourId, e.TeamRoleId });
         }
     }
 }

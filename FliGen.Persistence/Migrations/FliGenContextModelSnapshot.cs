@@ -259,17 +259,27 @@ namespace FliGen.Persistence.Migrations
 
             modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
                 {
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamRoleId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TourId", "TeamRoleId");
+                    b.Property<int>("PlayersCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId", "TeamRoleId");
 
                     b.ToTable("Team");
                 });
