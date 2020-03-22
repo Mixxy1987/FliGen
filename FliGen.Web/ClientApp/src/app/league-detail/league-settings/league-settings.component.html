@@ -1,7 +1,11 @@
 <div *ngIf="loaded">
   <h2>Настройки лиги</h2>
   <div>
-    <mat-slide-toggle [checked]="leagueSettings.visibility" (change)="changeVisibility()">Видимость</mat-slide-toggle>
-    <mat-slide-toggle [checked]="leagueSettings.requireConfirmation" (change)="changeConfirmation()">Требует подтверждения</mat-slide-toggle>
+    <p>
+      <mat-slide-toggle [checked]="leagueSettings.visibility" (change)="changeVisibility()">Видимость</mat-slide-toggle>
+    </p>
+    <p>
+      <mat-slide-toggle [checked]="leagueSettings.requireConfirmation" (change)="changeConfirmation()">Требует подтверждения</mat-slide-toggle>
+    </p>
   </div>
 </div>

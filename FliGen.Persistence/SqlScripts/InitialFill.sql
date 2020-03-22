@@ -31,11 +31,6 @@ BEGIN
 	FROM [League]
 	WHERE [League].[Name] = 'FLIHockey'
 
-	INSERT INTO [Season](Start, Finish, LeagueId)
-	SELECT '2020-01-01','2020-12-31', Id
-	FROM [League]
-	WHERE [League].[Name] = 'FLI'
-
 	INSERT INTO [LeagueSeasonLinks](LeagueId, SeasonId)
 	SELECT a.Id, b.Id
 	FROM [League] as a, [Season] as b WHERE a.Name='FLI' AND b.Start = '2020-01-01' AND b.Finish = '2020-12-31'
