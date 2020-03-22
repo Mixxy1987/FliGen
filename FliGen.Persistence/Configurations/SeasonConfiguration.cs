@@ -17,7 +17,7 @@ namespace FliGen.Persistence.Configurations
             builder.HasOne(e => e.League)
                 .WithMany(e => e.Seasons)
                 .HasForeignKey(e => e.LeagueId)
-                .IsRequired(true)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

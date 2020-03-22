@@ -9,21 +9,15 @@ namespace FliGen.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Tour> builder)
         {
             builder.ToTable("Tour");
-            builder.Property(e => e.TourDate)
+            builder.Property(e => e.Date)
                 .IsRequired();
-            builder.Property(e => e.HomeTeamId)
-                .IsRequired();
-            builder.Property(e => e.GuestTeamId)
-                .IsRequired();
-            builder.Property(e => e.HomeCount)
-                .IsRequired();
-            builder.Property(e => e.GuestCount)
-                .IsRequired();
+            builder.Property(e => e.HomeCount);
+            builder.Property(e => e.GuestCount);
 
             builder.HasOne(e => e.Season)
                 .WithMany(e => e.Tours)
                 .HasForeignKey(e => e.SeasonId)
-                .IsRequired(true)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

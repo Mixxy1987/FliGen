@@ -13,6 +13,17 @@ namespace FliGen.Persistence.Configurations
                 .IsRequired();
             builder.Property(e => e.Name)
                 .IsRequired();
+
+            builder.Property(e => e.TeamRoleId)
+                .IsRequired();
+
+            builder.Ignore(x => x.TeamRole);
+
+            builder.HasOne(e => e.Tour)
+                .WithMany(e => e.Teams)
+                .HasForeignKey(e => e.TourId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

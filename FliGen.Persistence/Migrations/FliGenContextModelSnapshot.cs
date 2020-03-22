@@ -59,6 +59,26 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("LeagueType");
                 });
 
+            modelBuilder.Entity("FliGen.Domain.Entities.Enum.TeamRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TeamRole");
+                });
+
             modelBuilder.Entity("FliGen.Domain.Entities.League", b =>
                 {
                     b.Property<int>("Id")
@@ -264,7 +284,15 @@ namespace FliGen.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TeamRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TourId");
 
                     b.ToTable("Team");
                 });
@@ -289,23 +317,17 @@ namespace FliGen.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GuestCount")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GuestCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("GuestTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HomeCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HomeTeamId")
+                    b.Property<int?>("HomeCount")
                         .HasColumnType("int");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("TourDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -352,6 +374,15 @@ namespace FliGen.Persistence.Migrations
                     b.HasOne("FliGen.Domain.Entities.League", "League")
                         .WithMany("Seasons")
                         .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
+                {
+                    b.HasOne("FliGen.Domain.Entities.Tour", "Tour")
+                        .WithMany("Teams")
+                        .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
