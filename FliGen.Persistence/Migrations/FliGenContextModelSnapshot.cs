@@ -257,42 +257,19 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("Season");
                 });
 
-            modelBuilder.Entity("FliGen.Domain.Entities.SeasonTourLink", b =>
+            modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
                 {
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TourId")
                         .HasColumnType("int");
 
-                    b.HasKey("SeasonId", "TourId");
-
-                    b.ToTable("SeasonTourLinks");
-                });
-
-            modelBuilder.Entity("FliGen.Domain.Entities.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("TeamRoleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeamRoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
+                    b.HasKey("TourId", "TeamRoleId");
 
                     b.ToTable("Team");
                 });
@@ -332,6 +309,8 @@ namespace FliGen.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SeasonId");
+
+                    b.HasIndex("Date", "SeasonId");
 
                     b.ToTable("Tour");
                 });

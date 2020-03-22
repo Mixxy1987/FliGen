@@ -4,9 +4,8 @@ using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Domain.Entities
 {
-    public class Team : Entity
+    public class Team
     {
-        public DateTime Date { get; set; }
         public string Name { get; set; }
 
         public int TeamRoleId

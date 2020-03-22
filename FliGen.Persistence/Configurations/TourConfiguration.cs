@@ -19,6 +19,8 @@ namespace FliGen.Persistence.Configurations
                 .HasForeignKey(e => e.SeasonId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasIndex(e => new { e.Date, e.SeasonId });
         }
     }
 }

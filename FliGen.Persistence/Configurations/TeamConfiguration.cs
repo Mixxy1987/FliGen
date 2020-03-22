@@ -9,8 +9,6 @@ namespace FliGen.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Team> builder)
         {
             builder.ToTable("Team");
-            builder.Property(e => e.Date)
-                .IsRequired();
             builder.Property(e => e.Name)
                 .IsRequired();
 
@@ -24,6 +22,8 @@ namespace FliGen.Persistence.Configurations
                 .HasForeignKey(e => e.TourId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasKey(e => new { e.TourId, e.TeamRoleId });
         }
     }
 }

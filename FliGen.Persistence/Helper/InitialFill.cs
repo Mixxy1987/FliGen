@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Collections.Generic;
 using System.Linq;
+using FliGen.Domain.Common;
+using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Persistence.Helper
 {
@@ -62,6 +64,11 @@ namespace FliGen.Persistence.Helper
             {"Лаврега Игорь 7.1" }
         };
         public static readonly List<string> Leagues = new List<string> { "FLI", "FLIHockey" };
+        public static readonly List<(string, string)> TeamCombinations = new List<(string, string)>
+        {
+            ("Лазурные", "Красные"),
+            ("Красные", "Лазурные")
+        };
         public static readonly List<(string, string)> SeasonDates = new List<(string, string)>
         {
             ("2015-01-01", "2015-12-31"),
@@ -71,6 +78,9 @@ namespace FliGen.Persistence.Helper
             ("2019-01-01", "2019-12-31"),
             ("2020-01-01", "2020-12-31")
         };
+        public const int ToursInSeasonCount = 50;
+        public const int ToursOverall = 450; // 50 * 9;
+        public const int MaxGoals = 16;
     }
     public static class InitialFillPlayers
     {
@@ -111,20 +121,20 @@ namespace FliGen.Persistence.Helper
 	FROM [Player] as player, [League] as league
 	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName AND [League].Name=@@leagueName
 ";
-            FillLeague(migrationBuilder, InitialFillData.Players, InitialFillData.Leagues[0], lpQuery);
-            FillLeague(migrationBuilder, InitialFillData.Players.Take(15), InitialFillData.Leagues[1], lpQuery);
+            InsertLeague(migrationBuilder, InitialFillData.Players, InitialFillData.Leagues[0], lpQuery);
+            InsertLeague(migrationBuilder, InitialFillData.Players.Take(15), InitialFillData.Leagues[1], lpQuery);
         }
 
-        private static void FillLeague(MigrationBuilder migrationBuilder, IEnumerable<string> players, string leagueName, string query)
+        private static void InsertLeague(MigrationBuilder migrationBuilder, IEnumerable<string> players, string leagueName, string query)
         {
             foreach (var kv in players)
             {
-                FillLeagueFromList(migrationBuilder, leagueName, kv, query);
+                InsertLeagueFromList(migrationBuilder, leagueName, kv, query);
             }
         }
 
 
-        private static void FillLeagueFromList(MigrationBuilder migrationBuilder, string leagueName, string kvPlayer, string query)
+        private static void InsertLeagueFromList(MigrationBuilder migrationBuilder, string leagueName, string kvPlayer, string query)
         {
             var firstNameLastName = kvPlayer.Split(' ');
 
@@ -182,8 +192,7 @@ namespace FliGen.Persistence.Helper
 
     public static class InitialFillTours
     {
-        private const int ToursCount = 50;
-        private const int MaxGoals = 16;
+   
 
         public static void ToursFill(MigrationBuilder migrationBuilder)
         {
@@ -204,7 +213,7 @@ namespace FliGen.Persistence.Helper
         {
             var currentTourDate = DateTime.Parse(seasonStartDate);
 
-            for (int i = 0; i < ToursCount; i++)
+            for (int i = 0; i < InitialFillData.ToursInSeasonCount; i++)
             {
                 InsertToursFromList(migrationBuilder, seasonStartDate, currentTourDate.ToString("yyyy-MM-dd"), query);
                 currentTourDate = currentTourDate.AddDays(7);
@@ -220,8 +229,8 @@ namespace FliGen.Persistence.Helper
                 new List<KeyValuePair<string, object>>()
                 {
                     new KeyValuePair<string, object>("@@date", tourDate),
-                    new KeyValuePair<string, object>("@@homeCount", random.Next(0, MaxGoals)),
-                    new KeyValuePair<string, object>("@@guestCount", random.Next(0, MaxGoals)),
+                    new KeyValuePair<string, object>("@@homeCount", random.Next(0, InitialFillData.MaxGoals)),
+                    new KeyValuePair<string, object>("@@guestCount", random.Next(0, InitialFillData.MaxGoals)),
                     new KeyValuePair<string, object>("@@startSeasonDate", seasonStartDate),
                 }
             );
@@ -231,21 +240,40 @@ namespace FliGen.Persistence.Helper
 
     public static class InitialFillTeams
     {
-        
-
         public static void TeamsFill(MigrationBuilder migrationBuilder)
         {
-            DateTime startDate = DateTime.Parse(InitialFillData.SeasonDates[0].Item1);
-
-            /*const string insertTeamsQuery = @"
-    INSERT INTO [Team](Date, Name, TeamRole)
-	SELECT @@date, @@name, @@teamRole, Id
-	FROM [League]
-	WHERE [League].[Name] = @@leagueName
+            const string insertTeamsQuery = @"
+    INSERT INTO [Team](TeamRoleId, TourId, Name)
+	SELECT @@teamRoleId, @@tourId, @@name
     ";
 
-            FillSeasons(migrationBuilder, InitialFillData.SeasonDates, InitialFillData.Leagues[0], insertSeasonsQuery);
-            FillSeasons(migrationBuilder, InitialFillData.SeasonDates.TakeLast(3), InitialFillData.Leagues[1], insertSeasonsQuery);*/
+            InsertTeams(migrationBuilder, insertTeamsQuery);
+        }
+
+        private static void InsertTeams(MigrationBuilder migrationBuilder, string query)
+        {
+            List<TeamRole> roles = Enumeration.GetAll<TeamRole>().ToList();
+            var random = new Random();
+            for (int tourId = 1; tourId <= InitialFillData.ToursOverall; tourId++)
+            {
+                int rnd = random.Next(0, InitialFillData.TeamCombinations.Count);
+                InsertTeam(migrationBuilder, roles[0].Id, tourId, InitialFillData.TeamCombinations[rnd].Item1, query); // home team
+                InsertTeam(migrationBuilder, roles[1].Id, tourId, InitialFillData.TeamCombinations[rnd].Item2, query); // guest team
+            }
+        }
+
+        private static void InsertTeam(MigrationBuilder migrationBuilder, int roleId, int tourId, string teamName, string query)
+        {
+            string q = MigrationHelpers.ReplaceVariablesWithValues(
+                query,
+                new List<KeyValuePair<string, object>>()
+                {
+                    new KeyValuePair<string, object>("@@teamRoleId", roleId),
+                    new KeyValuePair<string, object>("@@tourId", tourId),
+                    new KeyValuePair<string, object>("@@name", teamName),
+                }
+            );
+            migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(q));
         }
     }
 }

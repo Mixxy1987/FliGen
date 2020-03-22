@@ -11,6 +11,11 @@ BEGIN
 	('User'),
 	('Admin')
 
+	INSERT INTO [TeamRole](Name)
+	VALUES
+	('Home'),
+	('Guest')
+
 	INSERT INTO [League](Name, Description, LeagueTypeId)
 	SELECT 'FLI', 'Best League in the world!', Id
 	FROM [LeagueType]
