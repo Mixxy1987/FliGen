@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace FliGen.Persistence.Helper
+namespace FliGen.Persistence.Helper.InitialFill
 {
     public class MigrationHelpers
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using FliGen.Persistence.Helper;
+﻿using FliGen.Persistence.Helper.InitialFill;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FliGen.Persistence.Migrations
@@ -12,9 +11,9 @@ namespace FliGen.Persistence.Migrations
             InitialFillPlayers.NamesAndRatesFill(migrationBuilder);
             InitialFillPlayers.LeaguePlayerLinksFill(migrationBuilder);
             InitialFillSeasons.SeasonsAndToursFill(migrationBuilder);
-            InitialFillTours.ToursFill(migrationBuilder);
-            InitialFillTeams.TeamsFill(migrationBuilder);
-            InitialFillTeamsPlayers.TeamPlayersFill(migrationBuilder);
+            int toursCount = InitialFillTours.ToursFill(migrationBuilder);
+            InitialFillTeams.TeamsFill(migrationBuilder, toursCount);
+            InitialFillTeamPlayers.TeamPlayersFill(migrationBuilder, toursCount * 2);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
