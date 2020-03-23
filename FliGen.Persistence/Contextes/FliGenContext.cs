@@ -10,6 +10,7 @@ namespace FliGen.Persistence.Contextes
         public DbSet<LeaguePlayerRole> LeaguePlayerRoles { get; set; }
         public DbSet<LeagueType> LeagueTypes { get; set; }
         public DbSet<TeamRole> TeamRoles { get; set; }
+        public DbSet<TourStatus> TourStatuses { get; set; }
 
         public DbSet<League> Leagues { get; set; }
         public DbSet<LeaguePlayerLink> LeaguePlayerLinks { get; set; }

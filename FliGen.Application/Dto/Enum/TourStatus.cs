@@ -7,6 +7,7 @@
         RegistrationOpened,
         RegistrationClosed,
         InProgress,
-        Completed
+        Completed,
+        Canceled
     }
 }

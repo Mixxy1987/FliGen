@@ -9,8 +9,8 @@ namespace FliGen.Persistence.Helper.InitialFill
         public static int ToursFill(MigrationBuilder migrationBuilder)
         {
             const string insertToursQuery = @"
-    INSERT INTO [Tour](Date, HomeCount, GuestCount, SeasonId)
-	SELECT @@date, @@homeCount, @@guestCount, Id
+    INSERT INTO [Tour](Date, HomeCount, GuestCount, SeasonId, TourStatusId)
+	SELECT @@date, @@homeCount, @@guestCount, Id, 5
 	FROM [Season]
 	WHERE [Season].[Start] = @@startSeasonDate
     ";

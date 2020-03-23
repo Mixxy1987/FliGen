@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Persistence.Migrations
 {
     [DbContext(typeof(FliGenContext))]
-    [Migration("20200322145345_Initial")]
+    [Migration("20200323171756_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,26 @@ namespace FliGen.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("TeamRole");
+                });
+
+            modelBuilder.Entity("FliGen.Domain.Entities.Enum.TourStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TourStatus");
                 });
 
             modelBuilder.Entity("FliGen.Domain.Entities.League", b =>
@@ -316,6 +336,9 @@ namespace FliGen.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("SeasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

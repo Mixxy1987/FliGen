@@ -16,6 +16,15 @@ BEGIN
 	('Home'),
 	('Guest')
 
+	INSERT INTO [TourStatus](Name)
+	VALUES
+	('Planned'),
+	('RegistrationOpened'),
+	('RegistrationClosed'),
+	('InProgress'),
+	('Completed'),
+	('Canceled')
+
 	INSERT INTO [League](Name, Description, LeagueTypeId)
 	SELECT 'FLI', 'Best League in the world!', Id
 	FROM [LeagueType]

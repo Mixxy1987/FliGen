@@ -79,6 +79,26 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("TeamRole");
                 });
 
+            modelBuilder.Entity("FliGen.Domain.Entities.Enum.TourStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TourStatus");
+                });
+
             modelBuilder.Entity("FliGen.Domain.Entities.League", b =>
                 {
                     b.Property<int>("Id")
@@ -314,6 +334,9 @@ namespace FliGen.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("SeasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

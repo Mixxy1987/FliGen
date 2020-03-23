@@ -1,4 +1,5 @@
-﻿using FliGen.Persistence.Helper.InitialFill;
+﻿using System;
+using FliGen.Persistence.Helper.InitialFill;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FliGen.Persistence.Migrations
@@ -14,6 +15,7 @@ namespace FliGen.Persistence.Migrations
             int toursCount = InitialFillTours.ToursFill(migrationBuilder);
             InitialFillTeams.TeamsFill(migrationBuilder, toursCount);
             InitialFillTeamPlayers.TeamPlayersFill(migrationBuilder, toursCount * 2);
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -47,6 +49,9 @@ namespace FliGen.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "TeamRole");
+
+            migrationBuilder.DropTable(
+                name: "TourStatus");
 
             migrationBuilder.DropTable(
                 name: "Player");
