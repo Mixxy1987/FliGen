@@ -1,5 +1,9 @@
 export enum PlayerLeagueJoinStatus {
   None = 0,
-  Joined,
-  Waiting
+  Planned,
+  RegistrationOpened,
+  RegistrationClosed,
+  InProgress,
+  Completed,
+  Canceled
 }

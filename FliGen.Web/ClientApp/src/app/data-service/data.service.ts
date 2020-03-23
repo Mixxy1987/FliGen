@@ -1,9 +1,10 @@
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { League } from "../common/league";
-import { LeagueType } from "../common/leagueType";
 import { LeagueInformation } from "../common/leagueInformation";
 import { LeagueSettings } from "../common/leagueSettings";
+import { LeagueType } from "../common/leagueType";
+import { MyTour } from "../common/myTour";
 import { Player } from '../players/player';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class DataService {
   private leaguesUrl: string;
   private leagueUrl: string;
   private myLeaguesUrl: string;
+  private myToursUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -20,6 +22,11 @@ export class DataService {
       this.leaguesUrl = this.baseUrl + "leagues";
       this.leagueUrl = this.baseUrl + "league";
       this.myLeaguesUrl = this.baseUrl + "myleagues";
+      this.myToursUrl = this.baseUrl + "mytours";
+  }
+
+  getMyTours() {
+    return this.http.get<MyTour[]>(this.myToursUrl);
   }
 
   getMyLeagues() {
