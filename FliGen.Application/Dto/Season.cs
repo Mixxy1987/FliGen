@@ -4,6 +4,7 @@
     {
         public string Start { get; set; }
         public int ToursPlayed { get; set; }
-        public Tour LastTour { get; set; }
+        public Tour PreviousTour { get; set; }
+        public Tour NextTour { get; set; }
     }
 }

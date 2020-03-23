@@ -1,4 +1,6 @@
-﻿namespace FliGen.Application.Dto
+﻿using FliGen.Application.Dto.Enum;
+
+namespace FliGen.Application.Dto
 {
     public class League
     {

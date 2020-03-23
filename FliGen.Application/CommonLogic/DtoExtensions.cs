@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FliGen.Application.Dto;
+﻿using FliGen.Application.Dto.Enum;
 using FliGen.Domain.Entities;
+using System.Collections.Generic;
+using System.Linq;
 using League = FliGen.Application.Dto.League;
 
 namespace FliGen.Application.CommonLogic

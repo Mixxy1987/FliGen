@@ -24,13 +24,16 @@ namespace FliGen.Web.Mappings
                 .ForMember(x => x.GuestCount, ls => ls.MapFrom(s => s.GuestCount));
 
             CreateMap<Domain.Entities.Season, Application.Dto.Season>()
-                .ForMember(x => x.Start, ls => ls.MapFrom(s => s.Start.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.ToursPlayed, ls => ls.MapFrom(s => s.Tours.Count(t => t.Date < DateTime.Now)))
-                .ForMember(x => x.LastTour, ls => ls.MapFrom(s => s.Tours
-                        .Where(t => t.Date < DateTime.Now)
-                        .OrderBy(t => t.Date)
-                        .Last())
-                    );
+	            .ForMember(x => x.Start, ls => ls.MapFrom(s => s.Start.ToString("yyyy-MM-dd")))
+	            .ForMember(x => x.ToursPlayed, ls => ls.MapFrom(s => s.Tours.Count(t => t.Date < DateTime.Now)))
+	            .ForMember(x => x.PreviousTour, ls => ls.MapFrom(s => s.Tours
+		            .Where(t => t.Date < DateTime.Now)
+		            .OrderBy(t => t.Date)
+		            .LastOrDefault()))
+	            .ForMember(x => x.NextTour, ls => ls.MapFrom(s => s.Tours
+		            .Where(t => t.Date >= DateTime.Now)
+		            .OrderBy(t => t.Date)
+		            .FirstOrDefault()));
 
             CreateMap<Domain.Entities.League, Application.Dto.LeagueInformation>()
                 .ForMember(x => x.Name, o => o.MapFrom(l => l.Name))

@@ -76,6 +76,10 @@ namespace FliGen.Domain.Entities
         {
 	        return JoinTime != null && LeaveTime != null;
         }
+        public bool InJoinedStatus()
+        {
+	        return JoinTime != null && LeaveTime == null;
+        }
 
         public bool InWaitingStatus()
         {
