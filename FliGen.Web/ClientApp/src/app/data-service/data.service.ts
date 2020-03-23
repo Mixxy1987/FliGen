@@ -11,6 +11,7 @@ export class DataService {
   private playersUrl: string;
   private leaguesUrl: string;
   private leagueUrl: string;
+  private myLeaguesUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -18,6 +19,15 @@ export class DataService {
       this.playersUrl = this.baseUrl + "players";
       this.leaguesUrl = this.baseUrl + "leagues";
       this.leagueUrl = this.baseUrl + "league";
+      this.myLeaguesUrl = this.baseUrl + "myleagues";
+  }
+
+  getMyLeagues() {
+    return this.http.get<League[]>(this.myLeaguesUrl);
+  }
+
+  joinLeague(id: number) {
+    return this.http.post(this.myLeaguesUrl + "/join", id);
   }
 
   getLeagues() {
@@ -40,11 +50,7 @@ export class DataService {
   deleteLeague(id: number) {
     return this.http.delete(this.leaguesUrl + "/" + id);
   }
-
-  join(id: number) {
-    return this.http.post(this.baseUrl + "myleagues/join", id);
-  }
-
+  
   getLeagueInformation(id: number) {
     return this.http.get<LeagueInformation>(this.leagueUrl + "/" + id);
   }

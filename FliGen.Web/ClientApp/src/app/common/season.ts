@@ -4,5 +4,5 @@ export class Season {
   start: string;
   toursPlayed: number;
   previousTour: Tour;
-  nextTour: Tour;
+  nextTour?: Tour;
 }

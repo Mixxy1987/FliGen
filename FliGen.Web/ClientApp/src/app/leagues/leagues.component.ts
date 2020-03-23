@@ -83,7 +83,7 @@ export class LeaguesComponent implements OnInit {
   }
 
   joinLeague(l: League) {
-    this.dataService.join(l.id)
+    this.dataService.joinLeague(l.id)
       .subscribe(data => this.loadLeagues());
   }
 }

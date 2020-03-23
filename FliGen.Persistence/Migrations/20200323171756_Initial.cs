@@ -15,7 +15,6 @@ namespace FliGen.Persistence.Migrations
             int toursCount = InitialFillTours.ToursFill(migrationBuilder);
             InitialFillTeams.TeamsFill(migrationBuilder, toursCount);
             InitialFillTeamPlayers.TeamPlayersFill(migrationBuilder, toursCount * 2);
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

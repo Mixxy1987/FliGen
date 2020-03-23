@@ -1,14 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
-import { MyLeaguesDataService } from "./myleagues.data.service";
 import { AuthorizeService } from "../api-authorization/authorize.service";
 import { take } from 'rxjs/operators';
+import { DataService } from "../data-service/data.service";
 
 @Component({
   selector: 'app-leagues',
   templateUrl: './myleagues.component.html',
-  providers: [MyLeaguesDataService]
+  providers: [DataService]
 })
 export class MyLeaguesComponent implements OnInit {
 
@@ -18,7 +18,7 @@ export class MyLeaguesComponent implements OnInit {
   isAuthenticated: boolean;
 
   constructor(
-    private dataService: MyLeaguesDataService,
+    private dataService: DataService,
     private authorizeService: AuthorizeService) {
   }
 
@@ -32,7 +32,7 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   loadLeagues() {
-    this.dataService.getLeagues().subscribe(result => {
+    this.dataService.getMyLeagues().subscribe(result => {
       this.leagues = result;
     }, error => console.error(error));
   }
@@ -44,7 +44,7 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   joinLeague(l: League) {
-    this.dataService.join(l.id)
+    this.dataService.joinLeague(l.id)
       .subscribe(data => this.loadLeagues());
   }
 }

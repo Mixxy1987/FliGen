@@ -9,7 +9,7 @@
     <p><b>Текущий сезон начат:</b> {{leagueInformation.currentSeason.start}}</p>
     <p><b>В текущем сезоне туров сыграно:</b> {{leagueInformation.currentSeason.toursPlayed}}</p>
     <p><b>Последний тур был:</b> {{leagueInformation.currentSeason.previousTour.date}}</p>
-    <p><b>Следующий тур:</b> {{leagueInformation.currentSeason.nextTour.date}}</p>
+    <p><b>Следующий тур:</b> {{leagueInformation.currentSeason.nextTour?.date}}</p>
 
     <p><b><a [routerLink]="'settings'" class="nav-link">Настройки</a></b></p>
     <p><a routerLink="/leagues" class="nav-link">Обратно к лигам</a></p>
