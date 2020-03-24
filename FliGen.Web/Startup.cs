@@ -4,10 +4,12 @@ using EventBus.RabbitMQ.Standard.Options;
 using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Common.Mediator.Extensions;
+using FliGen.Common.Mvc;
 using FliGen.Domain.Common.Repository.DependencyInjection;
 using FliGen.Persistence.Contextes;
 //using FliGen.Persistence.Repositories;
 using FliGen.Web.Extensions;
+using FliGen.Web.Services;
 using IdentityServer4.Models;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -22,8 +24,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
-using Autofac.Extensions.DependencyInjection;
-using FliGen.Web.Services;
 
 namespace FliGen.Web
 {
@@ -31,7 +31,7 @@ namespace FliGen.Web
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -139,7 +139,7 @@ namespace FliGen.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseErrorHandler();
             app.UseAuthentication();
             app.UseAuthorization();
 

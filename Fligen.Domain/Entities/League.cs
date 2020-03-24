@@ -1,63 +1,65 @@
 ﻿using FliGen.Domain.Common;
 using FliGen.Domain.Entities.Enum;
 using System.Collections.Generic;
+using FliGen.Common.Types;
 
 namespace FliGen.Domain.Entities
 {
-    public class League : Entity, IAggregateRoot
-    {
-        public string Name { get; }
-        public string Description { get; }
-        
-        public LeagueSettings LeagueSettings { get; }
-        public int LeagueTypeId {
-            get
-            {
-                return Type.Id;
-            }
-            set
-            {
-                Type = Enumeration.FromValue<LeagueType>(value);
-            }
-        }
-        public LeagueType Type { get; private set; }
+	public class League : Entity, IAggregateRoot
+	{
+		public string Name { get; }
+		public string Description { get; }
 
-        public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
-        public List<Season> Seasons { get; }
+		public LeagueSettings LeagueSettings { get; }
+		public int LeagueTypeId 
+		{
+			get => Type.Id;
+			set => Type = Enumeration.FromValue<LeagueType>(value);
+		}
 
-        public bool IsVisible() => LeagueSettings.Visibility;
-        public bool IsRequireConfirmation() => LeagueSettings.RequireConfirmation;
+		public LeagueType Type { get; private set; }
 
-        protected League()
-        {
-        }
+		public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
+		public List<Season> Seasons { get; }
 
-        private League(string name, string description, LeagueType type) : this()
-        {
-            Name = name;
-            Description = description;
-            Type = type;
-            Seasons = new List<Season>();
-            LeagueSettings = new LeagueSettings(true, false);
-        }
+		public bool IsVisible() => LeagueSettings.Visibility;
+		public bool IsRequireConfirmation() => LeagueSettings.RequireConfirmation;
 
-        private League(string name, string description, LeagueType type, LeagueSettings settings = null) : this()
-        {
-            Name = name;
-            Description = description;
-            Type = type;
-            Seasons = new List<Season>();
-            LeagueSettings = settings;
-        }
+		protected League()
+		{
+		}
 
-        public static League Create(string name, string description, LeagueType type)
-        {
-            return new League(name, description, type);
-        }
+		private League(string name, string description, LeagueType type) : this()
+		{
+			if (string.IsNullOrWhiteSpace(name))
+			{
+				throw new FliGenException("cannot_create_league_with_empty_name", "Cannot create league with empty name.");
+			}
 
-        public static League GetUpdated(int id, string firstName, string lastName, LeagueType type)
-        {
-            return new League(firstName, lastName, type, null) { Id = id };
-        }
-    }
+			Name = name;
+			Description = description;
+			Type = type;
+			Seasons = new List<Season>();
+			LeagueSettings = new LeagueSettings(true, false);
+		}
+
+		private League(string name, string description, LeagueType type, LeagueSettings settings = null) : this()
+		{
+			Name = name;
+			Description = description;
+			Type = type;
+			Seasons = new List<Season>();
+			LeagueSettings = settings;
+		}
+
+		public static League Create(string name, string description, LeagueType type)
+		{
+			return new League(name, description, type);
+		}
+
+		public static League GetUpdated(int id, string firstName, string lastName, LeagueType type)
+		{
+			return new League(firstName, lastName, type, null) { Id = id };
+		}
+	}
 }

@@ -10,14 +10,8 @@ namespace FliGen.Domain.Entities
 
         public int TeamRoleId
         {
-            get
-            {
-                return TeamRole.Id;
-            }
-            set
-            {
-                TeamRole = Enumeration.FromValue<TeamRole>(value);
-            }
+            get => TeamRole.Id;
+            set => TeamRole = Enumeration.FromValue<TeamRole>(value);
         }
 
         public TeamRole TeamRole { get; private set; }

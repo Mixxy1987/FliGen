@@ -1,4 +1,5 @@
 ﻿using System;
+using FliGen.Common.Types;
 using FliGen.Domain.Common;
 using FliGen.Domain.Entities.Enum;
 
@@ -16,14 +17,8 @@ namespace FliGen.Domain.Entities
 
         public int LeaguePlayerRoleId
         {
-            get
-            {
-                return Role.Id;
-            }
-            set
-            {
-                Role = Enumeration.FromValue<LeaguePlayerRole>(value);
-            }
+            get => Role.Id;
+            set => Enumeration.FromValue<LeaguePlayerRole>(value);
         }
 
         public LeaguePlayerRole Role { get; private set; }
@@ -39,7 +34,17 @@ namespace FliGen.Domain.Entities
 	        DateTime? joinTime = null,
 	        DateTime? leaveTime = null)
         {
-	        LeagueId = leagueId;
+	        if (leagueId <= 0)
+	        {
+		        throw new FliGenException("invalid_leagueId", $"Invalid leagueId. - {leagueId}");
+	        }
+
+	        if (playerId <= 0)
+	        {
+		        throw new FliGenException("invalid_playerId", $"Invalid PlayerId. - {playerId}");
+	        }
+
+            LeagueId = leagueId;
 	        PlayerId = playerId;
 	        LeaguePlayerRoleId = roleId;
             CreationTime = DateTime.Now;

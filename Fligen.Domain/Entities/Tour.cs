@@ -17,14 +17,8 @@ namespace FliGen.Domain.Entities
 
         public int TourStatusId
         {
-            get
-            {
-                return TourStatus.Id;
-            }
-            set
-            {
-                TourStatus = Enumeration.FromValue<TourStatus>(value);
-            }
+            get => TourStatus.Id;
+            set => TourStatus = Enumeration.FromValue<TourStatus>(value);
         }
 
         public TourStatus TourStatus { get; private set; }

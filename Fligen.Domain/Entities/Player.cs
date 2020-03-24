@@ -2,6 +2,7 @@
 using FliGen.Domain.Common;
 using System;
 using System.Collections.Generic;
+using FliGen.Common.Types;
 
 namespace FliGen.Domain.Entities
 {
@@ -19,6 +20,16 @@ namespace FliGen.Domain.Entities
 
         private Player(string firstName, string lastName, double rate, string externalId) : this()
         {
+	        if (string.IsNullOrWhiteSpace(firstName))
+	        {
+		        throw new FliGenException("cannot_create_player_with_empty_firstName", "Cannot create player with empty first Name");
+	        }
+
+	        if (string.IsNullOrWhiteSpace(lastName))
+	        {
+		        throw new FliGenException("cannot_create_player_with_empty_lastName", "Cannot create player with empty last Name");
+	        }
+
             FirstName = firstName;
             LastName = lastName;
             ExternalId = externalId;
