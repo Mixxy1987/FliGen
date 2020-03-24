@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using EventBus.Base.Standard;
+﻿using EventBus.Base.Standard;
 using FliGen.Domain.Common.Repository;
 using FliGen.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace FliGen.Application.Events.PlayerRegistered
 {
@@ -16,7 +16,7 @@ namespace FliGen.Application.Events.PlayerRegistered
 
         public async Task Handle(PlayerRegisteredIntegrationEvent @event)
         {
-            var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+            var playerRepo = _uow.GetRepositoryAsync<Player>();
 
             Player foundPlayer = await playerRepo.SingleAsync(
                 predicate: x => x.FirstName == @event.FirstName &&
@@ -33,7 +33,7 @@ namespace FliGen.Application.Events.PlayerRegistered
                     Player.GetUpdated(foundPlayer.Id, @event.FirstName, @event.LastName, @event.ExternalId));
             }
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
         }
     }
 }

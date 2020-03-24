@@ -4,7 +4,7 @@ import { League } from "../common/league";
 import { LeagueInformation } from "../common/leagueInformation";
 import { LeagueSettings } from "../common/leagueSettings";
 import { LeagueType } from "../common/leagueType";
-import { MyTour } from "../common/myTour";
+import { Tour } from "../common/tour";
 import { Player } from '../players/player';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class DataService {
   }
 
   getMyTours() {
-    return this.http.get<MyTour[]>(this.myToursUrl);
+    return this.http.get<Tour[]>(this.myToursUrl);
   }
 
   getMyLeagues() {

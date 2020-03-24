@@ -26,7 +26,7 @@ namespace FliGen.Application.Commands.League.UpdateLeague
                 request.Description,
                 Enumeration.FromDisplayName<LeagueType>(request.LeagueType.Name)));
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Task.FromResult(Unit.Value);
         }

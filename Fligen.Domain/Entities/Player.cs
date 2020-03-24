@@ -16,7 +16,8 @@ namespace FliGen.Domain.Entities
         public List<PlayerRate> Rates { get; }
 
         public virtual ICollection<LeaguePlayerLink> LeaguePlayerLinks { get; }
-        protected Player(){}
+        private Player()
+        {}
 
         private Player(string firstName, string lastName, double rate, string externalId) : this()
         {

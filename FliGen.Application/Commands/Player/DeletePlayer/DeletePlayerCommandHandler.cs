@@ -19,7 +19,7 @@ namespace FliGen.Application.Commands.Player.DeletePlayer
             var repo = _uow.GetRepository<Domain.Entities.Player>();
             repo.Delete(request.Id);
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Task.FromResult(Unit.Value);
         }

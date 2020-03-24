@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { AuthorizeService } from "../api-authorization/authorize.service";
-import { MyTour } from "../common/myTour";
+import { Tour } from "../common/tour";
 import { DataService } from "../data-service/data.service";
 
 @Component({
@@ -10,7 +10,7 @@ import { DataService } from "../data-service/data.service";
   providers: [DataService]
 })
 export class MyToursComponent implements OnInit {
-  private myTours: MyTour[];
+  private myTours: Tour[];
 
   isAuthenticated: boolean;
 

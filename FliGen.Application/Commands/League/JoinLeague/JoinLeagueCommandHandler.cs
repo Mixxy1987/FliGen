@@ -63,7 +63,7 @@ namespace FliGen.Application.Commands.League.JoinLeague
 	            lpRepo.UpdateAsync(lastLink);
             }
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
             return Unit.Value;
         }
     }

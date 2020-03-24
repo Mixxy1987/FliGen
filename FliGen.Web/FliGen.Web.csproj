@@ -34,6 +34,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove=".gitignore" />
     <None Remove="ClientApp\src\app\common\playerLeagueJoinStatus.ts" />
     <None Remove="ClientApp\src\app\common\tourStatus.ts" />
   </ItemGroup>

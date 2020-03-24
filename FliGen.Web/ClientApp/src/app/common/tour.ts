@@ -5,5 +5,7 @@ export class Tour {
   date: string;
   homeCount: number;
   guestCount: number;
+  leagueId: number;
+  seasonId: number;
   tourStatus: TourStatus;
 }

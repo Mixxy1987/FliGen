@@ -1,5 +1,4 @@
-﻿using FliGen.Application.Dto;
-using MediatR;
+﻿using MediatR;
 
 namespace FliGen.Application.Commands.League.JoinLeague
 {

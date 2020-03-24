@@ -27,7 +27,7 @@ namespace FliGen.Application.Commands.League.CreateLeague
 
             await repo.AddAsync(league, cancellationToken);
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Unit.Value;
         }

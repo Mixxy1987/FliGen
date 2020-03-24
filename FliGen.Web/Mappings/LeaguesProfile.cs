@@ -22,6 +22,8 @@ namespace FliGen.Web.Mappings
                 .ForMember(x => x.Date, ls => ls.MapFrom(s => s.Date.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.HomeCount, ls => ls.MapFrom(s => s.HomeCount))
                 .ForMember(x => x.GuestCount, ls => ls.MapFrom(s => s.GuestCount))
+                .ForMember(x => x.SeasonId, ls => ls.MapFrom(s => s.SeasonId))
+                .ForMember(x => x.LeagueId, ls => ls.MapFrom(s => s.Season.LeagueId))
                 .ForMember(x => x.TourStatus, ls => ls.MapFrom(s => s.TourStatus.Id));
 
             CreateMap<Domain.Entities.Season, Application.Dto.Season>()

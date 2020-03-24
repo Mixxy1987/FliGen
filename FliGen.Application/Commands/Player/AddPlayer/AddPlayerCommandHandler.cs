@@ -25,7 +25,7 @@ namespace FliGen.Application.Commands.Player.AddPlayer
 
             await repo.AddAsync(player, cancellationToken);
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Unit.Value;
         }

@@ -44,7 +44,7 @@ namespace FliGen.Application.Commands.Player.UpdatePlayer
             playerRepo.UpdateAsync(Domain.Entities.Player.GetUpdated(
                 player.Id, request.FirstName, request.LastName, player.ExternalId));
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Unit.Value;
         }

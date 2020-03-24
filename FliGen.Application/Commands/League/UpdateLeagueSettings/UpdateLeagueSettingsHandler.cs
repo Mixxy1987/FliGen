@@ -1,9 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FliGen.Domain.Common;
-using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Entities.Enum;
+﻿using FliGen.Domain.Common.Repository;
 using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FliGen.Application.Commands.League.UpdateLeagueSettings
 {
@@ -27,7 +25,7 @@ namespace FliGen.Application.Commands.League.UpdateLeagueSettings
                 request.Visibility,
                 request.RequireConfirmation));
 
-            var result = _uow.SaveChanges();
+            _uow.SaveChanges();
 
             return Unit.Value;
         }

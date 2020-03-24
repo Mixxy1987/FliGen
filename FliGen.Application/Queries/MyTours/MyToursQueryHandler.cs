@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FliGen.Application.Dto;
 using FliGen.Domain.Common.Repository;
 using FliGen.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Player = FliGen.Domain.Entities.Player;
 
-namespace FliGen.Application.Queries.Tour.MyTours
+namespace FliGen.Application.Queries.MyTours
 {
-    public class MyToursQueryHandler : IRequestHandler<MyToursQuery, IEnumerable<Dto.MyTour>>
+	public class MyToursQueryHandler : IRequestHandler<MyToursQuery, IEnumerable<Dto.Tour>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace FliGen.Application.Queries.Tour.MyTours
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Dto.MyTour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
         {
 	        var playerRepo = _uow.GetRepositoryAsync<Player>();
 	        var leagueRepo = _uow.GetRepositoryAsync<Domain.Entities.League>();
@@ -53,7 +53,7 @@ namespace FliGen.Application.Queries.Tour.MyTours
 								.ThenInclude(s => s.Tours)));
 			}
 
-	        var tours = new List<MyTour>();
+	        var tours = new List<Dto.Tour>();
 
 	        foreach (var league in leagues)
 	        {
@@ -64,11 +64,7 @@ namespace FliGen.Application.Queries.Tour.MyTours
 			        .OrderBy(t => t.Date)
 			        .FirstOrDefault();
 
-		        tours.Add(new MyTour()
-		        {
-					LeagueId = league.Id,
-					Tour = _mapper.Map<Dto.Tour>(tour)
-				});
+		        tours.Add(_mapper.Map<Dto.Tour>(tour));
 	        }
 
             return tours;
