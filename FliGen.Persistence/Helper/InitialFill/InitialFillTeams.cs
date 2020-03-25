@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FliGen.Domain.Common;
+﻿using FliGen.Common.SeedWork;
 using FliGen.Domain.Entities.Enum;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FliGen.Persistence.Helper.InitialFill
 {

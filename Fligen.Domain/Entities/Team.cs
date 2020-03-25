@@ -1,5 +1,5 @@
 ﻿using System;
-using FliGen.Domain.Common;
+using FliGen.Common.SeedWork;
 using FliGen.Domain.Entities.Enum;
 
 namespace FliGen.Domain.Entities

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FliGen.Application.CommonLogic;
-using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Common.Repository.Paging;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository.Paging;
 using Player = FliGen.Domain.Entities.Player;
 
 namespace FliGen.Application.Queries.GetLeagues

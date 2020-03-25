@@ -1,6 +1,6 @@
-﻿using FliGen.Domain.Common;
-using FliGen.Domain.Entities.Enum;
+﻿using FliGen.Domain.Entities.Enum;
 using System.Collections.Generic;
+using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
 
 namespace FliGen.Domain.Entities

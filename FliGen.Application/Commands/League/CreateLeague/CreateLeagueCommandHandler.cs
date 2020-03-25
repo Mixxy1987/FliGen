@@ -1,9 +1,9 @@
-﻿using FliGen.Domain.Common;
+﻿using FliGen.Common.SeedWork;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Domain.Entities.Enum;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Domain.Common.Repository;
 
 namespace FliGen.Application.Commands.League.CreateLeague
 {

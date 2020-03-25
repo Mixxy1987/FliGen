@@ -1,4 +1,4 @@
-﻿using FliGen.Domain.Common;
+﻿using FliGen.Common.SeedWork;
 
 namespace FliGen.Domain.Entities
 {

@@ -1,5 +1,5 @@
 ﻿using EventBus.Base.Standard;
-using FliGen.Domain.Common.Repository;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Domain.Entities;
 using System.Threading.Tasks;
 

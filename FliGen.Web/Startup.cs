@@ -5,9 +5,7 @@ using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
-using FliGen.Domain.Common.Repository.DependencyInjection;
 using FliGen.Persistence.Contextes;
-//using FliGen.Persistence.Repositories;
 using FliGen.Web.Extensions;
 using FliGen.Web.Services;
 using IdentityServer4.Models;
@@ -24,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Linq;
 using System.Reflection;
+using FliGen.Common.SeedWork.Repository.DependencyInjection;
 
 namespace FliGen.Web
 {

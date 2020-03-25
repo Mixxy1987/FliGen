@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using FliGen.Domain.Common.Repository;
+﻿using AutoMapper;
+using FliGen.Common.SeedWork.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FliGen.Application.Queries.League.LeagueInformation
 {

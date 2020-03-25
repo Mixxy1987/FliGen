@@ -1,11 +1,11 @@
-﻿using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Entities;
+﻿using FliGen.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository;
 
 namespace FliGen.Application.Commands.Player.UpdatePlayer
 {

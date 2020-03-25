@@ -1,7 +1,7 @@
-﻿using MediatR;
+﻿using FliGen.Common.SeedWork.Repository;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Domain.Common.Repository;
 
 namespace FliGen.Application.Commands.Player.AddPlayer
 {

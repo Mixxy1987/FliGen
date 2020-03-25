@@ -1,6 +1,8 @@
-﻿namespace FliGen.Domain.Entities.Enum
+﻿using FliGen.Common.SeedWork;
+
+namespace FliGen.Domain.Entities.Enum
 {
-    public class LeagueType : Common.Enumeration
+    public class LeagueType : Enumeration
     {
         public static LeagueType None = new LeagueType(1, nameof(None));
         public static LeagueType Football = new LeagueType(2, nameof(Football));

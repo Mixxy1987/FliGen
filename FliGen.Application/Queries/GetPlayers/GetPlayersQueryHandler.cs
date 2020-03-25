@@ -1,12 +1,12 @@
 ﻿using FliGen.Application.Dto;
+using FliGen.Common.SeedWork.Repository;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Common.Repository.Paging;
-using Microsoft.EntityFrameworkCore;
+using FliGen.Common.SeedWork.Repository.Paging;
 
 namespace FliGen.Application.Queries.GetPlayers
 {

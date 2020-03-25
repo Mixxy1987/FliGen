@@ -1,7 +1,7 @@
 ﻿using FliGen.Common.Extensions;
-using FliGen.Domain.Common;
 using System;
 using System.Collections.Generic;
+using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
 
 namespace FliGen.Domain.Entities

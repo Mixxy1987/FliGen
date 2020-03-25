@@ -1,13 +1,13 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using FliGen.Application.CommonLogic;
+using FliGen.Common.SeedWork.Repository;
+using FliGen.Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using FliGen.Application.CommonLogic;
-using FliGen.Domain.Common.Repository;
-using FliGen.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Application.Queries.GetMyLeagues
 {

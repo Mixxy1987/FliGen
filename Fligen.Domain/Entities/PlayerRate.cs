@@ -1,6 +1,6 @@
 ﻿using System;
 using FliGen.Common.Extensions;
-using FliGen.Domain.Common;
+using FliGen.Common.SeedWork;
 
 namespace FliGen.Domain.Entities
 {

@@ -1,6 +1,8 @@
-﻿namespace FliGen.Domain.Entities.Enum
+﻿using FliGen.Common.SeedWork;
+
+namespace FliGen.Domain.Entities.Enum
 {
-    public class TourStatus : Common.Enumeration
+    public class TourStatus : Enumeration
     {
         public static TourStatus Planned = new TourStatus(1, nameof(Planned));
         public static TourStatus RegistrationOpened = new TourStatus(2, nameof(RegistrationOpened));

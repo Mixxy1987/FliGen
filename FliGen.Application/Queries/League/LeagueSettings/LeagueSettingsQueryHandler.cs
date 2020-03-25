@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FliGen.Domain.Common.Repository;
+using FliGen.Common.SeedWork.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

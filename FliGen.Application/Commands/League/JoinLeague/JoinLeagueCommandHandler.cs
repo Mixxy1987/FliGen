@@ -1,4 +1,4 @@
-﻿using FliGen.Domain.Common.Repository;
+﻿using FliGen.Common.SeedWork.Repository;
 using FliGen.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
