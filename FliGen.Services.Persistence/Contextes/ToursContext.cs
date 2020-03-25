@@ -1,4 +1,5 @@
 ﻿using FliGen.Services.Tours.Domain.Entities;
+using FliGen.Services.Tours.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Services.Tours.Persistence.Contextes
@@ -14,7 +15,7 @@ namespace FliGen.Services.Tours.Persistence.Contextes
         public ToursContext(DbContextOptions<ToursContext> options) :base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,7 +24,7 @@ namespace FliGen.Services.Tours.Persistence.Contextes
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(PlayerConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamConfiguration).Assembly);
             base.OnModelCreating(modelBuilder);
         }
     }

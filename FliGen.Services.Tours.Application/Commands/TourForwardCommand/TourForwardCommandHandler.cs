@@ -1,21 +1,22 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository;
 using MediatR;
 
 namespace FliGen.Services.Tours.Application.Commands.TourForwardCommand
 {
     public class TourForwardCommandHandler : IRequestHandler<TourForwardCommand>
     {
-        //private readonly IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
 
-        public TourForwardCommandHandler(/*IUnitOfWork uow*/)
+        public TourForwardCommandHandler(IUnitOfWork uow)
         {
-	        //_uow = uow;
+	        _uow = uow;
         }
 
         public async Task<Unit> Handle(TourForwardCommand request, CancellationToken cancellationToken)
         {
-            /*var tourRepo = _uow.GetRepositoryAsync<Domain.Entities.Tour>();
+            var tourRepo = _uow.GetRepositoryAsync<Domain.Entities.Tour>();
 
             if (request.TourId is null)
             {
@@ -29,7 +30,7 @@ namespace FliGen.Services.Tours.Application.Commands.TourForwardCommand
                 tourRepo.UpdateAsync(tour);
             }
 
-            _uow.SaveChanges();*/
+            _uow.SaveChanges();
 
             return Unit.Value;
         }

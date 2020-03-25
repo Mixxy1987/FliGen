@@ -36,7 +36,7 @@ namespace FliGen.Common.Mvc
 		private static Task HandleErrorAsync(HttpContext context, Exception exception)
 		{
 			var errorCode = "error";
-			string message = "There was an error.";
+			string message = exception.Message;
 			switch (exception)
 			{
 				case FliGenException e:

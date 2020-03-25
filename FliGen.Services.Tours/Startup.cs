@@ -17,12 +17,11 @@ namespace FliGen.Services.Tours
 {
 	public class Startup
 	{
+		public IConfiguration Configuration { get; }
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
-
-		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -39,6 +38,7 @@ namespace FliGen.Services.Tours
 			builder.AddMediator("FliGen.Services.Tours.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();
+			builder.AddSerilogService();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

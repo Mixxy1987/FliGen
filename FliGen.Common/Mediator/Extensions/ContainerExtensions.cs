@@ -15,6 +15,8 @@ namespace FliGen.Common.Mediator.Extensions
             var result = new List<Assembly>();
             foreach (var assembly in assemblies)
             {
+	            var tmp = Assembly.Load(assembly);
+
                 result.Add(Assembly.Load(assembly));
             }
 

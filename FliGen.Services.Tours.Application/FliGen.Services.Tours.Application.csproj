@@ -12,4 +12,9 @@
     <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Tours.Domain\FliGen.Services.Tours.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
