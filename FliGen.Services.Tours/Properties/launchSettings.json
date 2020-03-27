@@ -18,7 +18,7 @@
     },
     "FliGen.Services.Tours": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:5005/",
+      "applicationUrl": "http://localhost:5002/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

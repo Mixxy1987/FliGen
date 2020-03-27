@@ -1,4 +1,6 @@
-﻿namespace FliGen.Common.Extensions
+﻿using System.Linq;
+
+namespace FliGen.Common.Extensions
 {
     public static class StringExtensions
     {
@@ -12,5 +14,8 @@
 
             return string.Concat(str.Substring(0, index), '.', str.Substring(index + 1));
         }
+
+        public static string Underscore(this string value)
+	        => string.Concat(value.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()));
     }
 }
