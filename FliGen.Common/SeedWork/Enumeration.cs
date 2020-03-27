@@ -7,9 +7,9 @@ namespace FliGen.Common.SeedWork
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
         protected Enumeration(int id, string name)
         {
@@ -70,5 +70,10 @@ namespace FliGen.Common.SeedWork
         }
 
         public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
+
+        public static implicit operator int(Enumeration nameValue)
+        {
+	        return nameValue.Id;
+        }
     }
 }

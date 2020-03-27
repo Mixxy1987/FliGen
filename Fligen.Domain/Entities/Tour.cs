@@ -50,29 +50,29 @@ namespace FliGen.Domain.Entities
 
         public void MoveTourStatusForward()
         {
-            switch (TourStatus.Name)
-            { //refactor
-                case (nameof(TourStatus.Canceled)):
+            switch (TourStatus)
+            {
+                case (TourStatus.Enum.Canceled):
                 {
                     TourStatusId = TourStatus.Planned.Id;
                     break;
                 }
-                case (nameof(TourStatus.Planned)):
+                case (TourStatus.Enum.Planned):
                 {
                     TourStatusId = TourStatus.RegistrationOpened.Id;
                     break;
                 }
-                case (nameof(TourStatus.RegistrationOpened)):
+                case (TourStatus.Enum.RegistrationOpened):
                 {
                     TourStatusId = TourStatus.RegistrationClosed.Id;
                     break;
                 }
-                case (nameof(TourStatus.RegistrationClosed)):
+                case (TourStatus.Enum.RegistrationClosed):
                 {
                     TourStatusId = TourStatus.InProgress.Id;
                     break;
                 }
-                case (nameof(TourStatus.InProgress)):
+                case (TourStatus.Enum.InProgress):
                 {
                     TourStatusId = TourStatus.Completed.Id;
                     break;
