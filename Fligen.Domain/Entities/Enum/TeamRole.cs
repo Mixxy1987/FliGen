@@ -4,11 +4,17 @@ namespace FliGen.Domain.Entities.Enum
 {
     public class TeamRole : Enumeration
     {
-        public static TeamRole Home = new TeamRole(1, nameof(Home));
-        public static TeamRole Guest = new TeamRole(2, nameof(Guest));
+        public static readonly TeamRole Home = new TeamRole(Enum.Home, nameof(Home));
+        public static readonly TeamRole Guest = new TeamRole(Enum.Guest, nameof(Guest));
 
         public TeamRole(int id, string name) : base(id, name)
         {
+        }
+
+        public class Enum
+        {
+	        public const int Home = 1;
+	        public const int Guest = 2;
         }
     }
 }
