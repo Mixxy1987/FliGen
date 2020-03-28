@@ -1,8 +1,11 @@
 ﻿using FliGen.Services.Tours.Application.Commands.TourCancelCommand;
 using FliGen.Services.Tours.Application.Commands.TourForwardCommand;
+using FliGen.Services.Tours.Application.Dto;
+using FliGen.Services.Tours.Application.Queries.MyTours;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Tours.Controllers
@@ -19,6 +22,13 @@ namespace FliGen.Services.Tours.Controllers
 			_logger = logger;
 			_mediatr = mediatr;
 		}
+
+        [HttpGet]
+        [Produces(typeof(IEnumerable<Tour>))]
+        public Task<IEnumerable<Tour>> Get([FromQuery]int userId, int size)
+        {
+            return _mediatr.Send(new MyToursQuery(userId, size));
+        }
 
 		[HttpPost("forward")]
 		public async Task TourForward([FromBody]TourForwardCommand cmd)

@@ -1,17 +1,17 @@
 using Autofac;
+using FliGen.Common.Mediator.Extensions;
+using FliGen.Common.Mvc;
+using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Tours.Application.Commands.TourCancelCommand;
+using FliGen.Services.Tours.Persistence.Contextes;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
-using FliGen.Common.Mediator.Extensions;
-using FliGen.Common.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Services.Tours.Persistence.Contextes;
 
 namespace FliGen.Services.Tours
 {
@@ -29,12 +29,13 @@ namespace FliGen.Services.Tours
 			services.AddDbContext<ToursContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<ToursContext>();
 			services.AddControllers();
-			services.AddMediatR(typeof(Startup))
-				.AddMediatR(typeof(TourCancelCommand).GetTypeInfo().Assembly);
-		}
+            services.AddMediatR(typeof(Startup))
+                .AddMediatR(typeof(TourCancelCommand).GetTypeInfo().Assembly);
+        }
 
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
+            builder.AddAutoMapper();
 			builder.AddMediator("FliGen.Services.Tours.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();
