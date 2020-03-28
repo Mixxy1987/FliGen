@@ -19,5 +19,10 @@
     <ProjectReference Include="..\FliGen.Services.Tours.Application\FliGen.Services.Tours.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messages\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
 
 </Project>

@@ -20,7 +20,7 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
         {
 			var teamPlayerLinksRepo = _uow.GetReadOnlyRepository<TeamPlayerLink>();
 
@@ -34,7 +34,7 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
                 return null;
 			}
 
-            return GetToursByCondition(teamPlayerLinks.Items, request.QueryType, request.SeasonIds);
+            return Task.FromResult(GetToursByCondition(teamPlayerLinks.Items, request.QueryType, request.SeasonIds));
         }
 
         private IEnumerable<Dto.Tour> GetToursByCondition(IEnumerable<TeamPlayerLink> teamPlayerLinks, MyToursQueryType queryType, int[] seasonIds)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Application.Queries.TourById;
 
 namespace FliGen.Services.Tours.Controllers
 {
@@ -28,6 +29,13 @@ namespace FliGen.Services.Tours.Controllers
         public Task<IEnumerable<Tour>> Get(int userId, int size, int queryType, [FromQuery]int[] seasonId)
         {
             return _mediatr.Send(new MyToursQuery(userId, size, (MyToursQueryType)queryType, seasonId));
+        }
+
+        [HttpGet("{id}")]
+        [Produces(typeof(IEnumerable<Tour>))]
+        public Task<Tour> Get(int id)
+        {
+            return _mediatr.Send(new TourByIdQuery(id));
         }
 
 		[HttpPost("forward")]
