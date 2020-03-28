@@ -89,5 +89,9 @@ namespace FliGen.Services.Tours.Domain.Entities
             TourStatusId = TourStatus.Canceled.Id;
         }
 
+        public bool IsEnded()
+        {
+            return TourStatus.Equals(TourStatus.Canceled) || TourStatus.Equals(TourStatus.Completed);
+        }
     }
 }

@@ -7,11 +7,15 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
     {
         public int UserId { get; }
         public int Size { get; }
-
-        public MyToursQuery(int userId, int size)
+        public MyToursQueryType QueryType { get; }
+        public int[] SeasonIds { get; }
+        
+        public MyToursQuery(int userId, int size, MyToursQueryType queryType, int[] seasonId)
         {
             UserId = userId;
             Size = size;
+            QueryType = queryType;
+            SeasonIds = seasonId;
         }
     }
 }

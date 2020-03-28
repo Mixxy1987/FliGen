@@ -25,9 +25,9 @@ namespace FliGen.Services.Tours.Controllers
 
         [HttpGet]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromQuery]int userId, int size)
+        public Task<IEnumerable<Tour>> Get(int userId, int size, int queryType, [FromQuery]int[] seasonId)
         {
-            return _mediatr.Send(new MyToursQuery(userId, size));
+            return _mediatr.Send(new MyToursQuery(userId, size, (MyToursQueryType)queryType, seasonId));
         }
 
 		[HttpPost("forward")]
