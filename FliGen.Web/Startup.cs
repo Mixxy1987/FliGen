@@ -1,15 +1,15 @@
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using EventBus.RabbitMQ.Standard.Configuration;
 using EventBus.RabbitMQ.Standard.Options;
-using FliGen.Application.Commands.Player.AddPlayer;
 using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
+using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Persistence.Contextes;
 using FliGen.Web.Extensions;
 using FliGen.Web.Services;
 using IdentityServer4.Models;
-using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -20,15 +20,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System;
 using System.Linq;
-using System.Reflection;
-using FliGen.Common.SeedWork.Repository.DependencyInjection;
 
 namespace FliGen.Web
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public IContainer Container { get; private set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -36,7 +36,7 @@ namespace FliGen.Web
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FliGenContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<FliGenContext>();
@@ -92,21 +92,24 @@ namespace FliGen.Web
                 options.AddPolicy("ShouldHasUsersGroup", policy => { policy.RequireClaim("hasUsersGroup"); });
             });
 
-
-            services.AddMediatR(typeof(Startup))
-	            .AddMediatR(typeof(AddPlayerCommand).GetTypeInfo().Assembly);
-
-            services.AddTransient<PlayerRegisteredIntegrationEventHandler>();
-            services.AddTransient<IIdentityService, IdentityService>();
-
             var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
-
             services.AddRabbitMqConnection(rabbitMqOptions);
             services.AddRabbitMqRegistration(rabbitMqOptions);
+
+            var builder = new ContainerBuilder();
+
+            ConfigureContainer(builder);
+            builder.Populate(services);
+            Container = builder.Build();
+
+            return new AutofacServiceProvider(Container);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterType<PlayerRegisteredIntegrationEventHandler>();
+            builder.RegisterType<IdentityService>().As<IIdentityService>().InstancePerDependency();
+
             builder.AddAutoMapper();
             builder.AddMediator("FliGen.Application");
             builder.AddRequestLogDecorator();
