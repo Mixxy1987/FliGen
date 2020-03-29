@@ -22,12 +22,6 @@ namespace FliGen.Application.Commands.Player.UpdatePlayer
         {
             var playerRepo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
 
-            /*Domain.Entities.Player player = (await playerRepo.GetListAsync(
-                predicate: x => x.Id == request.Id,
-                include: source => source.Include(a => a.Rates),
-                size : 1,
-                cancellationToken : cancellationToken)).Items[0];*/
-
             Domain.Entities.Player player = await playerRepo.SingleAsync(
                 predicate: x => x.Id == request.Id,
                 include: source => source.Include(a => a.Rates));

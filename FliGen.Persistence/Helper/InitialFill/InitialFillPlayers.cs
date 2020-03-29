@@ -13,25 +13,35 @@ namespace FliGen.Persistence.Helper.InitialFill
 	VALUES
     (@@lastName, @@firstName)
 
-    INSERT INTO [PlayerRate](Date, Value, PlayerId)
-	SELECT '01.01.2020', @@rate, Id
-	FROM [Player]
-	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName
+    INSERT INTO [PlayerRate](Date, Value, PlayerId, LeagueId)
+	SELECT '01.01.2020', @@rate, player.Id, league.Id
+	FROM [Player] as player, [League] as league
+	WHERE [Player].[FirstName] = @@firstName AND [Player].[LastName] = @@lastName AND [League].Name=@@leagueName
 ";
+            InsertPlayersRateForLeague(migrationBuilder, InitialFillData.Leagues[0], migrateExistingOperationEntriesQuery);
+            InsertPlayersRateForLeague(migrationBuilder, InitialFillData.Leagues[1], migrateExistingOperationEntriesQuery);
+        }
+
+        private static void InsertPlayersRateForLeague(
+            MigrationBuilder migrationBuilder, 
+            string leagueName,
+            string query)
+        {
             foreach (var kv in InitialFillData.Players)
             {
                 var kvSplitted = kv.Split(' ');
 
-                string query = MigrationHelpers.ReplaceVariablesWithValues(
-                    migrateExistingOperationEntriesQuery,
+                string q = MigrationHelpers.ReplaceVariablesWithValues(
+                    query,
                     new List<KeyValuePair<string, object>>()
                     {
                         new KeyValuePair<string, object>("@@lastName", kvSplitted[0]),
                         new KeyValuePair<string, object>("@@firstName", kvSplitted[1]),
                         new KeyValuePair<string, object>("@@rate", kvSplitted[2]),
+                        new KeyValuePair<string, object>("@@leagueName", leagueName),
                     }
                 );
-                migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(query));
+                migrationBuilder.Sql(MigrationHelpers.ConvertScriptToDynamicSql(q));
             }
         }
 

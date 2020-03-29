@@ -33,7 +33,7 @@ namespace FliGen.Application.Queries.GetPlayers
                 Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Rate = x.Rates.OrderBy(y => y.Date).Last().Value
+                //Rate = x.Rates.OrderBy(y => y.Date).Last().Value
             });
         }
     }

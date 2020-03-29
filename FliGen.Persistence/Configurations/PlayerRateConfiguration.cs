@@ -20,6 +20,11 @@ namespace FliGen.Persistence.Configurations
                 .HasForeignKey(e => e.PlayerId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(e => e.LeagueId)
+                .IsRequired();
+
+            builder.Ignore(x => x.League);
         }
     }
 }

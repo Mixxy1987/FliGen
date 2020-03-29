@@ -12,6 +12,9 @@ namespace FliGen.Domain.Entities
         public int PlayerId { get; set; }
         public Player Player { get; set; }
 
+        public int LeagueId { get; set; }
+        public League League { get; set; }
+
         protected PlayerRate(){}
 
         public PlayerRate(DateTime date, double rate) : this()
