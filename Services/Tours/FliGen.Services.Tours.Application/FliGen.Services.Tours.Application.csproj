@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Tours.Domain\FliGen.Services.Tours.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

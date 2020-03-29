@@ -27,17 +27,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tours", "Tours", "{D701E96A-03ED-4F8F-9981-9C359BF6D350}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours", "FliGen.Services.Tours\FliGen.Services.Tours.csproj", "{CED5F0A6-2B75-4FF1-9A1B-DED451B0D28F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours", "Services\Tours\FliGen.Services.Tours\FliGen.Services.Tours.csproj", "{CED5F0A6-2B75-4FF1-9A1B-DED451B0D28F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Application", "FliGen.Services.Tours.Application\FliGen.Services.Tours.Application.csproj", "{EF9EC7C1-4E6A-42C4-8AAD-BF0D66A94222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Application", "Services\Tours\FliGen.Services.Tours.Application\FliGen.Services.Tours.Application.csproj", "{EF9EC7C1-4E6A-42C4-8AAD-BF0D66A94222}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Persistence", "FliGen.Services.Persistence\FliGen.Services.Tours.Persistence.csproj", "{64FB1666-8FFC-4A80-A16B-401E074E9497}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Persistence", "Services\Tours\FliGen.Services.Persistence\FliGen.Services.Tours.Persistence.csproj", "{64FB1666-8FFC-4A80-A16B-401E074E9497}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Domain", "FliGen.Services.Tours.Domain\FliGen.Services.Tours.Domain.csproj", "{548AD48A-403E-43FC-9828-C32080823EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Domain", "Services\Tours\FliGen.Services.Tours.Domain\FliGen.Services.Tours.Domain.csproj", "{548AD48A-403E-43FC-9828-C32080823EFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GatewayApi", "GatewayApi", "{FC2C7951-7DB9-4C63-AA74-A68FCF373304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Api", "FliGen.Services.Api\FliGen.Services.Api.csproj", "{D682F93A-9083-4B55-A827-C38E13D919D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Api", "Services\GatewayApi\FliGen.Services.Api\FliGen.Services.Api.csproj", "{D682F93A-9083-4B55-A827-C38E13D919D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
