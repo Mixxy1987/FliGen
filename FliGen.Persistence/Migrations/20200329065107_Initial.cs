@@ -26,9 +26,6 @@ namespace FliGen.Persistence.Migrations
                 name: "LeaguePlayerRole");
 
             migrationBuilder.DropTable(
-                name: "LeagueSeasonLinks");
-
-            migrationBuilder.DropTable(
                 name: "LeagueSettings");
 
             migrationBuilder.DropTable(
@@ -36,9 +33,6 @@ namespace FliGen.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PlayerRate");
-
-            migrationBuilder.DropTable(
-                name: "PlayerRatePlayerLinks");
 
             migrationBuilder.DropTable(
                 name: "Team");

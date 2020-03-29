@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common.RabbitMq;
 
 namespace FliGen.Services.Tours
 {
@@ -43,6 +44,7 @@ namespace FliGen.Services.Tours
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
             builder.AddAutoMapper();
+            builder.AddRabbitMq();
 			builder.AddMediator("FliGen.Services.Tours.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();

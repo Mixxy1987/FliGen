@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Persistence.Migrations
 {
     [DbContext(typeof(FliGenContext))]
-    [Migration("20200323171756_Initial")]
+    [Migration("20200329065107_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -156,19 +156,6 @@ namespace FliGen.Persistence.Migrations
                     b.ToTable("LeaguePlayerLinks");
                 });
 
-            modelBuilder.Entity("FliGen.Domain.Entities.LeagueSeasonLink", b =>
-                {
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LeagueId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SeasonId", "LeagueId");
-
-                    b.ToTable("LeagueSeasonLinks");
-                });
-
             modelBuilder.Entity("FliGen.Domain.Entities.LeagueSettings", b =>
                 {
                     b.Property<int>("Id")
@@ -241,19 +228,6 @@ namespace FliGen.Persistence.Migrations
                     b.HasIndex("PlayerId");
 
                     b.ToTable("PlayerRate");
-                });
-
-            modelBuilder.Entity("FliGen.Domain.Entities.PlayerRatePlayerLink", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerRateId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "PlayerRateId");
-
-                    b.ToTable("PlayerRatePlayerLinks");
                 });
 
             modelBuilder.Entity("FliGen.Domain.Entities.Season", b =>
