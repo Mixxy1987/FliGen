@@ -1,7 +1,6 @@
 ﻿using FliGen.Services.Players.Application.Dto;
 using FliGen.Services.Players.Application.Queries.Players;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -24,11 +23,9 @@ namespace FliGen.Services.Players.Controllers
 
         [HttpGet]
         [Produces(typeof(IEnumerable<PlayerWithRate>))]
-        public async Task<IEnumerable<PlayerWithRate>> GetPlayers(int size, int queryType, [FromQuery]int[] leagueId)
+        public async Task<IEnumerable<PlayerWithRate>> GetPlayers(int size, int queryType, [FromQuery]int[] leagueId, [FromQuery]int[] playerId)
         {
-            var players = await _mediatr.Send(new PlayersQuery(size, (PlayersQueryType)queryType, leagueId));
-
-            return players;
+            return await _mediatr.Send(new PlayersQuery(size, (PlayersQueryType)queryType, leagueId, playerId));
         }
     }
 }

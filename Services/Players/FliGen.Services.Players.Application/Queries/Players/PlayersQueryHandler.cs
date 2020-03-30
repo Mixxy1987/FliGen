@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Players.Application.Dto;
@@ -6,8 +7,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Services.Players.Domain.Entities;
 
 namespace FliGen.Services.Players.Application.Queries.Players
 {
@@ -24,10 +27,17 @@ namespace FliGen.Services.Players.Application.Queries.Players
 
         public async Task<IEnumerable<PlayerWithRate>> Handle(PlayersQuery request, CancellationToken cancellationToken)
         {
-            var repo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
+            var repo = _uow.GetRepositoryAsync<Player>();
 
-            IPaginate<Domain.Entities.Player> players = await repo.GetListAsync(
-                include: source => source.Include(a => a.Rates),
+            Expression<Func<Player, bool>> predicate = null;
+            if (request.PlayerIds.Length != 0)
+            {
+                predicate = player => request.PlayerIds.Contains(player.Id);
+            }
+
+            IPaginate<Player> players = await repo.GetListAsync(
+                predicate: predicate,
+                include: p => p.Include(a => a.Rates),
                 size: request.Size,
                 cancellationToken: cancellationToken);
 
