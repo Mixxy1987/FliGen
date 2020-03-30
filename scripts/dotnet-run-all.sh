@@ -3,7 +3,7 @@ export ASPNETCORE_ENVIRONMENT=local
 DOTNET_RUN=./scripts/dotnet-run.sh
 PREFIX=FliGen
 SERVICE=$PREFIX.Services
-REPOSITORIES=(Services/Tours/$SERVICE.Tours Services/GatewayApi/$SERVICE.Api)
+REPOSITORIES=(Services/Tours/$SERVICE.Tours Services/GatewayApi/$SERVICE.Api Services/Players/$SERVICE.Players)
 
 for REPOSITORY in ${REPOSITORIES[*]}
 do

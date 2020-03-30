@@ -1,15 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="scripts\**" />
-    <Content Remove="scripts\**" />
-    <EmbeddedResource Remove="scripts\**" />
-    <None Remove="scripts\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
@@ -21,10 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
-    <ProjectReference Include="..\FliGen.Services.Persistence\FliGen.Services.Tours.Persistence.csproj" />
-    <ProjectReference Include="..\FliGen.Services.Tours.Application\FliGen.Services.Tours.Application.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Players.Application\FliGen.Services.Players.Application.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Players.Persistence\FliGen.Services.Players.Persistence.csproj" />
   </ItemGroup>
-
-
 </Project>

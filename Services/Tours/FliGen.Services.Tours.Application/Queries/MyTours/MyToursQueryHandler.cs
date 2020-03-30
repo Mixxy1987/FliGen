@@ -38,20 +38,21 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
         }
 
         private IEnumerable<Dto.Tour> GetToursByCondition(IEnumerable<TeamPlayerLink> teamPlayerLinks, MyToursQueryType queryType, int[] seasonIds)
-        { // todo:: refactor using Specification pattern
+        { // todo:: refactor using Specification pattern?
             var tours = new List<Dto.Tour>();
             var teamRepo = _uow.GetReadOnlyRepository<Team>();
             var toursRepo = _uow.GetReadOnlyRepository<Tour>();
+
             foreach (var tpl in teamPlayerLinks)
             {
                 int tourId = teamRepo.Single(team => team.Id == tpl.TeamId).TourId;
                 Tour tour = toursRepo.Single(t => t.Id == tourId);
                 if (queryType == MyToursQueryType.Incoming && tour.IsEnded())
-                {
+                { // we want incoming tour, but this tour is ended - continue
                     continue;
                 }
                 if (seasonIds.Length != 0 && !seasonIds.Contains(tour.SeasonId))
-                {
+                { // we want tours for specific seasons, but this tour is from another season - continue
                     continue;
                 }
                 tours.Add(_mapper.Map<Dto.Tour>(tour));

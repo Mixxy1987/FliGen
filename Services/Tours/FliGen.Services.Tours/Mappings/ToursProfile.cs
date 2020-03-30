@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 
 namespace FliGen.Services.Tours.Mappings
 {
