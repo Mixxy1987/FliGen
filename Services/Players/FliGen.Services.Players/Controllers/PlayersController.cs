@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 
 namespace FliGen.Services.Players.Controllers
 {
@@ -26,6 +27,12 @@ namespace FliGen.Services.Players.Controllers
         public async Task<IEnumerable<PlayerWithRate>> GetPlayers(int size, int queryType, [FromQuery]int[] leagueId, [FromQuery]int[] playerId)
         {
             return await _mediatr.Send(new PlayersQuery(size, (PlayersQueryType)queryType, leagueId, playerId));
+        }
+
+        [HttpPut]
+        public async Task Update([FromBody]UpdatePlayerCommand cmd)
+        {
+            await _mediatr.Send(cmd);
         }
     }
 }

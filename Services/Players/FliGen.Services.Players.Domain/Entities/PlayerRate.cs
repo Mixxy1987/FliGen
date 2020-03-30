@@ -1,6 +1,7 @@
 ﻿using System;
 using FliGen.Common.Extensions;
 using FliGen.Common.SeedWork;
+using FliGen.Common.Types;
 
 namespace FliGen.Services.Players.Domain.Entities
 {
@@ -9,10 +10,10 @@ namespace FliGen.Services.Players.Domain.Entities
         public DateTime Date { get; }
         public double Value { get; }
 
-        public int PlayerId { get; set; }
-        public Player Player { get; set; }
+        public int PlayerId { get; }
+        public Player Player { get; }
 
-        public int LeagueId { get; set; }
+        public int LeagueId { get; }
 
         protected PlayerRate(){}
 
@@ -23,12 +24,33 @@ namespace FliGen.Services.Players.Domain.Entities
             Value = rate;
         }
 
-        public PlayerRate(DateTime date, string rate, int playerId) : this()
+        public PlayerRate(DateTime date, string rate, int playerId, int leagueId) : this()
         {
-            //todo:: validation?
+            if (date > DateTime.UtcNow)
+            {
+                throw new FliGenException("cannot_create_player_rate_with_future_date", "Cannot create player rate with future date");
+            }
+
+            if (string.IsNullOrWhiteSpace(rate))
+            {
+                throw new FliGenException("cannot_create_player_rate_with_empty_value", "Cannot create player rate with empty value");
+            }
+
+            if (playerId <= 0)
+            {
+                throw new FliGenException("cannot_create_player_with_negative_id", "Cannot create player with negative id");
+            }
+
+            if (leagueId <= 0)
+            {
+                throw new FliGenException("cannot_create_player_with_negative_league_id", "Cannot create player with negative league id");
+            }
+
+
             Date = date;
             Value = double.Parse(rate.CommaToDot());
             PlayerId = playerId;
+            LeagueId = leagueId;
         }
     }
 }
