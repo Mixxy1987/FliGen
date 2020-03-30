@@ -55,13 +55,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Seasons", "Seasons", "{F53D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Teams", "Teams", "{753D8655-9051-4D3D-BA5E-0212BEFB2A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Seasons", "Services\Seasons\FliGen.Services.Seasons\FliGen.Services.Seasons.csproj", "{863CF029-4C2E-4A69-91B8-428D869B130F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Seasons", "Services\Seasons\FliGen.Services.Seasons\FliGen.Services.Seasons.csproj", "{863CF029-4C2E-4A69-91B8-428D869B130F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Seasons.Application", "Services\Seasons\FliGen.Services.Seasons.Application\FliGen.Services.Seasons.Application.csproj", "{21554E2C-8D94-4C78-A4E1-A30EF5376E9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Seasons.Application", "Services\Seasons\FliGen.Services.Seasons.Application\FliGen.Services.Seasons.Application.csproj", "{21554E2C-8D94-4C78-A4E1-A30EF5376E9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Seasons.Domain", "Services\Seasons\FliGen.Services.Seasons.Domain\FliGen.Services.Seasons.Domain.csproj", "{99DBEF95-1440-4A54-9111-EDD37001EA47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Seasons.Domain", "Services\Seasons\FliGen.Services.Seasons.Domain\FliGen.Services.Seasons.Domain.csproj", "{99DBEF95-1440-4A54-9111-EDD37001EA47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Seasons.Persistence", "Services\Seasons\FliGen.Services.Seasons.Persistence\FliGen.Services.Seasons.Persistence.csproj", "{531BD53A-4509-472C-BFD2-F4E84BD9752B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Seasons.Persistence", "Services\Seasons\FliGen.Services.Seasons.Persistence\FliGen.Services.Seasons.Persistence.csproj", "{531BD53A-4509-472C-BFD2-F4E84BD9752B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues", "Services\Leagues\FliGen.Services.Leagues\FliGen.Services.Leagues.csproj", "{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues.Application", "Services\Leagues\FliGen.Services.Leagues.Application\FliGen.Services.Leagues.Application.csproj", "{D1637614-4295-44B9-BCB8-9627575975E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues.Domain", "Services\Leagues\FliGen.Services.Leagues.Domain\FliGen.Services.Leagues.Domain.csproj", "{6E442D56-31D0-4F56-8BA5-F87B59F0B885}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues.Persistence", "Services\Leagues\FliGen.Services.Leagues.Persistence\FliGen.Services.Leagues.Persistence.csproj", "{C47652C3-A905-4AFE-A108-B3B6803EF654}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +165,22 @@ Global
 		{531BD53A-4509-472C-BFD2-F4E84BD9752B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{531BD53A-4509-472C-BFD2-F4E84BD9752B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{531BD53A-4509-472C-BFD2-F4E84BD9752B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1637614-4295-44B9-BCB8-9627575975E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1637614-4295-44B9-BCB8-9627575975E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1637614-4295-44B9-BCB8-9627575975E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1637614-4295-44B9-BCB8-9627575975E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E442D56-31D0-4F56-8BA5-F87B59F0B885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E442D56-31D0-4F56-8BA5-F87B59F0B885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E442D56-31D0-4F56-8BA5-F87B59F0B885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E442D56-31D0-4F56-8BA5-F87B59F0B885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47652C3-A905-4AFE-A108-B3B6803EF654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47652C3-A905-4AFE-A108-B3B6803EF654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47652C3-A905-4AFE-A108-B3B6803EF654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47652C3-A905-4AFE-A108-B3B6803EF654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +208,10 @@ Global
 		{21554E2C-8D94-4C78-A4E1-A30EF5376E9C} = {F53DB629-A07B-4198-B786-3946060CF1AD}
 		{99DBEF95-1440-4A54-9111-EDD37001EA47} = {F53DB629-A07B-4198-B786-3946060CF1AD}
 		{531BD53A-4509-472C-BFD2-F4E84BD9752B} = {F53DB629-A07B-4198-B786-3946060CF1AD}
+		{C2B28B34-EA85-4520-B125-7ACEA0DCA8DA} = {24ECE023-2D75-4B41-8640-D9630E915FED}
+		{D1637614-4295-44B9-BCB8-9627575975E2} = {24ECE023-2D75-4B41-8640-D9630E915FED}
+		{6E442D56-31D0-4F56-8BA5-F87B59F0B885} = {24ECE023-2D75-4B41-8640-D9630E915FED}
+		{C47652C3-A905-4AFE-A108-B3B6803EF654} = {24ECE023-2D75-4B41-8640-D9630E915FED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4F4FC9-5251-45DB-8C41-967CFEBF4FC3}

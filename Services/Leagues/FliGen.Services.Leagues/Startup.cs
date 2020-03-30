@@ -4,7 +4,7 @@ using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Services.Seasons.Persistence.Contextes;
+using FliGen.Services.Leagues.Persistence.Contextes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace FliGen.Services.Seasons
+namespace FliGen.Services.Leagues
 {
     public class Startup
     {
@@ -27,8 +27,8 @@ namespace FliGen.Services.Seasons
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SeasonsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<SeasonsContext>();
+            services.AddDbContext<LeaguesContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<LeaguesContext>();
             services.AddControllers();
 
             var builder = new ContainerBuilder();
@@ -44,7 +44,7 @@ namespace FliGen.Services.Seasons
         {
             builder.AddAutoMapper();
             builder.AddRabbitMq();
-            builder.AddMediator("FliGen.Services.Seasons.Application");
+            builder.AddMediator("FliGen.Services.Leagues.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
             builder.AddSerilogService();
