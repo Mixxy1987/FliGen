@@ -52,10 +52,14 @@
         }
     */
   "MultiProjectConfigurations": {
-    "Api + Tours": {
+    "Api+Leagues+Players+Seasons+Tours+Teams": {
       "Projects": {
         "FliGen.Services.Api": {},
-        "FliGen.Services.Tours": {}
+        "FliGen.Services.Leagues": {},
+        "FliGen.Services.Players": {},
+        "FliGen.Services.Seasons": {},
+        "FliGen.Services.Tours": {},
+        "FliGen.Services.Teams": {}
       }
     }
   }

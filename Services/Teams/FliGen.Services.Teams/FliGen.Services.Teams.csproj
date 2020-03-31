@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FliGen.Services.Teams.Application\FliGen.Services.Teams.Application.csproj" />
     <ProjectReference Include="..\FliGen.Services.Teams.Persistence\FliGen.Services.Teams.Persistence.csproj" />
   </ItemGroup>

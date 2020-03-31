@@ -6,10 +6,7 @@ namespace FliGen.Services.Tours.Persistence.Contextes
 {
     public class ToursContext : DbContext
     {
-        public DbSet<TeamRole> TeamRoles { get; set; }
         public DbSet<TourStatus> TourStatuses { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<TeamPlayerLink> TeamPlayerLinks { get; set; }
         public DbSet<Tour> Tours { get; set; }
 
         public ToursContext(DbContextOptions<ToursContext> options) :base(options)
@@ -24,7 +21,7 @@ namespace FliGen.Services.Tours.Persistence.Contextes
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TourConfiguration).Assembly);
             base.OnModelCreating(modelBuilder);
         }
     }

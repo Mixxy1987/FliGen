@@ -2,6 +2,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
+using FliGen.Common.RabbitMq;
+using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Tours.Persistence.Contextes;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.RabbitMq;
+using FliGen.Services.Tours.Application.Services;
 
 namespace FliGen.Services.Tours
 {
@@ -32,7 +34,9 @@ namespace FliGen.Services.Tours
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<ToursContext>();
 			services.AddControllers();
 
-            var builder = new ContainerBuilder();
+            services.RegisterServiceForwarder<ITeamsService>("teams-service");
+
+			var builder = new ContainerBuilder();
 
             ConfigureContainer(builder);
             builder.Populate(services);

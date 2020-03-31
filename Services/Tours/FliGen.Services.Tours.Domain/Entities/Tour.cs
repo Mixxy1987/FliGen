@@ -1,14 +1,12 @@
 ﻿using FliGen.Common.SeedWork;
-using System;
-using System.Collections.Generic;
 using FliGen.Common.Types;
+using System;
 
 namespace FliGen.Services.Tours.Domain.Entities
 {
     public class Tour : Entity
     {
         public DateTime Date { get; set; }
-        public List<Team> Teams { get; set; }
         public int? HomeCount { get; set; }
         public int? GuestCount { get; set; }
 

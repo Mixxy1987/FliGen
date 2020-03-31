@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
-using FliGen.Services.Tours.Domain.Entities;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository.Paging;
+using FliGen.Services.Tours.Application.Dto;
+using FliGen.Services.Tours.Application.Services;
+using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
 
 namespace FliGen.Services.Tours.Application.Queries.MyTours
 {
@@ -13,52 +16,51 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ITeamsService _teamsService;
 
-        public MyToursQueryHandler(IUnitOfWork uow, IMapper mapper)
+        public MyToursQueryHandler(
+            IUnitOfWork uow,
+            IMapper mapper,
+            ITeamsService teamsService)
         {
             _uow = uow;
             _mapper = mapper;
+            _teamsService = teamsService;
         }
 
-        public Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
         {
-			var teamPlayerLinksRepo = _uow.GetReadOnlyRepository<TeamPlayerLink>();
+            ToursByPlayerIdDto toursByPlayerIdDto = await _teamsService.GetToursByPlayerIdAsync(request.PlayerId, request.Size);
 
-            var teamPlayerLinks = teamPlayerLinksRepo
-                .GetList(
-                    predicate: tpl => tpl.PlayerId == request.UserId, 
-                    size : request.Size);
-
-            if (teamPlayerLinks.Count == 0)
+            if (toursByPlayerIdDto is null)
             {
                 return null;
-			}
+            }
 
-            return Task.FromResult(GetToursByCondition(teamPlayerLinks.Items, request.QueryType, request.SeasonIds));
-        }
+            List<int> tourIds = toursByPlayerIdDto.TourDtos.Select(x => x.TourId).ToList();
 
-        private IEnumerable<Dto.Tour> GetToursByCondition(IEnumerable<TeamPlayerLink> teamPlayerLinks, MyToursQueryType queryType, int[] seasonIds)
-        { // todo:: refactor using Specification pattern?
-            var tours = new List<Dto.Tour>();
-            var teamRepo = _uow.GetReadOnlyRepository<Team>();
             var toursRepo = _uow.GetReadOnlyRepository<Tour>();
 
-            foreach (var tpl in teamPlayerLinks)
+            IPaginate<Tour> tours = toursRepo.GetList(
+                t => tourIds.Contains(t.Id),
+                size: tourIds.Count);
+
+            var toursDtos = new List<Dto.Tour>();
+
+            foreach (var tour in tours.Items)
             {
-                int tourId = teamRepo.Single(team => team.Id == tpl.TeamId).TourId;
-                Tour tour = toursRepo.Single(t => t.Id == tourId);
-                if (queryType == MyToursQueryType.Incoming && tour.IsEnded())
+                if (request.QueryType == MyToursQueryType.Incoming && tour.IsEnded())
                 { // we want incoming tour, but this tour is ended - continue
                     continue;
                 }
-                if (seasonIds.Length != 0 && !seasonIds.Contains(tour.SeasonId))
+                if (request.SeasonIds.Length != 0 && !request.SeasonIds.Contains(tour.SeasonId))
                 { // we want tours for specific seasons, but this tour is from another season - continue
                     continue;
                 }
-                tours.Add(_mapper.Map<Dto.Tour>(tour));
+                toursDtos.Add(_mapper.Map<Dto.Tour>(tour));
             }
 
-            return tours;
+            return toursDtos;
         }
     }
 }
