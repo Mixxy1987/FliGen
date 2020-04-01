@@ -6,6 +6,7 @@ using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository.Paging;
 
 namespace FliGen.Services.Teams.Application.Queries
 {
@@ -24,10 +25,11 @@ namespace FliGen.Services.Teams.Application.Queries
         {
             var teamPlayerLinksRepo = _uow.GetReadOnlyRepository<TeamPlayerLink>();
 
-            var teamPlayerLinks = teamPlayerLinksRepo
+            IPaginate<TeamPlayerLink> teamPlayerLinks = teamPlayerLinksRepo
                 .GetList(
                     predicate: tpl => tpl.PlayerId == request.PlayerId,
-                    size: request.Size);
+                    size: request.Size,
+                    index: request.Page);
 
             if (teamPlayerLinks.Count == 0)
             {

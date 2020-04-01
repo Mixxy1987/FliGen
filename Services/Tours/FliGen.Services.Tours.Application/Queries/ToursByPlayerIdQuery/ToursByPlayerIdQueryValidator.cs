@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace FliGen.Services.Tours.Application.Queries.MyTours
+namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
 {
-    public sealed class MyToursCommandValidator : AbstractValidator<MyToursQuery>
+    public sealed class ToursByPlayerIdQueryValidator : AbstractValidator<ToursByPlayerIdQuery>
     {
-        public MyToursCommandValidator()
+        public ToursByPlayerIdQueryValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

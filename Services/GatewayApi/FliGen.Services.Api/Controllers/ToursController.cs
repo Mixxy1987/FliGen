@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FliGen.Common.RabbitMq;
 using FliGen.Services.Api.Messages.Commands.Tours;
+using FliGen.Services.Api.Models.Tours;
+using FliGen.Services.Api.Queries;
 using FliGen.Services.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
@@ -21,6 +24,10 @@ namespace FliGen.Services.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             return Single(await _toursService.GetAsync(id));
+        }
+        public async Task<IEnumerable<Tour>> GetAsync([FromQuery]ToursByPlayerIdQuery toursByPlayerIdQuery)
+        {
+            return await _toursService.GetAsync(toursByPlayerIdQuery);
         }
 
         [HttpPost]

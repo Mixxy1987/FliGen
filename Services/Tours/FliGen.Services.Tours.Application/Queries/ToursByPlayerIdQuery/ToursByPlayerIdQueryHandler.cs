@@ -1,24 +1,24 @@
-﻿using AutoMapper;
-using FliGen.Common.SeedWork.Repository;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Services;
+using MediatR;
 using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
 
-namespace FliGen.Services.Tours.Application.Queries.MyTours
+namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
 {
-    public class MyToursQueryHandler : IRequestHandler<MyToursQuery, IEnumerable<Dto.Tour>>
+    public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, IEnumerable<Dto.Tour>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
         private readonly ITeamsService _teamsService;
 
-        public MyToursQueryHandler(
+        public ToursByPlayerIdQueryHandler(
             IUnitOfWork uow,
             IMapper mapper,
             ITeamsService teamsService)
@@ -28,9 +28,9 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
             _teamsService = teamsService;
         }
 
-        public async Task<IEnumerable<Dto.Tour>> Handle(MyToursQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dto.Tour>> Handle(ToursByPlayerIdQuery request, CancellationToken cancellationToken)
         {
-            ToursByPlayerIdDto toursByPlayerIdDto = await _teamsService.GetToursByPlayerIdAsync(request.PlayerId, request.Size);
+            ToursByPlayerIdDto toursByPlayerIdDto = await _teamsService.GetToursByPlayerIdAsync(request.Size, request.Page, request.PlayerId);
 
             if (toursByPlayerIdDto is null)
             {
@@ -49,11 +49,11 @@ namespace FliGen.Services.Tours.Application.Queries.MyTours
 
             foreach (var tour in tours.Items)
             {
-                if (request.QueryType == MyToursQueryType.Incoming && tour.IsEnded())
+                if (request.QueryType == ToursByPlayerIdQueryType.Incoming && tour.IsEnded())
                 { // we want incoming tour, but this tour is ended - continue
                     continue;
                 }
-                if (request.SeasonIds.Length != 0 && !request.SeasonIds.Contains(tour.SeasonId))
+                if (request.SeasonIds != null && request.SeasonIds.Length != 0 && !request.SeasonIds.Contains(tour.SeasonId))
                 { // we want tours for specific seasons, but this tour is from another season - continue
                     continue;
                 }

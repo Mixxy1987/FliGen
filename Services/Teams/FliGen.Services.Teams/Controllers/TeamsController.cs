@@ -22,9 +22,9 @@ namespace FliGen.Services.Teams.Controllers
 
         [HttpGet("ToursByPlayerId")]
         [Produces(typeof(ToursByPlayerIdDto))]
-        public Task<ToursByPlayerIdDto> Get([FromQuery]int playerId, int size)
+        public Task<ToursByPlayerIdDto> Get(int size, int page, [FromQuery]int playerId)
         {
-            return _mediatr.Send(new ToursByPlayerIdQuery(playerId, size));
+            return _mediatr.Send(new ToursByPlayerIdQuery(size, page, playerId));
         }
 	}
 }

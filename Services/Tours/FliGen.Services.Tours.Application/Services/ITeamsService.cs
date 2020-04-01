@@ -8,6 +8,6 @@ namespace FliGen.Services.Tours.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("teams/toursByPlayerId")]
-        Task<ToursByPlayerIdDto> GetToursByPlayerIdAsync([Query]int playerId, [Query]int size);
+        Task<ToursByPlayerIdDto> GetToursByPlayerIdAsync([Query]int size, [Query]int page, [Query]int playerId);
     }
 }
