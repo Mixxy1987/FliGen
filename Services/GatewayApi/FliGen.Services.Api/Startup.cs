@@ -39,6 +39,7 @@ namespace FliGen.Services.Api
                         .WithExposedHeaders(Headers));
             });
             services.RegisterServiceForwarder<IToursService>("tours-service");
+            services.RegisterServiceForwarder<IPlayersService>("players-service");
 
             services.AddControllers();
 
@@ -46,7 +47,7 @@ namespace FliGen.Services.Api
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                 .AsImplementedInterfaces();
             builder.Populate(services);
-            builder.AddRabbitMq();
+            builder.AddRabbitMq("FliGen.Services.Api");
 
             Container = builder.Build();
 

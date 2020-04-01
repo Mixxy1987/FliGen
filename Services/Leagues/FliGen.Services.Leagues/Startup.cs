@@ -43,7 +43,7 @@ namespace FliGen.Services.Leagues
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddAutoMapper();
-            builder.AddRabbitMq();
+            builder.AddRabbitMq("FliGen.Services.Leagues.Application");
             builder.AddMediator("FliGen.Services.Leagues.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();

@@ -43,7 +43,7 @@ namespace FliGen.Services.Seasons
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddAutoMapper();
-            builder.AddRabbitMq();
+            builder.AddRabbitMq("FliGen.Services.Seasons.Application");
             builder.AddMediator("FliGen.Services.Seasons.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();

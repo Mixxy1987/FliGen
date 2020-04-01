@@ -44,7 +44,7 @@ namespace FliGen.Services.Teams
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddAutoMapper();
-            builder.AddRabbitMq();
+            builder.AddRabbitMq("FliGen.Services.Teams.Application");
             builder.AddMediator("FliGen.Services.Teams.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();

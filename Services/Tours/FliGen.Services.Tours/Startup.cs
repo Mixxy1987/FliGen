@@ -48,7 +48,7 @@ namespace FliGen.Services.Tours
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
             builder.AddAutoMapper();
-            builder.AddRabbitMq();
+            builder.AddRabbitMq("FliGen.Services.Tours.Application");
 			builder.AddMediator("FliGen.Services.Tours.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();

@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using FliGen.Common.Messages;
 
 namespace FliGen.Services.Players.Application.Commands.UpdatePlayer
 {
-    public class UpdatePlayerCommand : IRequest
+    [MessageNamespace("players")]
+    public class UpdatePlayer: ICommand
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

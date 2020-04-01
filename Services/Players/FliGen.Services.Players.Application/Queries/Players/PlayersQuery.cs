@@ -12,17 +12,10 @@ namespace FliGen.Services.Players.Application.Queries.Players
      */
     public class PlayersQuery : IRequest<IEnumerable<PlayerWithRate>>
     {
-        public int Size { get; }
-        public PlayersQueryType QueryType { get; }
-        public int[] PlayerIds { get; }
-        public int[] LeagueIds { get; }
-
-        public PlayersQuery(int size, PlayersQueryType queryType, int[] leagueIds, int[] playerIds)
-        {
-            Size = size;
-            QueryType = queryType;
-            LeagueIds = leagueIds;
-            PlayerIds = playerIds;
-        }
+        public int Page { get; set; }
+        public int Size { get; set; }
+        public PlayersQueryType QueryType { get; set; }
+        public int[] PlayerId { get; set; }
+        public int[] LeagueId { get; set; }
     }
 }

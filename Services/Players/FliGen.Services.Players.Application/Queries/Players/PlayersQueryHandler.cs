@@ -30,9 +30,9 @@ namespace FliGen.Services.Players.Application.Queries.Players
             var repo = _uow.GetRepositoryAsync<Player>();
 
             Expression<Func<Player, bool>> predicate = null;
-            if (request.PlayerIds.Length != 0)
+            if (request.PlayerId.Length != 0)
             {
-                predicate = player => request.PlayerIds.Contains(player.Id);
+                predicate = player => request.PlayerId.Contains(player.Id);
             }
 
             IPaginate<Player> players = await repo.GetListAsync(
@@ -61,7 +61,7 @@ namespace FliGen.Services.Players.Application.Queries.Players
 
                 foreach (var rate in rates)
                 {
-                    if (request.LeagueIds.Length != 0 && !request.LeagueIds.Contains(rate.LeagueId))
+                    if (request.LeagueId.Length != 0 && !request.LeagueId.Contains(rate.LeagueId))
                     {
                         continue;
                     }

@@ -14,7 +14,9 @@ namespace FliGen.Services.Api.Controllers
     {
         private readonly IToursService _toursService;
 
-        public ToursController(IBusPublisher busPublisher, ITracer tracer,
+        public ToursController(
+            IBusPublisher busPublisher,
+            ITracer tracer,
             IToursService toursService) : base(busPublisher, tracer)
         {
             _toursService = toursService;
@@ -25,6 +27,8 @@ namespace FliGen.Services.Api.Controllers
         {
             return Single(await _toursService.GetAsync(id));
         }
+
+        [HttpGet]
         public async Task<IEnumerable<Tour>> GetAsync([FromQuery]ToursByPlayerIdQuery toursByPlayerIdQuery)
         {
             return await _toursService.GetAsync(toursByPlayerIdQuery);

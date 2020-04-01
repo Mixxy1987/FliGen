@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FliGen.Services.Players.Application.Commands.UpdatePlayer
 {
-    public sealed class UpdatePlayerCommandValidator : AbstractValidator<UpdatePlayerCommand>
+    public sealed class UpdatePlayerValidator : AbstractValidator<UpdatePlayer>
     {
-        public UpdatePlayerCommandValidator()
+        public UpdatePlayerValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

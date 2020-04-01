@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +27,7 @@ namespace FliGen.Common.RabbitMq
         public static IBusSubscriber UseRabbitMq(this IApplicationBuilder app)
             => new BusSubscriber(app);
 
-        public static void AddRabbitMq(this ContainerBuilder builder)
+        public static void AddRabbitMq(this ContainerBuilder builder, params string[] assemblies)
         {
             builder.Register(context =>
             {
@@ -43,11 +45,23 @@ namespace FliGen.Common.RabbitMq
                 return options;
             }).SingleInstance();
 
-            var assembly = Assembly.GetCallingAssembly();
-            builder.RegisterAssemblyTypes(assembly)
+            var result = new List<Assembly>();
+            foreach (var assembly in assemblies)
+            {
+                result.Add(Assembly.Load(assembly));
+            }
+
+            builder.AddRabbitMq(result.ToArray());
+
+            ConfigureBus(builder);
+        }
+
+        public static void AddRabbitMq(this ContainerBuilder builder, params Assembly[] assemblies)
+        {
+            builder.RegisterAssemblyTypes(assemblies)
                 .AsClosedTypesOf(typeof(IEventHandler<>))
                 .InstancePerDependency();
-            builder.RegisterAssemblyTypes(assembly)
+            builder.RegisterAssemblyTypes(assemblies)
                 .AsClosedTypesOf(typeof(ICommandHandler<>))
                 .InstancePerDependency();
             builder.RegisterType<Handler>().As<IHandler>()
@@ -56,8 +70,6 @@ namespace FliGen.Common.RabbitMq
                 .InstancePerDependency();
             builder.RegisterInstance(FliGenDefaultTracer.Create()).As<ITracer>().SingleInstance()
                 .PreserveExistingDefaults();
-
-            ConfigureBus(builder);
         }
 
         private static void ConfigureBus(ContainerBuilder builder)

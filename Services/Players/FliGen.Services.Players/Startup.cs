@@ -11,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 using FliGen.Common.RabbitMq;
+using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 
 namespace FliGen.Services.Players
 {
@@ -29,9 +31,13 @@ namespace FliGen.Services.Players
 		{
 			services.AddDbContext<PlayersContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<PlayersContext>();
-			services.AddControllers();
+			
+            services.AddControllers();
 
 			var builder = new ContainerBuilder();
+
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
 
 			ConfigureContainer(builder);
 			builder.Populate(services);
@@ -43,7 +49,7 @@ namespace FliGen.Services.Players
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			builder.AddAutoMapper();
-			builder.AddRabbitMq();
+			builder.AddRabbitMq("FliGen.Services.Players.Application");
 			builder.AddMediator("FliGen.Services.Players.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();
@@ -61,6 +67,8 @@ namespace FliGen.Services.Players
 			app.UseHttpsRedirection();
 			app.UseRouting();
 			app.UseAuthorization();
+
+            app.UseRabbitMq().SubscribeCommand<UpdatePlayer>();
 
 			app.UseEndpoints(endpoints =>
 			{
