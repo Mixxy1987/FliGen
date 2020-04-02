@@ -7,14 +7,14 @@ using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Leagues.Application.Dto;
 using MediatR;
 
-namespace FliGen.Services.Leagues.Application.Queries.GetLeagueTypes
+namespace FliGen.Services.Leagues.Application.Queries.LeagueTypes
 {
-    public class GetLeagueTypesQueryHandler : IRequestHandler<GetLeagueTypesQuery, IEnumerable<Dto.LeagueType>>
+    public class LeagueTypesQueryHandler : IRequestHandler<LeagueTypesQuery, IEnumerable<LeagueType>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public GetLeagueTypesQueryHandler(
+        public LeagueTypesQueryHandler(
             IUnitOfWork uow,
             IMapper mapper)
         {
@@ -22,7 +22,7 @@ namespace FliGen.Services.Leagues.Application.Queries.GetLeagueTypes
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Dto.LeagueType>> Handle(GetLeagueTypesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<LeagueType>> Handle(LeagueTypesQuery request, CancellationToken cancellationToken)
         {
             var repo = _uow.GetRepositoryAsync<Domain.Entities.Enum.LeagueType>();
             var leagueTypes = await repo.GetListAsync(cancellationToken: cancellationToken);

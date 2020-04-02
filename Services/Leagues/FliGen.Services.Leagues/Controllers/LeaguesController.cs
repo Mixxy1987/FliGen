@@ -1,13 +1,13 @@
 ﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Dto;
-using FliGen.Services.Leagues.Application.Queries.GetLeagueTypes;
 using FliGen.Services.Leagues.Application.Queries.Leagues;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Leagues.Application.Queries.LeagueTypes;
 
 namespace FliGen.Services.Leagues.Controllers
 {
@@ -36,7 +36,7 @@ namespace FliGen.Services.Leagues.Controllers
         [Produces(typeof(IEnumerable<LeagueType>))]
         public Task<IEnumerable<LeagueType>> GetTypes()
         {
-            return _mediatr.Send(new GetLeagueTypesQuery());
+            return _mediatr.Send(new LeagueTypesQuery());
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace FliGen.Services.Leagues.Controllers
         }
 
         [HttpPost]
-        public async Task Create([FromBody]CreateLeagueCommand cmd)
+        public async Task Create([FromBody]CreateLeague cmd)
         { 
             await _mediatr.Send(cmd);
         }
@@ -55,7 +55,7 @@ namespace FliGen.Services.Leagues.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            await _mediatr.Send(new DeleteLeagueCommand()
+            await _mediatr.Send(new DeleteLeague()
             {
                 Id = id
             });

@@ -1,4 +1,5 @@
 ﻿using FliGen.Common.RabbitMq;
+using FliGen.Services.Api.Messages.Commands.Leagues;
 using FliGen.Services.Api.Models.Leagues;
 using FliGen.Services.Api.Queries.Leagues;
 using FliGen.Services.Api.Services;
@@ -35,7 +36,19 @@ namespace FliGen.Services.Api.Controllers
         {
             var playerId = _identityService.GetUserIdentity();
 
-            return await _leaguesService.GetAsync(new LeaguesQuery() { PlayerId = playerId });
+            return await _leaguesService.GetAsync(new LeaguesQuery{ PlayerId = playerId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateLeague command)
+        {
+            return await SendAsync(command);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return await SendAsync(new DeleteLeague(id));
         }
     }
 }

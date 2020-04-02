@@ -2,9 +2,9 @@
 
 namespace FliGen.Services.Leagues.Application.Commands.DeleteLeague
 {
-    public sealed class DeleteLeagueCommandValidator : AbstractValidator<DeleteLeagueCommand>
+    public sealed class DeleteLeagueValidator : AbstractValidator<DeleteLeague>
     {
-        public DeleteLeagueCommandValidator()
+        public DeleteLeagueValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

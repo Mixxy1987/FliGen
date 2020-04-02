@@ -1,9 +1,10 @@
-﻿using FliGen.Services.Leagues.Application.Dto;
-using MediatR;
+﻿using FliGen.Common.Messages;
+using FliGen.Services.Leagues.Application.Dto;
 
 namespace FliGen.Services.Leagues.Application.Commands.CreateLeague
 {
-    public class CreateLeagueCommand : IRequest
+    [MessageNamespace("leagues")]
+    public class CreateLeague : ICommand
     {
         public string Name { get; set; }
         public string Description { get; set; }

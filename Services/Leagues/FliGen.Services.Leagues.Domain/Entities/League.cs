@@ -24,9 +24,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
 		public bool IsVisible() => LeagueSettings.Visibility;
 		public bool IsRequireConfirmation() => LeagueSettings.RequireConfirmation;
 
-		private League()
-		{
-		}
+		public League() {}
 
 		private League(string name, string description, LeagueType type) : this()
 		{

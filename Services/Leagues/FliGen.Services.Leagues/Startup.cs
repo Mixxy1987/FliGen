@@ -3,7 +3,11 @@ using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
+using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Persistence.Contextes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.RestEase;
-using FliGen.Services.Leagues.Application.Services;
 
 namespace FliGen.Services.Leagues
 {
@@ -65,6 +67,10 @@ namespace FliGen.Services.Leagues
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseRabbitMq()
+                .SubscribeCommand<CreateLeague>()
+                .SubscribeCommand<DeleteLeague>();
 
             app.UseEndpoints(endpoints =>
             {

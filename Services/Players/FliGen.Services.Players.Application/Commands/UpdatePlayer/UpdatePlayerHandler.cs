@@ -1,13 +1,11 @@
-﻿using FliGen.Common.SeedWork.Repository;
+﻿using FliGen.Common.Handlers;
+using FliGen.Common.RabbitMq;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Players.Domain.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Common.Handlers;
-using FliGen.Common.RabbitMq;
 
 namespace FliGen.Services.Players.Application.Commands.UpdatePlayer
 {
