@@ -11,15 +11,5 @@ namespace FliGen.Services.Api.Messages.Commands.Players
         public string LastName { get; set; }
         public int LeagueId { get; set; }
         public string Rate { get; set; }
-
-        /*[JsonConstructor]
-        public UpdatePlayer(int id, string firstName, string lastName, int leagueId, string rate)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            LeagueId = leagueId;
-            Rate = rate;
-        }*/
     }
 }

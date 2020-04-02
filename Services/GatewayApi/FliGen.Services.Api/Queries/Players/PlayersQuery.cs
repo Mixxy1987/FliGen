@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace FliGen.Services.Api.Queries
+﻿namespace FliGen.Services.Api.Queries.Players
 {
     public class PlayersQuery : PagedQuery
     {

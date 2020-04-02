@@ -38,12 +38,19 @@ namespace FliGen.Services.Api
                         .AllowAnyHeader()
                         .WithExposedHeaders(Headers));
             });
-            services.RegisterServiceForwarder<IToursService>("tours-service");
             services.RegisterServiceForwarder<IPlayersService>("players-service");
+            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+            //services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
+            services.RegisterServiceForwarder<IToursService>("tours-service");
+            //services.RegisterServiceForwarder<ITeamsService>("teams-service");
+            
 
             services.AddControllers();
 
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<IdentityService>().As<IIdentityService>().InstancePerDependency();
+
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                 .AsImplementedInterfaces();
             builder.Populate(services);

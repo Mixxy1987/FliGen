@@ -3,6 +3,7 @@ using FliGen.Services.Api.Queries;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Api.Queries.Tours;
 
 
 namespace FliGen.Services.Api.Services

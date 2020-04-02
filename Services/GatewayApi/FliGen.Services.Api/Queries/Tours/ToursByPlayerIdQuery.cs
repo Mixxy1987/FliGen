@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Api.Queries
+﻿namespace FliGen.Services.Api.Queries.Tours
 {
     public class ToursByPlayerIdQuery : PagedQuery
     {

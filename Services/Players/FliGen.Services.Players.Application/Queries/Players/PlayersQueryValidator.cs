@@ -2,9 +2,9 @@
 
 namespace FliGen.Services.Players.Application.Queries.Players
 {
-    public sealed class PlayersCommandValidator : AbstractValidator<PlayersQuery>
+    public sealed class PlayersQueryValidator : AbstractValidator<PlayersQuery>
     {
-        public PlayersCommandValidator()
+        public PlayersQueryValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

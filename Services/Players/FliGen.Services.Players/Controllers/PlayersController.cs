@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Players.Application.Queries.PlayerInternalId;
 
 namespace FliGen.Services.Players.Controllers
 {
@@ -21,11 +22,24 @@ namespace FliGen.Services.Players.Controllers
             _mediatr = mediatr;
         }
 
+        [HttpGet("HealthCheck")]
+        public IActionResult HealthCheck()
+        {
+            return Ok("Players service ready!");
+        }
+
         [HttpGet]
         [Produces(typeof(IEnumerable<PlayerWithRate>))]
         public async Task<IEnumerable<PlayerWithRate>> GetAsync([FromQuery]PlayersQuery playersQuery)
         {
             return await _mediatr.Send(playersQuery);
+        }
+
+        [HttpGet("id")]
+        [Produces(typeof(PlayerInternalIdDto))]
+        public async Task<PlayerInternalIdDto> GetInternalIdAsync([FromQuery]string externalId)
+        {
+            return await _mediatr.Send(new PlayerInternalIdQuery(externalId));
         }
     }
 }

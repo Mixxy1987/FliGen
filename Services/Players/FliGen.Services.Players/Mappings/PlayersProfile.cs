@@ -17,6 +17,9 @@ namespace FliGen.Services.Players.Mappings
                 .ForMember(pwr => pwr.FirstName, x => x.MapFrom(p => p.FirstName))
                 .ForMember(pwr => pwr.LastName, x => x.MapFrom(p => p.LastName))
                 .ForMember(pwr => pwr.PlayerLeagueRates, x => x.MapFrom(p => p.Rates));
+
+            CreateMap<Domain.Entities.Player, Application.Dto.PlayerInternalIdDto>()
+                .ForMember(p => p.InternalId, x => x.MapFrom(p => p.Id));
         }
     }
 }
