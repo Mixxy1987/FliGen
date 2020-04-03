@@ -6,7 +6,7 @@ using FliGen.Application.Events.PlayerRegistered;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Persistence.Contextes;
+using FliGen.Persistence.Contexts;
 using FliGen.Web.Extensions;
 using FliGen.Web.Services;
 using IdentityServer4.Models;

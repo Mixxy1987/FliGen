@@ -1,5 +1,4 @@
-﻿using System;
-using FliGen.Persistence.Helper.InitialFill;
+﻿using FliGen.Common.Sql;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FliGen.Persistence.Migrations
@@ -9,12 +8,6 @@ namespace FliGen.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(MigrationHelpers.GetDynamicSqlFromFile(@"SqlScripts/InitialFill.sql"));
-            InitialFillPlayers.NamesAndRatesFill(migrationBuilder);
-            InitialFillPlayers.LeaguePlayerLinksFill(migrationBuilder);
-            InitialFillSeasons.SeasonsAndToursFill(migrationBuilder);
-            int toursCount = InitialFillTours.ToursFill(migrationBuilder);
-            InitialFillTeams.TeamsFill(migrationBuilder, toursCount);
-            InitialFillTeamPlayers.TeamPlayersFill(migrationBuilder, toursCount * 2);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

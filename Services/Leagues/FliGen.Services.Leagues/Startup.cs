@@ -8,7 +8,7 @@ using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Services;
-using FliGen.Services.Leagues.Persistence.Contextes;
+using FliGen.Services.Leagues.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using EventBus.Base.Standard;
 using FliGen.Application.Events;
 using FliGen.Application.Events.PlayerRegistered;
-using FliGen.Persistence.Contextes;
+using FliGen.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

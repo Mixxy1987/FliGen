@@ -3,7 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Services.Players.Persistence.Contextes;
+using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

@@ -4,7 +4,7 @@ using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Services.Seasons.Persistence.Contextes;
+using FliGen.Services.Seasons.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

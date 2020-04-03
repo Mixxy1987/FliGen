@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Helper\" />
     <Folder Include="Migrations\" />
     <Folder Include="Repositories\" />
   </ItemGroup>

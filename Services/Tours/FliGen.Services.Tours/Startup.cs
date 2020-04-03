@@ -5,7 +5,7 @@ using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Services.Tours.Persistence.Contextes;
+using FliGen.Services.Tours.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
