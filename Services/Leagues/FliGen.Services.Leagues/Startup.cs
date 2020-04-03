@@ -7,6 +7,7 @@ using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
+using FliGen.Services.Leagues.Application.Commands.JoinLeague;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
@@ -70,7 +71,8 @@ namespace FliGen.Services.Leagues
 
             app.UseRabbitMq()
                 .SubscribeCommand<CreateLeague>()
-                .SubscribeCommand<DeleteLeague>();
+                .SubscribeCommand<DeleteLeague>()
+                .SubscribeCommand<JoinLeague>();
 
             app.UseEndpoints(endpoints =>
             {

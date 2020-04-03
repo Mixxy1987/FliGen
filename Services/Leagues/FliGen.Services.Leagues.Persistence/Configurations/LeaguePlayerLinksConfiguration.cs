@@ -18,13 +18,13 @@ namespace FliGen.Services.Leagues.Persistence.Configurations
                 .IsRequired();
             builder.Property(e => e.JoinTime);
             builder.Property(e => e.LeaveTime);
+            builder.Property(e => e.Actual)
+                .IsRequired();
 
             builder.HasKey(e => new {e.PlayerId, e.LeagueId, e.CreationTime});
 
             builder.Property(e => e.LeaguePlayerRoleId)
                 .IsRequired();
-
-            builder.Ignore(x => x.Role);
         }
     }
 }

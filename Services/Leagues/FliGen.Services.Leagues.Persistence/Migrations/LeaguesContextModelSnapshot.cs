@@ -98,6 +98,9 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Actual")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("JoinTime")
                         .HasColumnType("datetime2");
 

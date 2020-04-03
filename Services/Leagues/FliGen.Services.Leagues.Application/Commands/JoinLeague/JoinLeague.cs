@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using FliGen.Common.Messages;
 
 namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
 {
-    public class JoinLeagueCommand : IRequest
+    [MessageNamespace("leagues")]
+    public class JoinLeague : ICommand
     {
         public int LeagueId { get; set; }
         public string PlayerExternalId { get; set; }

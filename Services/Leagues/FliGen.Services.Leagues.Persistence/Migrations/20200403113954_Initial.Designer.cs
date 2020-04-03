@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Leagues.Persistence.Migrations
 {
     [DbContext(typeof(LeaguesContext))]
-    [Migration("20200403083016_Initial")]
+    [Migration("20200403113954_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,9 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Actual")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("JoinTime")
                         .HasColumnType("datetime2");

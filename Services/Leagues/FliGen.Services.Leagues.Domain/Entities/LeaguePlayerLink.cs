@@ -1,7 +1,6 @@
-﻿using System;
-using FliGen.Common.SeedWork;
-using FliGen.Common.Types;
+﻿using FliGen.Common.Types;
 using FliGen.Services.Leagues.Domain.Entities.Enum;
+using System;
 
 namespace FliGen.Services.Leagues.Domain.Entities
 {
@@ -13,14 +12,9 @@ namespace FliGen.Services.Leagues.Domain.Entities
         public DateTime CreationTime { get; }
         public DateTime? JoinTime { get; private set; }
         public DateTime? LeaveTime { get; private set; }
+        public bool Actual { get; private set; }
 
-        public int LeaguePlayerRoleId
-        {
-            get => Role.Id;
-            set => Enumeration.FromValue<LeaguePlayerRole>(value);
-        }
-
-        public LeaguePlayerRole Role { get; private set; }
+        public int LeaguePlayerRoleId { get; }
 
         protected LeaguePlayerLink()
         {
@@ -49,11 +43,12 @@ namespace FliGen.Services.Leagues.Domain.Entities
             CreationTime = DateTime.Now;
             JoinTime = joinTime;
 	        LeaveTime = leaveTime;
+            Actual = true;
         }
 
         public static LeaguePlayerLink CreateWaitingLink(int leagueId, int playerId)
         {
-	        return new LeaguePlayerLink(leagueId, playerId, LeaguePlayerRole.User.Id);
+	        return new LeaguePlayerLink(leagueId, playerId, LeaguePlayerRole.User);
         }
 
         public static LeaguePlayerLink CreateJoinedLink(int leagueId, int playerId)
@@ -61,7 +56,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
 	        return new LeaguePlayerLink(
                 leagueId,
                 playerId,
-                LeaguePlayerRole.User.Id,
+                LeaguePlayerRole.User,
 		        DateTime.Now);
         }
 
@@ -73,6 +68,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
         public void UpdateToLeft()
         {
             LeaveTime = DateTime.Now;
+            Actual = false;
         }
 
 

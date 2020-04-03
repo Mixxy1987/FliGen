@@ -50,5 +50,14 @@ namespace FliGen.Services.Api.Controllers
         {
             return await SendAsync(new DeleteLeague(id));
         }
+
+
+        [HttpPost("Join")]
+        public async Task<IActionResult> Join([FromBody]int id)
+        {
+            var playerId = _identityService.GetUserIdentity();
+            
+            return await SendAsync(new JoinLeague(id, playerId));
+        }
     }
 }

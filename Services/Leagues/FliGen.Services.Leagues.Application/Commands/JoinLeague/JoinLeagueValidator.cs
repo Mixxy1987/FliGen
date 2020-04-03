@@ -2,9 +2,9 @@
 
 namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
 {
-    public sealed class JoinLeagueCommandValidator : AbstractValidator<JoinLeagueCommand>
+    public sealed class JoinLeagueValidator : AbstractValidator<JoinLeague>
     {
-        public JoinLeagueCommandValidator()
+        public JoinLeagueValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

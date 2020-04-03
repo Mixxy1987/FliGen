@@ -57,7 +57,7 @@ namespace FliGen.Common.SeedWork.Repository
             return query.ToPaginateAsync(index, size, 0, cancellationToken);
         }
 
-        public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
+        public Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             return _dbSet.AddAsync(entity, cancellationToken).AsTask(); //todo:: return valuetask
         }
@@ -69,7 +69,7 @@ namespace FliGen.Common.SeedWork.Repository
 
 
         public Task AddAsync(IEnumerable<T> entities,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return _dbSet.AddRangeAsync(entities, cancellationToken);
         }
