@@ -5,6 +5,10 @@ using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
+using FliGen.Services.Tours.Application.Commands.TourCancel;
+using FliGen.Services.Tours.Application.Commands.TourForward;
+using FliGen.Services.Tours.Application.Services;
 using FliGen.Services.Tours.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Services.Tours.Application.Services;
 
 namespace FliGen.Services.Tours
 {
@@ -34,7 +37,9 @@ namespace FliGen.Services.Tours
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<ToursContext>();
 			services.AddControllers();
 
-            services.RegisterServiceForwarder<ITeamsService>("teams-service");
+            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+			services.RegisterServiceForwarder<IPlayersService>("players-service");
+			services.RegisterServiceForwarder<ITeamsService>("teams-service");
 
 			var builder = new ContainerBuilder();
 
@@ -70,6 +75,11 @@ namespace FliGen.Services.Tours
 			app.UseRouting();
 
 			app.UseAuthorization();
+
+            app.UseRabbitMq()
+                .SubscribeCommand<PlayerRegisterOnTour>()
+                .SubscribeCommand<TourCancel>()
+                .SubscribeCommand<TourForward>();
 
 			app.UseEndpoints(endpoints =>
 			{

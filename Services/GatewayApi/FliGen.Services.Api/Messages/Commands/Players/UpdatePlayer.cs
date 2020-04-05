@@ -1,5 +1,4 @@
 ﻿using FliGen.Common.Messages;
-using Newtonsoft.Json;
 
 namespace FliGen.Services.Api.Messages.Commands.Players
 {

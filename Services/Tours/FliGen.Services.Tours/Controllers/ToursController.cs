@@ -1,11 +1,12 @@
-﻿using FliGen.Services.Tours.Application.Commands.TourCancelCommand;
-using FliGen.Services.Tours.Application.Commands.TourForwardCommand;
-using FliGen.Services.Tours.Application.Dto;
+﻿using FliGen.Services.Tours.Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
+using FliGen.Services.Tours.Application.Commands.TourCancel;
+using FliGen.Services.Tours.Application.Commands.TourForward;
 using FliGen.Services.Tours.Application.Queries.TourById;
 using FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery;
 
@@ -24,7 +25,13 @@ namespace FliGen.Services.Tours.Controllers
 			_mediatr = mediatr;
 		}
 
-        [HttpGet]
+        [HttpGet("HealthCheck")]
+        public IActionResult HealthCheck()
+        {
+            return Ok("Tours service ready!");
+        }
+
+		[HttpGet]
         [Produces(typeof(IEnumerable<Tour>))]
         public Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery toursByPlayerIdQuery)
         {
@@ -38,14 +45,20 @@ namespace FliGen.Services.Tours.Controllers
             return _mediatr.Send(new TourByIdQuery(id));
         }
 
+        [HttpPost("register")]
+        public async Task TourForward([FromBody]PlayerRegisterOnTour cmd)
+        {
+            await _mediatr.Send(cmd);
+        }
+
 		[HttpPost("forward")]
-		public async Task TourForward([FromBody]TourForwardCommand cmd)
+		public async Task TourForward([FromBody]TourForward cmd)
 		{
 			await _mediatr.Send(cmd);
 		}
 
 		[HttpPost("cancel")]
-		public async Task TourCancel([FromBody]TourCancelCommand cmd)
+		public async Task TourCancel([FromBody]TourCancel cmd)
 		{
 			await _mediatr.Send(cmd);
 		}

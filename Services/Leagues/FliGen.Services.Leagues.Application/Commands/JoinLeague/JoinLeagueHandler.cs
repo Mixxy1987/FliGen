@@ -5,8 +5,6 @@ using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
@@ -52,7 +50,7 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
                     x.LeagueId == command.LeagueId &&
                     x.Actual);
 
-            if (lastLink == null || lastLink.InLeftStatus())
+            if (lastLink is null || lastLink.InLeftStatus())
             {
 	            LeaguePlayerLink link = leagueSettings.RequireConfirmation
 		            ? LeaguePlayerLink.CreateWaitingLink(command.LeagueId, playerId)

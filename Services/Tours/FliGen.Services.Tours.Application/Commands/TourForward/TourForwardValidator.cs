@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace FliGen.Services.Tours.Application.Commands.TourForwardCommand
+namespace FliGen.Services.Tours.Application.Commands.TourForward
 {
-    public sealed class TourForwardCommandValidator : AbstractValidator<TourForwardCommand>
+    public sealed class TourForwardValidator : AbstractValidator<TourForward>
     {
-        public TourForwardCommandValidator()
+        public TourForwardValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

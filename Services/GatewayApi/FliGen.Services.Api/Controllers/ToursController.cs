@@ -34,8 +34,20 @@ namespace FliGen.Services.Api.Controllers
             return await _toursService.GetAsync(toursByPlayerIdQuery);
         }
 
-        [HttpPost]
+        [HttpPost("cancel")]
         public async Task<IActionResult> Post(TourCancel command)
+        {
+            return await SendAsync(command);
+        }
+
+        [HttpPost("forward")]
+        public async Task<IActionResult> Post(TourForward command)
+        {
+            return await SendAsync(command);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Post(PlayerRegisterOnTour command)
         {
             return await SendAsync(command);
         }
