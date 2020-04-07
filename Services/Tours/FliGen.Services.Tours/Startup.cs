@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
@@ -35,9 +36,13 @@ namespace FliGen.Services.Tours
 		{
 			services.AddDbContext<ToursContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<ToursContext>();
-			services.AddControllers();
+			
+            services.AddControllers();
 
-            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+            services.AddJaeger();
+            services.AddOpenTracing();
+
+			services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
 			services.RegisterServiceForwarder<IPlayersService>("players-service");
 			services.RegisterServiceForwarder<ITeamsService>("teams-service");
 

@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
@@ -29,7 +30,11 @@ namespace FliGen.Services.Seasons
         {
             services.AddDbContext<SeasonsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<SeasonsContext>();
+            
             services.AddControllers();
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
             var builder = new ContainerBuilder();
 

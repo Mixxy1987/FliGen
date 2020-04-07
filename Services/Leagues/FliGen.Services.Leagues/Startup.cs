@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common.Jaeger;
 
 namespace FliGen.Services.Leagues
 {
@@ -35,6 +36,9 @@ namespace FliGen.Services.Leagues
             services.AddDbContext<LeaguesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<LeaguesContext>();
             services.AddControllers();
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
 

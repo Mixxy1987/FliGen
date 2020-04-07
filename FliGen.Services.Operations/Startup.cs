@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
@@ -25,6 +26,9 @@ namespace FliGen.Services.Operations
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
             var builder = new ContainerBuilder();
 
