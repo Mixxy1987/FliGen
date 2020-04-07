@@ -25,6 +25,8 @@ namespace FliGen.Services.Leagues.Persistence.Configurations
 
             builder.Property(e => e.LeaguePlayerRoleId)
                 .IsRequired();
+            builder.Property(e => e.LeaguePlayerPriority)
+                .IsRequired();
         }
     }
 }

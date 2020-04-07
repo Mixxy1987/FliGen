@@ -1,4 +1,5 @@
-﻿using FliGen.Common.Sql;
+﻿using System;
+using FliGen.Common.Sql;
 using FliGen.Services.Leagues.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -16,6 +17,9 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "LeaguePlayerLinks");
+
+            migrationBuilder.DropTable(
+                name: "LeaguePlayerPriority");
 
             migrationBuilder.DropTable(
                 name: "LeaguePlayerRole");

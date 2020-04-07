@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Leagues.Persistence.Migrations
 {
     [DbContext(typeof(LeaguesContext))]
-    [Migration("20200403113954_Initial")]
+    [Migration("20200407155044_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,26 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("FliGen.Services.Leagues.Domain.Entities.Enum.LeaguePlayerPriority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("LeaguePlayerPriority");
+                });
 
             modelBuilder.Entity("FliGen.Services.Leagues.Domain.Entities.Enum.LeaguePlayerRole", b =>
                 {
@@ -105,6 +125,9 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
 
                     b.Property<DateTime?>("JoinTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaguePlayerPriority")
+                        .HasColumnType("int");
 
                     b.Property<int>("LeaguePlayerRoleId")
                         .HasColumnType("int");

@@ -10,8 +10,8 @@ namespace FliGen.Services.Leagues.Persistence.Helper
         public static void LeaguePlayerLinksFill(MigrationBuilder migrationBuilder)
         {
             const string lpQuery = @"
-    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId, CreationTime, JoinTime, LeaguePlayerRoleId, Actual)
-	SELECT @@leagueId, @@playerId, @@creationTime, @@joinTime, 2, 1
+    INSERT INTO [LeaguePlayerLinks](LeagueId, PlayerId, CreationTime, JoinTime, LeaguePlayerRoleId, LeaguePlayerPriority, Actual)
+	SELECT @@leagueId, @@playerId, @@creationTime, @@joinTime, 2, 3, 1
 ";
             InsertLeague(
                 migrationBuilder,

@@ -16,6 +16,8 @@ namespace FliGen.Services.Leagues.Domain.Entities
 
         public int LeaguePlayerRoleId { get; }
 
+        public int LeaguePlayerPriority { get; }
+
         protected LeaguePlayerLink()
         {
         }
@@ -24,7 +26,8 @@ namespace FliGen.Services.Leagues.Domain.Entities
 	        int leagueId, 
 	        int playerId,
 	        int roleId,
-	        DateTime? joinTime = null,
+            int leaguePlayerPriority,
+            DateTime? joinTime = null,
 	        DateTime? leaveTime = null)
         {
 	        if (leagueId <= 0)
@@ -40,6 +43,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
             LeagueId = leagueId;
 	        PlayerId = playerId;
 	        LeaguePlayerRoleId = roleId;
+            LeaguePlayerPriority = leaguePlayerPriority;
             CreationTime = DateTime.Now;
             JoinTime = joinTime;
 	        LeaveTime = leaveTime;
@@ -48,7 +52,11 @@ namespace FliGen.Services.Leagues.Domain.Entities
 
         public static LeaguePlayerLink CreateWaitingLink(int leagueId, int playerId)
         {
-	        return new LeaguePlayerLink(leagueId, playerId, LeaguePlayerRole.User);
+            return new LeaguePlayerLink(
+                leagueId,
+                playerId, 
+                LeaguePlayerRole.User, 
+                Enum.LeaguePlayerPriority.Normal);
         }
 
         public static LeaguePlayerLink CreateJoinedLink(int leagueId, int playerId)
@@ -57,7 +65,8 @@ namespace FliGen.Services.Leagues.Domain.Entities
                 leagueId,
                 playerId,
                 LeaguePlayerRole.User,
-		        DateTime.Now);
+                Enum.LeaguePlayerPriority.Normal,
+                DateTime.Now);
         }
 
         public void UpdateToJoined()

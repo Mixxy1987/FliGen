@@ -9,6 +9,7 @@ namespace FliGen.Services.Leagues.Persistence.Contexts
     {
         public DbSet<LeaguePlayerRole> LeaguePlayerRoles { get; set; }
         public DbSet<LeagueType> LeagueTypes { get; set; }
+        public DbSet<LeaguePlayerPriority> LeaguePlayerPriorities { get; set; }
 
         public DbSet<League> Leagues { get; set; }
         public DbSet<LeaguePlayerLink> LeaguePlayerLinks { get; set; }
