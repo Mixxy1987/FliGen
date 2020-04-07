@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Services.Tours.Application.Events;
 
 namespace FliGen.Services.Tours
 {
@@ -82,8 +83,9 @@ namespace FliGen.Services.Tours
 			app.UseAuthorization();
 
             app.UseRabbitMq()
-                .SubscribeCommand<PlayerRegisterOnTour>()
-                .SubscribeCommand<TourCancel>()
+                .SubscribeCommand<PlayerRegisterOnTour>(onError: (c, e) =>
+                    new PlayerRegisterOnTourRejected(e.Message, e.Code))
+				.SubscribeCommand<TourCancel>()
                 .SubscribeCommand<TourForward>();
 
 			app.UseEndpoints(endpoints =>
