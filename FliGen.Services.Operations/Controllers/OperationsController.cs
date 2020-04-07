@@ -15,7 +15,13 @@ namespace FliGen.Services.Operations.Controllers
         {
             _operationsStorage = operationsStorage;
         }
-        
+
+        [HttpGet("HealthCheck")]
+        public IActionResult HealthCheck()
+        {
+            return Ok("Operations service ready!");
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<OperationDto>> Get(Guid id)
             => Single(await _operationsStorage.GetAsync(id));

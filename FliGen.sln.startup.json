@@ -59,7 +59,8 @@
         "FliGen.Services.Players": {},
         "FliGen.Services.Seasons": {},
         "FliGen.Services.Tours": {},
-        "FliGen.Services.Teams": {}
+        "FliGen.Services.Teams": {},
+        "FliGen.Services.Operations": {}
       }
     }
   }

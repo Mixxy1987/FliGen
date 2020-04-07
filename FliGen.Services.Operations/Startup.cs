@@ -37,8 +37,8 @@ namespace FliGen.Services.Operations
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.AddRabbitMq("FliGen.Services.Leagues.Application");
-            builder.AddMediator("FliGen.Services.Leagues.Application");
+            builder.AddRabbitMq("FliGen.Services.Operations");
+            //builder.AddMediator("FliGen.Services.Operations.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
             builder.AddSerilogService();
