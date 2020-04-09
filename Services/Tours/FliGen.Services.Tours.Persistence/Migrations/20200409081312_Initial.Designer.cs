@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Tours.Persistence.Migrations
 {
     [DbContext(typeof(ToursContext))]
-    [Migration("20200403081902_Initial")]
+    [Migration("20200409081312_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,24 @@ namespace FliGen.Services.Tours.Persistence.Migrations
                     b.HasIndex("Date", "SeasonId");
 
                     b.ToTable("Tour");
+                });
+
+            modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.TourRegistration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourRegistration");
                 });
 
             modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.TourStatus", b =>

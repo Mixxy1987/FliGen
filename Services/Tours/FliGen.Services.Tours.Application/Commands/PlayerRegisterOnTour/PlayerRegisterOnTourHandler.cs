@@ -3,12 +3,15 @@ using System.Linq;
 using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
-using FliGen.Services.Tours.Domain.Entities;
 using System.Threading.Tasks;
 using FliGen.Common.Types;
+using FliGen.Services.Tours.Application.Common;
+using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Dto.Enum;
 using FliGen.Services.Tours.Application.Queries.LeaguesQuery;
 using FliGen.Services.Tours.Application.Services;
+using FliGen.Services.Tours.Domain.Entities;
+using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
 
 namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
 {
@@ -30,21 +33,65 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
 
         public async Task HandleAsync(PlayerRegisterOnTour command, ICorrelationContext context)
         {
-            var tourRepo = _uow.GetRepositoryAsync<Tour>();
+            await ValidateTourOrThrowAsync(command);
 
-            var playerInternalIdDto = await _playersService.GetInternalIdAsync(command.PlayerExternalId);
-            if (playerInternalIdDto is null)
+            PlayerInternalIdDto playerInternalIdDto = await _playersService.GetInternalIdAsync(command.PlayerExternalId);
+            await ValidatePlayerStatusOrThrowAsync(command, playerInternalIdDto);
+
+            var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
+            TourRegistration tourRegistration = await tourRegistrationRepo.SingleAsync(
+                tr => tr.PlayerId == playerInternalIdDto.InternalId &&
+                      tr.TourId == command.TourId);
+            if (!(tourRegistration is null))
             {
-                throw new FliGenException("there_is_no_player_with_such_external_id", $"There is no player with external id: {command.PlayerExternalId}");
+                throw new FliGenException(
+                    ErrorCodes.PlayerAlreadyRegistered,
+                    $"Player with id {playerInternalIdDto.InternalId} is already registered on tour: {command.TourId}");
             }
 
-            await CheckPlayerStatusOrThrowAsync(command);
+            await tourRegistrationRepo.AddAsync(
+                TourRegistration.Create(command.TourId, playerInternalIdDto.InternalId));
 
             _uow.SaveChanges();
         }
 
-        private async Task CheckPlayerStatusOrThrowAsync(PlayerRegisterOnTour command)
+        private async Task ValidateTourOrThrowAsync(PlayerRegisterOnTour command)
         {
+            var tourRepo = _uow.GetRepositoryAsync<Tour>();
+            Tour tour = await tourRepo.SingleAsync(x => x.Id == command.TourId);
+            if (tour is null)
+            {
+                throw new FliGenException(
+                    ErrorCodes.InvalidTourId,
+                    $"There is no tour with id: {command.TourId}");
+            }
+
+            if (tour.IsRegistrationIsNotYetOpened())
+            {
+                throw new FliGenException(
+                    ErrorCodes.TourRegistrationIsNotYetOpened,
+                    $"Registration is not yet opened for tour with id: {command.TourId}");
+            }
+
+            if (tour.IsRegistrationClosed())
+            {
+                throw new FliGenException(
+                    ErrorCodes.TourRegistrationIsClosed,
+                    $"Registration is already closed for tour with id: {command.TourId}");
+            }
+        }
+
+        private async Task ValidatePlayerStatusOrThrowAsync(
+            PlayerRegisterOnTour command,
+            PlayerInternalIdDto playerInternalIdDto)
+        {
+            if (playerInternalIdDto is null)
+            {
+                throw new FliGenException(
+                    ErrorCodes.NoPlayerWithSuchId,
+                    $"There is no player with external id: {command.PlayerExternalId}");
+            }
+
             var leagues = await _leaguesService.GetLeagues(
                 new LeaguesQuery()
                 {
@@ -54,13 +101,17 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
 
             if (leagues is null)
             {
-                throw new FliGenException("there_is_no_league_with_id", $"There is no league with id: {command.LeagueId}");
+                throw new FliGenException(
+                    ErrorCodes.NoLeagueWithSuchId,
+                    $"There is no league with id: {command.LeagueId}");
             }
 
             var leaguesArr = leagues.ToList();
             if (leaguesArr.Count == 0 || leaguesArr[0].PlayerLeagueJoinStatus != PlayerLeagueJoinStatus.Joined)
             {
-                throw new FliGenException("player_is_not_a_member_of_this_league", $"Player with id {command.PlayerExternalId} is not a member of league: {command.LeagueId}");
+                throw new FliGenException(
+                    ErrorCodes.PlayerIsNotAMemberOfLeague,
+                    $"Player with id {command.PlayerExternalId} is not a member of league: {command.LeagueId}");
             }
         }
     }

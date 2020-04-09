@@ -1,4 +1,5 @@
-﻿using FliGen.Common.Sql;
+﻿using System;
+using FliGen.Common.Sql;
 using FliGen.Services.Tours.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -16,6 +17,9 @@ namespace FliGen.Services.Tours.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Tour");
+
+            migrationBuilder.DropTable(
+                name: "TourRegistration");
 
             migrationBuilder.DropTable(
                 name: "TourStatus");

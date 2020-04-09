@@ -48,6 +48,24 @@ namespace FliGen.Services.Tours.Persistence.Migrations
                     b.ToTable("Tour");
                 });
 
+            modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.TourRegistration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourRegistration");
+                });
+
             modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.TourStatus", b =>
                 {
                     b.Property<int>("Id")
