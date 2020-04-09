@@ -35,24 +35,52 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
         {
             await ValidateTourOrThrowAsync(command);
 
-            PlayerInternalIdDto playerInternalIdDto = await _playersService.GetInternalIdAsync(command.PlayerExternalId);
-            await ValidatePlayerStatusOrThrowAsync(command, playerInternalIdDto);
+            if (string.IsNullOrWhiteSpace(command.PlayerExternalId))
+            {
+                if (command.PlayerInternalIds is null || command.PlayerInternalIds.Length == 0)
+                {
+                    throw new FliGenException(ErrorCodes.EmptyPlayersList, "Players id list is empty.");
+                }
+                var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
+                foreach (var playerInternalId in command.PlayerInternalIds)
+                {
+                    await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalId, true);
+                }
+            }
+            else
+            {
+                PlayerInternalIdDto playerInternalIdDto = await _playersService.GetInternalIdAsync(command.PlayerExternalId);
+                await ValidatePlayerStatusOrThrowAsync(command, playerInternalIdDto);
 
-            var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
+                var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
+                await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalIdDto.InternalId);
+            }
+
+            _uow.SaveChanges();
+        }
+
+        private async Task RegisterPlayer(
+            IRepositoryAsync<TourRegistration> tourRegistrationRepo,
+            int tourId,
+            int playerInternalId,
+            bool ignoreAlreadyRegistered = false)
+        {
             TourRegistration tourRegistration = await tourRegistrationRepo.SingleAsync(
-                tr => tr.PlayerId == playerInternalIdDto.InternalId &&
-                      tr.TourId == command.TourId);
+                tr => tr.PlayerId == playerInternalId &&
+                      tr.TourId == tourId);
             if (!(tourRegistration is null))
             {
+                if (ignoreAlreadyRegistered)
+                {
+                    return;
+                }
                 throw new FliGenException(
                     ErrorCodes.PlayerAlreadyRegistered,
-                    $"Player with id {playerInternalIdDto.InternalId} is already registered on tour: {command.TourId}");
+                    $"Player with id {playerInternalId} is already registered on tour: {tourId}");
             }
 
             await tourRegistrationRepo.AddAsync(
-                TourRegistration.Create(command.TourId, playerInternalIdDto.InternalId));
-
-            _uow.SaveChanges();
+                TourRegistration.Create(tourId, playerInternalId));
         }
 
         private async Task ValidateTourOrThrowAsync(PlayerRegisterOnTour command)

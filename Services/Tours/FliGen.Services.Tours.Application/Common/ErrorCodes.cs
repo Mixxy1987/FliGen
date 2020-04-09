@@ -9,5 +9,6 @@
         public const string TourRegistrationIsNotYetOpened = "tour_registration_is_not_yet_opened";
         public const string TourRegistrationIsClosed = "tour_registration_is_closed";
         public const string PlayerAlreadyRegistered = "player_already_registered";
+        public const string EmptyPlayersList = "players_list_is_empty";
     }
 }
