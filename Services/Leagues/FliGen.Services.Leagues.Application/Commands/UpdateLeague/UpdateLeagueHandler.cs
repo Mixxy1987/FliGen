@@ -23,7 +23,7 @@ namespace FliGen.Services.Leagues.Application.Commands.UpdateLeague
             var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
             repo.UpdateAsync(Domain.Entities.League.GetUpdated(
-                command.Id,
+                command.LeagueId,
                 command.Name,
                 command.Description,
                 Enumeration.FromDisplayName<LeagueType>(command.LeagueType.Name)));

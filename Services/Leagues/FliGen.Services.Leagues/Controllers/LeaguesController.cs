@@ -45,20 +45,5 @@ namespace FliGen.Services.Leagues.Controllers
         {
             return _mediatr.Send(leaguesQuery);
         }
-
-        [HttpPost]
-        public async Task Create([FromBody]CreateLeague cmd)
-        { 
-            await _mediatr.Send(cmd);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task Delete(int id)
-        {
-            await _mediatr.Send(new DeleteLeague()
-            {
-                Id = id
-            });
-        }
     }
 }
