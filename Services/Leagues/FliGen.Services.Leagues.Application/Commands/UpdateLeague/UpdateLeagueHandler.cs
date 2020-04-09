@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.Handlers;
+using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Leagues.Domain.Entities.Enum;
@@ -7,28 +9,26 @@ using MediatR;
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeague
 {
-    public class UpdateLeagueCommandHandler : IRequestHandler<UpdateLeagueCommand>
+    public class UpdateLeagueHandler : ICommandHandler<UpdateLeague>
     {
         private readonly IUnitOfWork _uow;
 
-        public UpdateLeagueCommandHandler(IUnitOfWork uow)
+        public UpdateLeagueHandler(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        public Task<Unit> Handle(UpdateLeagueCommand request, CancellationToken cancellationToken)
+        public async Task HandleAsync(UpdateLeague command, ICorrelationContext context)
         {
             var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
             repo.UpdateAsync(Domain.Entities.League.GetUpdated(
-                request.Id,
-                request.Name,
-                request.Description,
-                Enumeration.FromDisplayName<LeagueType>(request.LeagueType.Name)));
+                command.Id,
+                command.Name,
+                command.Description,
+                Enumeration.FromDisplayName<LeagueType>(command.LeagueType.Name)));
 
             _uow.SaveChanges();
-
-            return Task.FromResult(Unit.Value);
         }
     }
 }

@@ -150,8 +150,14 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PlayersInTeam")
+                        .HasColumnType("int");
+
                     b.Property<bool>("RequireConfirmation")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("TeamsInTour")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Visibility")
                         .HasColumnType("bit");

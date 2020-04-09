@@ -36,7 +36,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
 			Name = name;
 			Description = description;
 			Type = type;
-			LeagueSettings = new LeagueSettings(true, false);
+			LeagueSettings = LeagueSettings.Create(true, false);
 		}
 
 		private League(string name, string description, LeagueType type, LeagueSettings settings = null) : this()

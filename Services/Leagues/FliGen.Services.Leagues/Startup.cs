@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using FliGen.Common.Jaeger;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
 
 namespace FliGen.Services.Leagues
 {
@@ -76,7 +78,9 @@ namespace FliGen.Services.Leagues
             app.UseRabbitMq()
                 .SubscribeCommand<CreateLeague>()
                 .SubscribeCommand<DeleteLeague>()
-                .SubscribeCommand<JoinLeague>();
+                .SubscribeCommand<JoinLeague>()
+                .SubscribeCommand<UpdateLeague>()
+                .SubscribeCommand<UpdateLeagueSettings>();
 
             app.UseEndpoints(endpoints =>
             {

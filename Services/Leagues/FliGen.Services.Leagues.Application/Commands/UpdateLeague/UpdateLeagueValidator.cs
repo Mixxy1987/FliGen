@@ -2,9 +2,9 @@
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeague
 {
-    public sealed class UpdateLeagueCommandValidator : AbstractValidator<UpdateLeagueCommand>
+    public sealed class UpdateLeagueValidator : AbstractValidator<UpdateLeague>
     {
-        public UpdateLeagueCommandValidator()
+        public UpdateLeagueValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

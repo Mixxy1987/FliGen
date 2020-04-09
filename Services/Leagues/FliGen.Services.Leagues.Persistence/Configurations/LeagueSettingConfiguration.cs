@@ -13,7 +13,8 @@ namespace FliGen.Services.Leagues.Persistence.Configurations
                 .IsRequired();
             builder.Property(e => e.Visibility)
                 .IsRequired();
-
+            builder.Property(e => e.PlayersInTeam);
+            builder.Property(e => e.TeamsInTour);
             builder.HasOne(e => e.League)
                 .WithOne(e => e.LeagueSettings)
                 .IsRequired()

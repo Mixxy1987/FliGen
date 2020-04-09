@@ -1,33 +1,33 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using FliGen.Common.Handlers;
+using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
-using MediatR;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings
 {
-    public class UpdateLeagueSettingsCommandHandler : IRequestHandler<UpdateLeagueSettingsCommand>
+    public class UpdateLeagueSettingsHandler : ICommandHandler<UpdateLeagueSettings>
     {
         private readonly IUnitOfWork _uow;
 
-        public UpdateLeagueSettingsCommandHandler(IUnitOfWork uow)
+        public UpdateLeagueSettingsHandler(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        public async Task<Unit> Handle(UpdateLeagueSettingsCommand request, CancellationToken cancellationToken)
+        public async Task HandleAsync(UpdateLeagueSettings command, ICorrelationContext context)
         {
             var repo = _uow.GetRepositoryAsync<Domain.Entities.LeagueSettings>();
 
-            Domain.Entities.LeagueSettings leagueSetting = await repo.SingleAsync(x => x.LeagueId == request.LeagueId);
+            Domain.Entities.LeagueSettings leagueSetting = await repo.SingleAsync(x => x.LeagueId == command.LeagueId);
 
             repo.UpdateAsync(Domain.Entities.LeagueSettings.GetUpdated(
                 leagueSetting,
-                request.Visibility,
-                request.RequireConfirmation));
+                command.Visibility,
+                command.RequireConfirmation,
+                command.PlayersInTeam,
+                command.TeamsInTour));
 
             _uow.SaveChanges();
-
-            return Unit.Value;
         }
     }
 }

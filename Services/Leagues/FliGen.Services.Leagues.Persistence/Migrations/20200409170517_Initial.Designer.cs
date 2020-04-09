@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Leagues.Persistence.Migrations
 {
     [DbContext(typeof(LeaguesContext))]
-    [Migration("20200407155044_Initial")]
+    [Migration("20200409170517_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,8 +152,14 @@ namespace FliGen.Services.Leagues.Persistence.Migrations
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PlayersInTeam")
+                        .HasColumnType("int");
+
                     b.Property<bool>("RequireConfirmation")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("TeamsInTour")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Visibility")
                         .HasColumnType("bit");
