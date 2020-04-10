@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 
 namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
 {
@@ -9,6 +10,9 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
             RuleFor(c => c)
                 .NotEmpty()
                 .WithMessage("Не задана команда на регистрацию");
+            RuleFor(c => c.RegistrationDate)
+                .Must(x => DateTime.TryParse(x, out _))
+                .WithMessage("Invalid datetime format for registration date");
         }
     }
 }

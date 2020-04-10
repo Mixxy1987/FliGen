@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Tours.Persistence.Migrations
 {
     [DbContext(typeof(ToursContext))]
-    [Migration("20200409081312_Initial")]
+    [Migration("20200410093314_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,9 @@ namespace FliGen.Services.Tours.Persistence.Migrations
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TourId")
                         .HasColumnType("int");

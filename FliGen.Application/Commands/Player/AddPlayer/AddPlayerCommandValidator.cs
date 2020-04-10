@@ -13,7 +13,7 @@ namespace FliGen.Application.Commands.Player.AddPlayer
                 .WithMessage("Не задана команда на добавление игрока");
 
             RuleFor(c => c.Rate)
-                .Must(x => double.TryParse(x.CommaToDot(), out double _))
+                .Must(x => double.TryParse(x.CommaToDot(), out _))
                 .WithMessage("Неверный формат рейтинга игрока");
 
             //todo:: add validation rules

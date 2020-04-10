@@ -8,6 +8,7 @@ using FliGen.Services.Tours.Application.Dto.Enum;
 using FliGen.Services.Tours.Application.Queries.LeaguesQuery;
 using FliGen.Services.Tours.Application.Services;
 using FliGen.Services.Tours.Domain.Entities;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
@@ -34,6 +35,8 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
         {
             await ValidateTourOrThrowAsync(command);
 
+            DateTime.TryParse(command.RegistrationDate, out var registrationDate);
+
             if (string.IsNullOrWhiteSpace(command.PlayerExternalId))
             {
                 if (command.PlayerInternalIds is null || command.PlayerInternalIds.Length == 0)
@@ -43,7 +46,7 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
                 var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
                 foreach (var playerInternalId in command.PlayerInternalIds)
                 {
-                    await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalId, true);
+                    await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalId, registrationDate, true);
                 }
             }
             else
@@ -52,7 +55,7 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
                 await ValidatePlayerStatusOrThrowAsync(command, playerInternalIdDto);
 
                 var tourRegistrationRepo = _uow.GetRepositoryAsync<TourRegistration>();
-                await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalIdDto.InternalId);
+                await RegisterPlayer(tourRegistrationRepo, command.TourId, playerInternalIdDto.InternalId, registrationDate);
             }
 
             _uow.SaveChanges();
@@ -62,6 +65,7 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
             IRepositoryAsync<TourRegistration> tourRegistrationRepo,
             int tourId,
             int playerInternalId,
+            DateTime registrationDate,
             bool ignoreAlreadyRegistered = false)
         {
             TourRegistration tourRegistration = await tourRegistrationRepo.SingleAsync(
@@ -79,7 +83,7 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
             }
 
             await tourRegistrationRepo.AddAsync(
-                TourRegistration.Create(tourId, playerInternalId));
+                TourRegistration.Create(tourId, playerInternalId, registrationDate));
         }
 
         private async Task ValidateTourOrThrowAsync(PlayerRegisterOnTour command)

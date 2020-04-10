@@ -14,6 +14,8 @@ namespace FliGen.Services.Tours.Persistence.Configurations
                 .IsRequired();
             builder.Property(e => e.PlayerId)
                 .IsRequired();
+            builder.Property(e => e.RegistrationDate)
+                .IsRequired();
         }
     }
 }

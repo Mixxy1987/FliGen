@@ -1,4 +1,5 @@
-﻿using FliGen.Common.RabbitMq;
+﻿using System;
+using FliGen.Common.RabbitMq;
 using FliGen.Services.Api.Messages.Commands.Tours;
 using FliGen.Services.Api.Models.Tours;
 using FliGen.Services.Api.Queries.Tours;
@@ -6,6 +7,7 @@ using FliGen.Services.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Api.Controllers
@@ -49,6 +51,10 @@ namespace FliGen.Services.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Post(PlayerRegisterOnTour command)
         {
+            if (string.IsNullOrWhiteSpace(command.RegistrationDate))
+            {
+                command.RegistrationDate = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
+            }
             return await SendAsync(command);
         }
     }

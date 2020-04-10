@@ -1,4 +1,5 @@
-﻿using FliGen.Common.Messages;
+﻿using System;
+using FliGen.Common.Messages;
 using Newtonsoft.Json;
 
 namespace FliGen.Services.Api.Messages.Commands.Tours
@@ -10,16 +11,22 @@ namespace FliGen.Services.Api.Messages.Commands.Tours
         public int[] PlayerInternalIds { get; set; }
         public int LeagueId { get; set; }
         public int TourId { get; set; }
-
+        public string RegistrationDate { get; set; }
         private PlayerRegisterOnTour() {}
 
         [JsonConstructor]
-        public PlayerRegisterOnTour(string playerExternalId, int[] playerInternalIds, int leagueId, int tourId)
+        public PlayerRegisterOnTour(
+            string playerExternalId,
+            int[] playerInternalIds,
+            int leagueId,
+            int tourId,
+            string registrationDate)
         {
             PlayerExternalId = playerExternalId;
             PlayerInternalIds = playerInternalIds;
             LeagueId = leagueId;
             TourId = tourId;
+            RegistrationDate = registrationDate;
         }
     }
 }

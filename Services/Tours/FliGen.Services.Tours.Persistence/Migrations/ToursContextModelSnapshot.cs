@@ -58,6 +58,9 @@ namespace FliGen.Services.Tours.Persistence.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("TourId")
                         .HasColumnType("int");
 
