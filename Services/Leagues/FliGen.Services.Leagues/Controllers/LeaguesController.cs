@@ -1,13 +1,12 @@
-﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
-using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
-using FliGen.Services.Leagues.Application.Dto;
+﻿using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Queries.Leagues;
+using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
+using FliGen.Services.Leagues.Application.Queries.LeagueTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Application.Queries.LeagueTypes;
 
 namespace FliGen.Services.Leagues.Controllers
 {
@@ -40,10 +39,17 @@ namespace FliGen.Services.Leagues.Controllers
         }
 
         [HttpGet]
-        [Produces(typeof(IEnumerable<League>))]
-        public Task<IEnumerable<League>> GetLeagues([FromQuery]LeaguesQuery leaguesQuery)
+        [Produces(typeof(IEnumerable<LeagueDto>))]
+        public Task<IEnumerable<LeagueDto>> GetLeagues([FromQuery]LeaguesQuery leaguesQuery)
         {
             return _mediatr.Send(leaguesQuery);
+        }
+
+        [HttpGet("settings/{id}")]
+        [Produces(typeof(LeagueSettings))]
+        public Task<LeagueSettings> GetSettings(int id)
+        {
+            return _mediatr.Send(new LeagueSettingsQuery(id));
         }
     }
 }

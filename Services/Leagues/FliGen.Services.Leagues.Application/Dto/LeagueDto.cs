@@ -1,13 +1,14 @@
-﻿using FliGen.Services.Leagues.Application.Dto.Enum;
+﻿using System.Collections.Generic;
+using FliGen.Services.Leagues.Application.Dto.Enum;
 
 namespace FliGen.Services.Leagues.Application.Dto
 {
-    public class League
+    public class LeagueDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public LeagueType LeagueType { get; set; }
-        public PlayerLeagueJoinStatus PlayerLeagueJoinStatus { get; set; } = PlayerLeagueJoinStatus.None;
+        public IEnumerable<PlayerWithLeagueStatusDto> PlayersLeagueStatuses { get; set; }
     }
 }

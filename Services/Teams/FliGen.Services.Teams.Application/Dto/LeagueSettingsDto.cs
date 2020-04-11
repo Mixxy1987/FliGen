@@ -1,6 +1,6 @@
-﻿namespace FliGen.Services.Leagues.Application.Dto
+﻿namespace FliGen.Services.Teams.Application.Dto
 {
-    public class LeagueSettings
+    public class LeagueSettingsDto
     {
         public bool Visibility { get; set; }
         public bool RequireConfirmation { get; set; }

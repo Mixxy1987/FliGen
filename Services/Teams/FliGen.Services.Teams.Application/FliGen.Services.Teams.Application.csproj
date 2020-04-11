@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
     <ProjectReference Include="..\FliGen.Services.Teams.Domain\FliGen.Services.Teams.Domain.csproj" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿using FliGen.Services.Teams.Application.Dto;
-using FliGen.Services.Teams.Application.Queries;
+using FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,7 +20,13 @@ namespace FliGen.Services.Teams.Controllers
 			_mediatr = mediatr;
 		}
 
-        [HttpGet("ToursByPlayerId")]
+        [HttpGet("HealthCheck")]
+        public IActionResult HealthCheck()
+        {
+            return Ok("Teams service ready!");
+        }
+
+		[HttpGet("ToursByPlayerId")]
         [Produces(typeof(ToursByPlayerIdDto))]
         public Task<ToursByPlayerIdDto> Get(int size, int page, [FromQuery]int playerId)
         {

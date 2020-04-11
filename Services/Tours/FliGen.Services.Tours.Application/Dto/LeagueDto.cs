@@ -8,6 +8,7 @@ namespace FliGen.Services.Tours.Application.Dto
         public string Name { get; set; }
         public string Description { get; set; }
         public LeagueTypeDto LeagueTypeDto { get; set; }
+        public int PlayerInternalId { get; set; }
         public PlayerLeagueJoinStatus PlayerLeagueJoinStatus { get; set; } = PlayerLeagueJoinStatus.None;
     }
 }

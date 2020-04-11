@@ -4,7 +4,11 @@ using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Teams.Application.Commands.GenerateTeams;
+using FliGen.Services.Teams.Application.Events;
+using FliGen.Services.Teams.Application.Services;
 using FliGen.Services.Teams.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Services.Teams.Application.Services.GenerateTeams;
 
 namespace FliGen.Services.Teams
 {
@@ -37,7 +42,13 @@ namespace FliGen.Services.Teams
             services.AddJaeger();
             services.AddOpenTracing();
 
+            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+            services.RegisterServiceForwarder<IPlayersService>("players-service");
+
             var builder = new ContainerBuilder();
+            builder.RegisterType<GenerateTeamsServiceFactory>()
+                .As<IGenerateTeamsServiceFactory>()
+                .InstancePerDependency();
 
             ConfigureContainer(builder);
             builder.Populate(services);
@@ -71,6 +82,10 @@ namespace FliGen.Services.Teams
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseRabbitMq()
+                .SubscribeCommand<GenerateTeams>(onError: (c, e) =>
+                    new GenerateTeamsRejected(e.Message, e.Code));
 
             app.UseEndpoints(endpoints =>
             {

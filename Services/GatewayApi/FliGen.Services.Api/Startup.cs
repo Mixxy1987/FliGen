@@ -42,7 +42,7 @@ namespace FliGen.Services.Api
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
             //services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
             services.RegisterServiceForwarder<IToursService>("tours-service");
-            //services.RegisterServiceForwarder<ITeamsService>("teams-service");
+            services.RegisterServiceForwarder<ITeamsService>("teams-service");
             
 
             services

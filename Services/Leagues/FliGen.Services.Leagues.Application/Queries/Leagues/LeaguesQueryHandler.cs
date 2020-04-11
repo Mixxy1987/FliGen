@@ -2,7 +2,8 @@
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Common.Types;
-using FliGen.Services.Leagues.Application.CommonLogic;
+using FliGen.Services.Leagues.Application.Dto;
+using FliGen.Services.Leagues.Application.Dto.Enum;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Domain.Entities;
 using MediatR;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Queries.Leagues
 {
-    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, IEnumerable<Dto.League>>
+    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, IEnumerable<Dto.LeagueDto>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -32,49 +33,86 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
             _playersService = playersService;
         }
 
-        public async Task<IEnumerable<Dto.League>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dto.LeagueDto>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
         {
             var leagueRepo = _uow.GetRepositoryAsync<League>();
 
-            Expression<Func<League, bool>> predicate = null;
+            Expression<Func<League, bool>> lPredicate = null;
             if (!(request.LeagueId is null) && request.LeagueId.Length != 0)
             {
-                predicate = league => request.LeagueId.Contains(league.Id);
+                lPredicate = league => request.LeagueId.Contains(league.Id);
             }
 
             IPaginate<League> leagues = 
                 await leagueRepo.GetListAsync(
-                    predicate: predicate,
+                    predicate: lPredicate,
                     include: q => q.Include(league => league.LeaguePlayerLinks),
                     cancellationToken : cancellationToken);
 
-            List<Dto.League> resultLeagues = leagues.Items
-	            .Select(x => _mapper.Map<Dto.League>(x))
+            List<LeagueDto> resultLeagues = leagues.Items
+	            .Select(x => _mapper.Map<LeagueDto>(x))
 	            .ToList();
+
+            Func<LeaguePlayerLink, bool> lplPredicate; 
 
             if (request.PlayerExternalId is null)
             {
-                return resultLeagues;
+                if (request.Pid is null || request.Pid.Length == 0)
+                {
+                    return resultLeagues;
+                }
+                lplPredicate = l => request.Pid.Contains(l.PlayerId);
             }
-
-            var playerInternalIdDto = await _playersService.GetInternalIdAsync(request.PlayerExternalId);
-            if (playerInternalIdDto is null)
+            else
             {
-                throw new FliGenException("there_is_no_player_with_such_external_id", $"There is no player with external id: {request.PlayerExternalId}");
+                var playerInternalIdDto = await _playersService.GetInternalIdAsync(request.PlayerExternalId);
+                if (playerInternalIdDto is null)
+                {
+                    throw new FliGenException("there_is_no_player_with_such_external_id", $"There is no player with external id: {request.PlayerExternalId}");
+                }
+                lplPredicate = l => l.PlayerId == playerInternalIdDto.InternalId;
             }
 
             foreach (var league in leagues.Items)
             {
                 var distinctLinks = league.LeaguePlayerLinks
-                    .Where(l => l.PlayerId == playerInternalIdDto.InternalId)
+                    .Where(lplPredicate)
                     .OrderBy(p => p.CreationTime)
-                    .GroupBy(p => p.LeagueId)
-                    .Select(g => g.Last());
+                    .GroupBy(p => p.PlayerId)
+                    .Select(g => g.Last()).ToList();
 
-                resultLeagues.EnrichByPlayerLeagueJoinStatus(distinctLinks);
+                resultLeagues.First(x => x.Id == league.Id).PlayersLeagueStatuses = EnrichByPlayerInformation(distinctLinks);
             }
 
             return resultLeagues;
+        }
+
+        private static List<PlayerWithLeagueStatusDto> EnrichByPlayerInformation(IEnumerable<LeaguePlayerLink> links)
+        {
+            var list = new List<PlayerWithLeagueStatusDto>();
+            foreach (var link in links)
+            {
+                var playerWithLeagueStatus = new PlayerWithLeagueStatusDto { Id = link.PlayerId };
+
+                if (link.JoinTime == null)
+                {
+                    playerWithLeagueStatus.PlayerLeagueJoinStatus = PlayerLeagueJoinStatus.Waiting;
+
+                }
+                else if (link.LeaveTime == null)
+                {
+                    playerWithLeagueStatus.PlayerLeagueJoinStatus = PlayerLeagueJoinStatus.Joined;
+                }
+                else
+                {
+                    playerWithLeagueStatus.PlayerLeagueJoinStatus = PlayerLeagueJoinStatus.None;
+                }
+
+                playerWithLeagueStatus.LeaguePlayerPriority = link.LeaguePlayerPriority;
+                list.Add(playerWithLeagueStatus);
+            }
+
+            return list;
         }
     }
 }

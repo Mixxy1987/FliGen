@@ -1,9 +1,8 @@
 ﻿using FliGen.Services.Api.Models.Tours;
-using FliGen.Services.Api.Queries;
+using FliGen.Services.Api.Queries.Tours;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Services.Api.Queries.Tours;
 
 
 namespace FliGen.Services.Api.Services

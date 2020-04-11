@@ -1,7 +1,7 @@
 ﻿using FliGen.Services.Teams.Application.Dto;
 using MediatR;
 
-namespace FliGen.Services.Teams.Application.Queries
+namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 {
     public class ToursByPlayerIdQuery : IRequest<ToursByPlayerIdDto>
     {

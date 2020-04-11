@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Leagues.Application.Dto
+﻿namespace FliGen.Services.Api.Models.Leagues
 {
     public class LeagueSettings
     {

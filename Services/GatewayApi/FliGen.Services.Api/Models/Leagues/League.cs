@@ -1,4 +1,4 @@
-﻿using FliGen.Services.Api.Models.Leagues.Enum;
+﻿using System.Collections.Generic;
 
 namespace FliGen.Services.Api.Models.Leagues
 {
@@ -8,6 +8,6 @@ namespace FliGen.Services.Api.Models.Leagues
         public string Name { get; set; }
         public string Description { get; set; }
         public LeagueType LeagueType { get; set; }
-        public PlayerLeagueJoinStatus PlayerLeagueJoinStatus { get; set; }
+        public IEnumerable<PlayerWithLeagueStatus> PlayersLeagueStatuses { get; set; }
     }
 }

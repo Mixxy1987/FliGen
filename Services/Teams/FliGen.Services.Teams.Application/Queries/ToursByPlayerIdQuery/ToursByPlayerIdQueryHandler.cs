@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
+using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Teams.Application.Dto;
 using FliGen.Services.Teams.Domain.Entities;
 using MediatR;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using FliGen.Common.SeedWork.Repository.Paging;
 
-namespace FliGen.Services.Teams.Application.Queries
+namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 {
     public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, ToursByPlayerIdDto>
     {

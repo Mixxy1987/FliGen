@@ -6,7 +6,7 @@ namespace FliGen.Services.Leagues.Mappings
     {
         public LeaguesProfile()
         {
-            CreateMap<Domain.Entities.League, Application.Dto.League>()
+            CreateMap<Domain.Entities.League, Application.Dto.LeagueDto>()
                 .ForMember(x => x.Id, l => l.MapFrom(s => s.Id))
                 .ForMember(x => x.Name, l => l.MapFrom(s => s.Name))
                 .ForMember(x => x.Description, l => l.MapFrom(s => s.Description))
