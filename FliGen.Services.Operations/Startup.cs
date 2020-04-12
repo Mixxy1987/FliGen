@@ -1,15 +1,21 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Chronicle;
+using FliGen.Common.Handlers;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
+using FliGen.Common.Mongo;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.Redis;
+using FliGen.Services.Operations.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common;
 
 namespace FliGen.Services.Operations
 {
@@ -29,11 +35,16 @@ namespace FliGen.Services.Operations
 
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
+            services.AddChronicle();
+            services.AddInitializers(typeof(IMongoDbInitializer));
 
             var builder = new ContainerBuilder();
-
-            ConfigureContainer(builder);
+            
             builder.Populate(services);
+            ConfigureContainer(builder);
+           
+
             Container = builder.Build();
 
             return new AutofacServiceProvider(Container);
@@ -42,13 +53,21 @@ namespace FliGen.Services.Operations
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddRabbitMq("FliGen.Services.Operations");
+            builder.AddMongo();
+            builder.RegisterGeneric(typeof(GenericEventHandler<>))
+                .As(typeof(IEventHandler<>));
+            builder.RegisterGeneric(typeof(GenericCommandHandler<>))
+                .As(typeof(ICommandHandler<>));
             //builder.AddMediator("FliGen.Services.Operations.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
             builder.AddSerilogService();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IStartupInitializer startupInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +85,8 @@ namespace FliGen.Services.Operations
             {
                 endpoints.MapControllers();
             });
+
+            startupInitializer.InitializeAsync();
         }
     }
 }

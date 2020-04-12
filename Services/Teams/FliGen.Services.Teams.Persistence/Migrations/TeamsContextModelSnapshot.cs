@@ -77,6 +77,25 @@ namespace FliGen.Services.Teams.Persistence.Migrations
 
                     b.ToTable("TeamRole");
                 });
+
+            modelBuilder.Entity("FliGen.Services.Teams.Domain.Entities.TemporalTeamPlayerLink", b =>
+                {
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId", "TeamId");
+
+                    b.ToTable("TemporalTeamPlayerLinks");
+                });
 #pragma warning restore 612, 618
         }
     }

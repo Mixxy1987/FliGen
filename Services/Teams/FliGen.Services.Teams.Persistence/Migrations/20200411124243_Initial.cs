@@ -1,7 +1,7 @@
-﻿using FliGen.Common.Sql;
+﻿using System;
+using FliGen.Common.Sql;
 using FliGen.Services.Teams.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
 namespace FliGen.Services.Teams.Persistence.Migrations
 {
@@ -15,19 +15,6 @@ namespace FliGen.Services.Teams.Persistence.Migrations
             InitialFillTeams.TeamsFill(migrationBuilder, toursCount);
             InitialFillTeamPlayers.TeamPlayersFill(migrationBuilder, toursCount * 2);
         }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Team");
-
-            migrationBuilder.DropTable(
-                name: "TeamPlayerLinks");
-
-            migrationBuilder.DropTable(
-                name: "TeamRole");
-        }
-
         private int ToursCount()
         {
             int toursCount = 0;
@@ -47,6 +34,21 @@ namespace FliGen.Services.Teams.Persistence.Migrations
             }
 
             return toursCount;
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Team");
+
+            migrationBuilder.DropTable(
+                name: "TeamPlayerLinks");
+
+            migrationBuilder.DropTable(
+                name: "TeamRole");
+
+            migrationBuilder.DropTable(
+                name: "TemporalTeamPlayerLinks");
         }
     }
 }

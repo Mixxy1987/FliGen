@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Teams.Persistence.Migrations
 {
     [DbContext(typeof(TeamsContext))]
-    [Migration("20200403075522_Initial")]
+    [Migration("20200411124243_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,25 @@ namespace FliGen.Services.Teams.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("TeamRole");
+                });
+
+            modelBuilder.Entity("FliGen.Services.Teams.Domain.Entities.TemporalTeamPlayerLink", b =>
+                {
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId", "TeamId");
+
+                    b.ToTable("TemporalTeamPlayerLinks");
                 });
 #pragma warning restore 612, 618
         }

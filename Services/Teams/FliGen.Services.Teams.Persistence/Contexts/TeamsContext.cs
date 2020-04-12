@@ -9,6 +9,7 @@ namespace FliGen.Services.Teams.Persistence.Contexts
         public DbSet<TeamRole> TeamRoles { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamPlayerLink> TeamPlayerLinks { get; set; }
+        public DbSet<TemporalTeamPlayerLink> TemporalTeamPlayerLinks { get; set; }
 
         public TeamsContext(DbContextOptions<TeamsContext> options) : base(options)
         {

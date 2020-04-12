@@ -4,14 +4,16 @@ using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
 using FliGen.Services.Teams.Application.Common;
 using FliGen.Services.Teams.Application.Dto;
+using FliGen.Services.Teams.Application.Dto.Enum;
 using FliGen.Services.Teams.Application.Queries.LeaguesQuery;
+using FliGen.Services.Teams.Application.Queries.PlayersQuery;
 using FliGen.Services.Teams.Application.Services;
+using FliGen.Services.Teams.Application.Services.GenerateTeams;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FliGen.Services.Teams.Application.Dto.Enum;
-using FliGen.Services.Teams.Application.Queries.PlayersQuery;
-using FliGen.Services.Teams.Application.Services.GenerateTeams;
+using FliGen.Services.Teams.Application.Events;
+using FliGen.Services.Teams.Domain.Entities;
 
 namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
 {
@@ -21,26 +23,87 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
         private readonly IPlayersService _playersService;
         private readonly ILeaguesService _leaguesService;
         private readonly IGenerateTeamsServiceFactory _generateTeamsServiceFactory;
+        private readonly IBusPublisher _busPublisher;
 
         public GenerateTeamsHandler(
             IUnitOfWork uow,
             IPlayersService playersService,
             ILeaguesService leaguesService,
-            IGenerateTeamsServiceFactory generateTeamsServiceFactory)
+            IGenerateTeamsServiceFactory generateTeamsServiceFactory,
+            IBusPublisher busPublisher)
         {
             _uow = uow;
             _playersService = playersService;
             _leaguesService = leaguesService;
             _generateTeamsServiceFactory = generateTeamsServiceFactory;
+            _busPublisher = busPublisher;
         }
 
         public async Task HandleAsync(GenerateTeams command, ICorrelationContext context)
         {
             (int playersInTeam, int teamsInTour) = await GetPlayersAndTeamsCount(command);
+            List<PlayerWithLeagueStatusDto> playersWithLeagueStatus = await GetPlayersInformationFromLeagueService(command);
+            List<PlayerWithRateDto> playersWithRate = await GetPlayersRate(command);
 
-            IEnumerable<PlayerWithLeagueStatusDto> playersWithLeagueStatus = await GetPlayersInformationFromLeagueService(command);
-            List<PlayerWithRateDto> playersWithRate = (await GetPlayersRate(command)).ToList();
+            await ValidateDataOrThrow(
+                playersWithLeagueStatus,
+                playersWithRate,
+                playersInTeam,
+                teamsInTour);
 
+            int[][] teams = GenerateTeams(
+                playersWithLeagueStatus,
+                playersWithRate,
+                playersInTeam,
+                teamsInTour,
+                command.GenerateTeamsStrategy);
+
+            await SaveGeneratedTeams(command, teams);
+
+            await _busPublisher.PublishAsync(new TeamsCreated(teams), context);
+
+            _uow.SaveChanges();
+        }
+
+        private async Task ValidateDataOrThrow(
+            List<PlayerWithLeagueStatusDto> playersWithLeagueStatus,
+            List<PlayerWithRateDto> playersWithRate,
+            int playersInTeam,
+            int teamsInTour)
+        {
+            //todo:: can we divide players?
+            var readyPlayers =
+                playersWithLeagueStatus.Where(x => x.PlayerLeagueJoinStatus == PlayerLeagueJoinStatus.Joined);
+
+            if (readyPlayers.Count() < playersInTeam * teamsInTour)
+            {
+                throw new FliGenException(ErrorCodes.NotEnoughPlayers, "Not enough players.");
+            }
+
+            //todo:: another reasons to reject
+        }
+
+        private async Task SaveGeneratedTeams(GenerateTeams command, int[][] teams)
+        {
+            var ttplRepo = _uow.GetRepositoryAsync<TemporalTeamPlayerLink>();
+
+            for (int i = 0; i < teams.Length; i++)
+            {
+                for (int j = 0; j < teams[i].Length; j++)
+                {
+                    var link = TemporalTeamPlayerLink.Create(command.TourId, command.LeagueId, i + 1, teams[i][j]);
+                    await ttplRepo.AddAsync(link);
+                }
+            }
+        }
+
+        private int[][] GenerateTeams(
+            IEnumerable<PlayerWithLeagueStatusDto> playersWithLeagueStatus,
+            List<PlayerWithRateDto> playersWithRate, 
+            int playersInTeam,
+            int teamsInTour, 
+            GenerateTeamsStrategy strategy)
+        {
             var playerInfosForGenerate = new List<PlayerInfoForGenerate>();
             foreach (var player in playersWithLeagueStatus.Where(x => x.PlayerLeagueJoinStatus == PlayerLeagueJoinStatus.Joined))
             {
@@ -48,27 +111,24 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
                 playerInfosForGenerate.Add(new PlayerInfoForGenerate(player.Id, rate, player.LeaguePlayerPriority));
             }
 
-            IGenerateTeamsService generateTeamsService = 
-                _generateTeamsServiceFactory.Create(command.GenerateTeamsStrategy);
-            var teams = generateTeamsService.Generate(
-                new InfoForGenerate(teamsInTour, playersInTeam, playerInfosForGenerate));
-
-            _uow.SaveChanges();
+            return _generateTeamsServiceFactory
+                .Create(strategy)
+                .Generate(new InfoForGenerate(teamsInTour, playersInTeam, playerInfosForGenerate));
         }
 
-        private async Task<IEnumerable<PlayerWithRateDto>> GetPlayersRate(GenerateTeams command)
+        private async Task<List<PlayerWithRateDto>> GetPlayersRate(GenerateTeams command)
         {
-            return await _playersService.GetAsync(
+            return (await _playersService.GetAsync(
                 new PlayersQuery
                 {
                     Size = command.Pid.Length,
                     PlayerId = command.Pid,
                     QueryType = PlayersQueryType.Actual,
                     LeagueId = new[] { command.LeagueId },
-                });
+                })).ToList();
         }
 
-        private async Task<IEnumerable<PlayerWithLeagueStatusDto>> GetPlayersInformationFromLeagueService(GenerateTeams command)
+        private async Task<List<PlayerWithLeagueStatusDto>> GetPlayersInformationFromLeagueService(GenerateTeams command)
         {
             var leagueDto = (await _leaguesService.GetAsync(
                 new LeaguesQuery
@@ -83,7 +143,7 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
                 throw new FliGenException(ErrorCodes.NoInformationAboutLeague, "No information about players.");
             }
 
-            return leagueDto.PlayersLeagueStatuses;
+            return leagueDto.PlayersLeagueStatuses.ToList();
         }
 
         private async Task<(int, int)> GetPlayersAndTeamsCount(GenerateTeams command)
