@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 using FliGen.Common;
 
 namespace FliGen.Services.Operations
@@ -40,7 +41,10 @@ namespace FliGen.Services.Operations
             services.AddInitializers(typeof(IMongoDbInitializer));
 
             var builder = new ContainerBuilder();
-            
+
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
+
             builder.Populate(services);
             ConfigureContainer(builder);
            
