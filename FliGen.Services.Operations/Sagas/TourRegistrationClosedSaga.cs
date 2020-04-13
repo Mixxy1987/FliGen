@@ -1,13 +1,15 @@
 ﻿using Chronicle;
 using FliGen.Common.RabbitMq;
+using FliGen.Services.Operations.Messages.Tours.Commands;
 using FliGen.Services.Operations.Messages.Tours.Events;
 using System.Threading.Tasks;
-using FliGen.Services.Operations.Messages.Tours.Commands;
 
 namespace FliGen.Services.Operations.Sagas
 {
     public class TourRegistrationClosedSaga : Saga,
-        ISagaStartAction<TourRegistrationClosed>
+        ISagaStartAction<TourRegistrationClosed>,
+        ISagaAction<TeamsCreated>,
+        ISagaAction<GenerateTeamsRejected>
     {
         private readonly IBusPublisher _busPublisher;
 
@@ -31,6 +33,7 @@ namespace FliGen.Services.Operations.Sagas
 
         public async Task CompensateAsync(TourRegistrationClosed message, ISagaContext context)
         {
+            await _busPublisher.PublishAsync(new TourBack(message.TourId), CorrelationContext.Empty);
             await Task.CompletedTask;
         }
 

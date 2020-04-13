@@ -7,8 +7,10 @@ using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
+using FliGen.Services.Tours.Application.Commands.TourBack;
 using FliGen.Services.Tours.Application.Commands.TourCancel;
 using FliGen.Services.Tours.Application.Commands.TourForward;
+using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Application.Services;
 using FliGen.Services.Tours.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +20,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Services.Tours.Application.Events;
 
 namespace FliGen.Services.Tours
 {
@@ -86,7 +87,8 @@ namespace FliGen.Services.Tours
                 .SubscribeCommand<PlayerRegisterOnTour>(onError: (c, e) =>
                     new PlayerRegisterOnTourRejected(e.Message, e.Code))
 				.SubscribeCommand<TourCancel>()
-                .SubscribeCommand<TourForward>();
+                .SubscribeCommand<TourForward>()
+                .SubscribeCommand<TourBack>();
 
 			app.UseEndpoints(endpoints =>
 			{

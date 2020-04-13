@@ -76,6 +76,33 @@ namespace FliGen.Services.Tours.Domain.Entities
             }
         }
 
+        public void MoveTourStatusBack()
+        {
+            switch (TourStatus.Name)
+            {
+                case (nameof(TourStatus.RegistrationOpened)):
+                {
+                    TourStatusId = TourStatus.Planned.Id;
+                    break;
+                }
+                case (nameof(TourStatus.RegistrationClosed)):
+                {
+                    TourStatusId = TourStatus.RegistrationOpened.Id;
+                    break;
+                }
+                case (nameof(TourStatus.InProgress)):
+                {
+                    TourStatusId = TourStatus.RegistrationClosed.Id;
+                    break;
+                }
+                case (nameof(TourStatus.Completed)):
+                {
+                    TourStatusId = TourStatus.InProgress.Id;
+                    break;
+                }
+            }
+        }
+
         public void CancelTour()
         {
             if (TourStatus.Equals(TourStatus.InProgress) ||

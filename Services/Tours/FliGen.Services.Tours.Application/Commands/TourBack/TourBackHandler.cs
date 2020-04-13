@@ -1,18 +1,18 @@
-﻿using FliGen.Common.Handlers;
+﻿using System.Threading.Tasks;
+using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Domain.Entities;
-using System.Threading.Tasks;
 
-namespace FliGen.Services.Tours.Application.Commands.TourCancel
+namespace FliGen.Services.Tours.Application.Commands.TourBack
 {
-    public class TourCancelHandler : ICommandHandler<TourCancel>
+    public class TourBackHandler : ICommandHandler<TourBack>
     {
         private readonly IUnitOfWork _uow;
         private readonly IBusPublisher _busPublisher;
 
-        public TourCancelHandler(
+        public TourBackHandler(
             IUnitOfWork uow,
             IBusPublisher busPublisher)
         {
@@ -20,16 +20,14 @@ namespace FliGen.Services.Tours.Application.Commands.TourCancel
             _busPublisher = busPublisher;
         }
 
-        public async Task HandleAsync(TourCancel command, ICorrelationContext context)
+        public async Task HandleAsync(TourBack command, ICorrelationContext context)
         {
             var tourRepo = _uow.GetRepositoryAsync<Tour>();
-
-            Tour tour = await tourRepo.SingleAsync(t => t.Id == command.TourId);
-            tour.CancelTour();
-            tourRepo.UpdateAsync(tour);
-
-            await _busPublisher.PublishAsync(new TourCanceled(tour.Id), context);
             
+            Tour tour = await tourRepo.SingleAsync(t => t.Id == command.TourId);
+            tour.MoveTourStatusBack();
+
+            tourRepo.UpdateAsync(tour);
             _uow.SaveChanges();
         }
     }
