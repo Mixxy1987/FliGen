@@ -8,9 +8,9 @@ namespace FliGen.Common.SeedWork.Repository.DependencyInjection
         public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services)
             where TContext : DbContext
         {
-            services.AddScoped<IRepositoryFactory, UnitOfWork<TContext>>();
-            services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
-            services.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
+            services.AddTransient<IRepositoryFactory, UnitOfWork<TContext>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork<TContext>>();
+            services.AddTransient<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
             return services;
         }
 

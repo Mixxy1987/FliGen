@@ -5,6 +5,7 @@ using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Domain.Entities;
 
+
 namespace FliGen.Services.Tours.Application.Commands.TourBack
 {
     public class TourBackHandler : ICommandHandler<TourBack>
@@ -28,6 +29,7 @@ namespace FliGen.Services.Tours.Application.Commands.TourBack
             tour.MoveTourStatusBack();
 
             tourRepo.UpdateAsync(tour);
+
             _uow.SaveChanges();
         }
     }

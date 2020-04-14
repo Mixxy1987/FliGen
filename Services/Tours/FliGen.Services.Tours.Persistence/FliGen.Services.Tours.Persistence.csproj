@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
-    <ProjectReference Include="..\FliGen.Services.Tours.Application\FliGen.Services.Tours.Application.csproj" />
     <ProjectReference Include="..\FliGen.Services.Tours.Domain\FliGen.Services.Tours.Domain.csproj" />
   </ItemGroup>
 

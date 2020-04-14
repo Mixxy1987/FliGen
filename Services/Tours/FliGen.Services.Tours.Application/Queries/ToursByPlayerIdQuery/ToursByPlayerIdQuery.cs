@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using MediatR;
-using Newtonsoft.Json;
+﻿using MediatR;
+using System.Collections.Generic;
 
 namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
 {

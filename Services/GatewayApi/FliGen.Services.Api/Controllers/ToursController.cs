@@ -48,6 +48,12 @@ namespace FliGen.Services.Api.Controllers
             return await SendAsync(command);
         }
 
+        [HttpPost("back")]
+        public async Task<IActionResult> Post(TourBack command)
+        {
+            return await SendAsync(command);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Post(PlayerRegisterOnTour command)
         {

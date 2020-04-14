@@ -11,11 +11,14 @@ namespace FliGen.Services.Tours.Persistence.Contexts
 
         public ToursContext(DbContextOptions<ToursContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { }
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); // not working
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
