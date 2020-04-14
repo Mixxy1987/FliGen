@@ -34,9 +34,12 @@ namespace FliGen.Services.Teams
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TeamsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<TeamsContext>();
-            
+            services
+                .AddDbContext<TeamsContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
+                    contextLifetime: ServiceLifetime.Transient)
+                .AddUnitOfWork<TeamsContext>();
+
             services.AddControllers();
 
             services.AddJaeger();

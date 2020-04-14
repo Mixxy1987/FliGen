@@ -58,7 +58,8 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
                 teamsInTour,
                 command.GenerateTeamsStrategy);
 
-            await SaveGeneratedTeams(command, teams);
+            CleanPreviousGeneratedTeams(command, teams);
+            SaveGeneratedTeams(command, teams);
 
             await _busPublisher.PublishAsync(new TeamsCreated(teams), context);
 
@@ -83,16 +84,23 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
             //todo:: another reasons to reject
         }
 
-        private async Task SaveGeneratedTeams(GenerateTeams command, int[][] teams)
+        private void CleanPreviousGeneratedTeams(GenerateTeams command, int[][] teams)
         {
-            var ttplRepo = _uow.GetRepositoryAsync<TemporalTeamPlayerLink>();
+            var ttplRepo = _uow.GetRepository<TemporalTeamPlayerLink>();
+            var previousData = ttplRepo.GetList(x => x.TourId == command.TourId);
+            ttplRepo.Delete(previousData.Items);
+        }
+
+        private void SaveGeneratedTeams(GenerateTeams command, int[][] teams)
+        {
+            var ttplRepo = _uow.GetRepository<TemporalTeamPlayerLink>();
 
             for (int i = 0; i < teams.Length; i++)
             {
                 for (int j = 0; j < teams[i].Length; j++)
                 {
                     var link = TemporalTeamPlayerLink.Create(command.TourId, command.LeagueId, i + 1, teams[i][j]);
-                    await ttplRepo.AddAsync(link);
+                    ttplRepo.Add(link);
                 }
             }
         }
