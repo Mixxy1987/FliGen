@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Authentication;
 using FliGen.Common.RestEase;
 using FliGen.Common.Jaeger;
 using FliGen.Common.RabbitMq;
@@ -38,6 +39,8 @@ namespace FliGen.Services.Api
                         .AllowAnyHeader()
                         .WithExposedHeaders(Headers));
             });
+            services.AddJwt();
+
             services.RegisterServiceForwarder<IPlayersService>("players-service");
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
             //services.RegisterServiceForwarder<ISeasonsService>("seasons-service");

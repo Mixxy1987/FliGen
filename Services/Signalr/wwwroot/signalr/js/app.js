@@ -1,20 +1,19 @@
 'use strict';
-(function() {
+(function () {
     const $jwt = document.getElementById("jwt");
     const $connect = document.getElementById("connect");
     const $messages = document.getElementById("messages");
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5007/fligen')
+        .withUrl('http://localhost:5009/fligen')
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
     $connect.onclick = function() {
         const jwt = $jwt.value;
-        if (!jwt || /\s/g.test(jwt)){
+        if (!jwt) {
             alert('Invalid JWT.')
             return;
         }
-
         appendMessage("Connecting to FliGen Hub...");
         connection.start()
             .then(() => {

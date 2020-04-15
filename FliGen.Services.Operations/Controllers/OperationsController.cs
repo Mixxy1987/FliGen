@@ -24,6 +24,8 @@ namespace FliGen.Services.Operations.Controllers
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OperationDto>> Get(Guid id)
-            => Single(await _operationsStorage.GetAsync(id));
+        {
+            return Single(await _operationsStorage.GetAsync(id));
+        }
     }
 }
