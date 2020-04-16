@@ -3,6 +3,10 @@ using FliGen.Common.Messages;
 
 namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
 {
+    /*
+     * 1) player register by himself - PlayerExternalId
+     * 2) bulk register by admin - PlayerInternalIds
+     */
     [MessageNamespace("tours")]
     public class PlayerRegisterOnTour : ICommand
     {

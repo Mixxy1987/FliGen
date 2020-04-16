@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace FliGen.Application.Commands.Player.DeletePlayer
+namespace FliGen.Services.Players.Application.Commands.DeletePlayer
 {
-    public sealed class DeletePlayerCommandValidator : AbstractValidator<DeletePlayerCommand>
+    public sealed class DeletePlayerValidator : AbstractValidator<DeletePlayer>
     {
-        public DeletePlayerCommandValidator()
+        public DeletePlayerValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()

@@ -1,15 +1,15 @@
 ﻿using FliGen.Common.Extensions;
 using FluentValidation;
 
-namespace FliGen.Application.Commands.Player.UpdatePlayer
+namespace FliGen.Services.Players.Application.Commands.AddPlayer
 {
-    public sealed class UpdatePlayerCommandValidator : AbstractValidator<UpdatePlayerCommand>
+    public sealed class AddPlayerValidator : AbstractValidator<AddPlayer>
     {
-        public UpdatePlayerCommandValidator()
+        public AddPlayerValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()
-                .WithMessage("Не задана команда на обновление игрока");
+                .WithMessage("Не задана команда на добавление игрока");
 
             RuleFor(c => c.Rate)
                 .Must(x => double.TryParse(x.CommaToDot(), out _))

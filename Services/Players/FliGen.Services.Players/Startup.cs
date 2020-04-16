@@ -2,7 +2,11 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
+using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Players.Application.Commands.AddPlayer;
+using FliGen.Services.Players.Application.Commands.DeletePlayer;
+using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using FliGen.Common.RabbitMq;
-using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 
 namespace FliGen.Services.Players
 {
@@ -68,7 +70,10 @@ namespace FliGen.Services.Players
 			app.UseRouting();
 			app.UseAuthorization();
 
-            app.UseRabbitMq().SubscribeCommand<UpdatePlayer>();
+            app.UseRabbitMq()
+                .SubscribeCommand<UpdatePlayer>()
+                .SubscribeCommand<AddPlayer>()
+                .SubscribeCommand<DeletePlayer>();
 
 			app.UseEndpoints(endpoints =>
 			{
