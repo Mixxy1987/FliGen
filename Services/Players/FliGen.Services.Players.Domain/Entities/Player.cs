@@ -50,6 +50,7 @@ namespace FliGen.Services.Players.Domain.Entities
 
         public static Player Create(string firstName, string lastName, string rate = DefaultRate, string externalId = null)
         {
+            rate ??= DefaultRate;
             return new Player(firstName, lastName, double.Parse(rate.CommaToDot()), externalId);
         }
 

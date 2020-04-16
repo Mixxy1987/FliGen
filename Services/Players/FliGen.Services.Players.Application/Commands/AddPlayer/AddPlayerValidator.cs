@@ -11,6 +11,14 @@ namespace FliGen.Services.Players.Application.Commands.AddPlayer
                 .NotEmpty()
                 .WithMessage("Не задана команда на добавление игрока");
 
+            RuleFor(c => c.FirstName)
+                .NotEmpty()
+                .WithMessage("Неверное имя");
+
+            RuleFor(c => c.LastName)
+                .NotEmpty()
+                .WithMessage("Неверная фамилия");
+
             RuleFor(c => c.Rate)
                 .Must(x => double.TryParse(x.CommaToDot(), out _))
                 .WithMessage("Неверный формат рейтинга игрока");

@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Chronicle;
+using FliGen.Common;
 using FliGen.Common.Handlers;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
@@ -16,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using FliGen.Common;
 
 namespace FliGen.Services.Operations
 {
@@ -48,7 +48,6 @@ namespace FliGen.Services.Operations
             builder.Populate(services);
             ConfigureContainer(builder);
            
-
             Container = builder.Build();
 
             return new AutofacServiceProvider(Container);

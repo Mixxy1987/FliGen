@@ -30,11 +30,16 @@ namespace FliGen.Services.Players
 		}
 
 		public IServiceProvider ConfigureServices(IServiceCollection services)
-		{
-			services.AddDbContext<PlayersContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<PlayersContext>();
-			
-            services.AddControllers();
+        {
+            string connectionString = Configuration["TestConnection"] ??   //todo:: think how do it better!
+                                      Configuration.GetConnectionString("DefaultConnection");
+
+			services
+                .AddDbContext<PlayersContext>(options =>
+                    options.UseSqlServer(connectionString))
+                .AddUnitOfWork<PlayersContext>();
+
+			services.AddControllers();
 
 			var builder = new ContainerBuilder();
 
