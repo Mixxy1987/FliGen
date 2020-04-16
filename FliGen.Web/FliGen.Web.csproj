@@ -38,10 +38,8 @@
     <None Remove="ClientApp\src\app\common\tourStatus.ts" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FliGen.Application\FliGen.Application.csproj" />
     <ProjectReference Include="..\FliGen.Common\FliGen.Common.csproj" />
-    <ProjectReference Include="..\FliGen.Domain\FliGen.Domain.csproj" />
-    <ProjectReference Include="..\FliGen.Persistence\FliGen.Persistence.csproj" />
+    <ProjectReference Include="..\Services\AuthServer\FliGen.Services.AuthServer.Persistence\FliGen.Services.AuthServer.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\common\tourStatus.ts" />

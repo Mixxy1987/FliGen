@@ -1,14 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using EventBus.Base.Standard;
-using FliGen.Application.Events;
-using FliGen.Application.Events.PlayerRegistered;
-using FliGen.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +8,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using FliGen.Services.AuthServer.Persistence.Contexts;
 
 namespace FliGen.Web.Areas.Identity.Pages.Account
 {
@@ -111,8 +109,7 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-	                var message = new PlayerRegisteredIntegrationEvent(user.Id, user.FirstName, user.LastName);
-	                _eventBus.Publish(message);
+	                //todo:: publish player registered event
 
                     _logger.LogInformation("User created a new account with password.");
 

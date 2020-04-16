@@ -2,13 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EventBus.RabbitMQ.Standard.Configuration;
 using EventBus.RabbitMQ.Standard.Options;
-using FliGen.Application.Events.PlayerRegistered;
-using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
-using FliGen.Common.SeedWork.Repository.DependencyInjection;
-using FliGen.Persistence.Contexts;
-using FliGen.Web.Extensions;
-using FliGen.Web.Services;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
@@ -22,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
+using FliGen.Services.AuthServer.Persistence.Contexts;
 
 namespace FliGen.Web
 {
@@ -38,11 +33,8 @@ namespace FliGen.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FliGenContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<FliGenContext>();
-
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));//.AddUnitOfWork<ApplicationDbContext>();
+                options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
             services.AddDefaultIdentity<AppUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -97,36 +89,15 @@ namespace FliGen.Web
             services.AddRabbitMqRegistration(rabbitMqOptions);
 
             var builder = new ContainerBuilder();
-
-            ConfigureContainer(builder);
             builder.Populate(services);
             Container = builder.Build();
 
             return new AutofacServiceProvider(Container);
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterType<PlayerRegisteredIntegrationEventHandler>();
-            builder.RegisterType<IdentityService>().As<IIdentityService>().InstancePerDependency();
-
-            builder.AddAutoMapper();
-            builder.AddMediator("FliGen.Application");
-            builder.AddRequestLogDecorator();
-            builder.AddRequestValidationDecorator();
-            builder.AddSerilogService();
-        }
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<FliGenContext>();
-                //context.Database.Migrate();
-            }
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -157,9 +128,6 @@ namespace FliGen.Web
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
-
-            //Event Bus
-            app.SubscribeToEvents();
 
             app.UseSpa(spa =>
             {
