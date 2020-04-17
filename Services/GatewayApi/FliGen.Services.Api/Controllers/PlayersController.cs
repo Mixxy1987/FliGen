@@ -39,5 +39,11 @@ namespace FliGen.Services.Api.Controllers
         {
             return await SendAsync(command);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody]DeletePlayer command)
+        {
+            return await SendAsync(command);
+        }
     }
 }

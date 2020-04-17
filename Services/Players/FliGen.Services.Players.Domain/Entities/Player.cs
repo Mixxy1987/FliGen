@@ -15,7 +15,7 @@ namespace FliGen.Services.Players.Domain.Entities
         public string ExternalId { get; }
         public List<PlayerRate> Rates { get; }
 
-        private Player()
+        public Player()
         {}
 
         private Player(string firstName, string lastName, double rate, string externalId) : this()

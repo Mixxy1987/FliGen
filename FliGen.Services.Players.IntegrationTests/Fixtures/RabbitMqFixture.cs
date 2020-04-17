@@ -66,6 +66,24 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             return taskCompletionSource;
         }
 
+        public async Task<TaskCompletionSource<bool>> SubscribeAndGetAsync<TEvent>(
+            Func<int, TaskCompletionSource<bool>, Task> onMessageReceived,
+            int id) where TEvent : IEvent
+        {
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+            var guid = Guid.NewGuid().ToString();
+
+            await _client.SubscribeAsync<TEvent>(
+                async _ => await onMessageReceived(id, taskCompletionSource),
+                ctx => ctx.UseSubscribeConfiguration(cfg =>
+                    cfg
+                        .FromDeclaredQueue(
+                            builder => builder
+                                .WithDurability(false)
+                                .WithName(guid))));
+            return taskCompletionSource;
+        }
+
         public void Dispose()
         {
             _client.Dispose();

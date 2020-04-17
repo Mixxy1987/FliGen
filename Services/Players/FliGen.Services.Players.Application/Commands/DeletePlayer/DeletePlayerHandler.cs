@@ -1,7 +1,7 @@
 ﻿using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
-using MediatR;
+using FliGen.Services.Players.Application.Events;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Players.Application.Commands.DeletePlayer
@@ -9,20 +9,23 @@ namespace FliGen.Services.Players.Application.Commands.DeletePlayer
     public class DeletePlayerHandler : ICommandHandler<DeletePlayer>
     {
         private readonly IUnitOfWork _uow;
+        private readonly IBusPublisher _busPublisher;
 
-        public DeletePlayerHandler(IUnitOfWork uow)
+        public DeletePlayerHandler(
+            IUnitOfWork uow,
+            IBusPublisher busPublisher)
         {
             _uow = uow;
+            _busPublisher = busPublisher;
         }
 
-        public Task HandleAsync(DeletePlayer command, ICorrelationContext context)
+        public async Task HandleAsync(DeletePlayer command, ICorrelationContext context)
         {
             var repo = _uow.GetRepository<Domain.Entities.Player>();
             repo.Delete(command.Id);
 
             _uow.SaveChanges();
-
-            return Task.FromResult(Unit.Value);
+            await _busPublisher.PublishAsync(new PlayerDeleted(), context);
         }
     }
 }

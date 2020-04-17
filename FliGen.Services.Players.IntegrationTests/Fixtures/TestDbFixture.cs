@@ -9,10 +9,11 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        private bool _disposed = false;
-        public PlayersContext Context;
-        
-        public string ConnectionString;
+        public MockedData MockedDataInstance { get; set; }
+
+        public PlayersContext Context { get; set; }
+        public string ConnectionString { get; set; }
+            = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public TestDbFixture()
         {
@@ -22,11 +23,24 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
             var builder = new DbContextOptionsBuilder<PlayersContext>();
 
-            ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
             builder.UseSqlServer(ConnectionString)
                 .UseInternalServiceProvider(serviceProvider);
-            Context = new PlayersContext(builder.Options);
+            InitDb(builder.Options);
+        }
+
+        public void InitDb(DbContextOptions<PlayersContext> options)
+        {
+            Context = new PlayersContext(options);
             Context.Database.Migrate();
+
+            MockedDataInstance = new MockedData()
+            {
+                PlayerExternalIdForDelete = Guid.NewGuid().ToString(),
+            };
+            var playerForDelete = Player.Create("for delete", "for delete", externalId: MockedDataInstance.PlayerExternalIdForDelete);
+            var entity = Context.Add(playerForDelete);
+            Context.SaveChanges();
+            MockedDataInstance.PlayerInternalIdForDelete = entity.Entity.Id;
         }
 
         public async Task GetPlayerByExternalId(string externalId, TaskCompletionSource<Player> receivedTask)
@@ -53,9 +67,35 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             }
         }
 
+        public async Task CheckIfPlayerExists(int internalId, TaskCompletionSource<bool> receivedTask)
+        {
+            try
+            {
+                var entity = await Context.Players.SingleOrDefaultAsync(p => p.Id == internalId);
+
+                if (entity is null)
+                {
+                    receivedTask.TrySetResult(false);
+                }
+                receivedTask.TrySetResult(true);
+            }
+            catch (Exception e)
+            {
+                receivedTask.TrySetException(e);
+            }
+        }
+
         public void Dispose()
         {
             Context.Database.EnsureDeleted();
         }
+
+        public class MockedData
+        {
+            public string PlayerExternalIdForDelete { get; set; }
+            public int PlayerInternalIdForDelete { get; set; }
+        }
     }
+
+
 }

@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FliGen.Services.Players.Application.Commands.DeletePlayer;
 using Microsoft.AspNetCore.Hosting;
 using Xunit;
 
 namespace FliGen.Services.Players.IntegrationTests
 {
-    public class PlayersCommandsTests:
+    public class PlayersCommandsTests :
         IClassFixture<TestDbFixture>,
         IClassFixture<RabbitMqFixture>,
         IClassFixture<WebApplicationFactory<TestStartup>>
@@ -28,15 +29,13 @@ namespace FliGen.Services.Players.IntegrationTests
         {
             _testDbFixture = testDbFixture;
             _rabbitMqFixture = rabbitMqFixture;
-            _client = factory
-                .WithWebHostBuilder(builder => builder
-                    .UseStartup<TestStartup>())
+            _client = factory.WithWebHostBuilder(builder => builder.UseStartup<TestStartup>())
                 .CreateClient();
         }
 
         [Theory]
         [InlineData("players/healthcheck")]
-        public async Task Given_Endpoints_Should_Return_Success_Http_Status_Code(string endpoint)
+        public async Task GivenEndpointsShouldReturnSuccessHttpStatusCode(string endpoint)
         {
             var response = await _client.GetAsync(endpoint);
             response.IsSuccessStatusCode.Should().BeTrue();
@@ -64,6 +63,25 @@ namespace FliGen.Services.Players.IntegrationTests
             player.FirstName.Should().Be(command.FirstName);
             player.LastName.Should().Be(command.LastName);
             player.ExternalId.Should().Be(command.ExternalId);
+        }
+
+        [Fact]
+        public async Task DeletePlayerShouldDeleteDbEntity()
+        {
+            var command = new DeletePlayer()
+            {
+                Id = _testDbFixture.MockedDataInstance.PlayerInternalIdForDelete
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<PlayerDeleted>(
+                _testDbFixture.CheckIfPlayerExists,
+                _testDbFixture.MockedDataInstance.PlayerInternalIdForDelete);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            var result = await creationTask.Task;
+
+            result.Should().BeFalse();
         }
     }
 }
