@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fligen.Services.Notifications.Application\FliGen.Services.Notifications.Application.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Notifications.Persistence\FliGen.Services.Notifications.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

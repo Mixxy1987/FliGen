@@ -5,6 +5,8 @@ using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
+using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Notifications.Application.Events.TourRegistrationOpened;
 using FliGen.Services.Notifications.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Services.Notifications.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Services.Notifications
 {
@@ -27,6 +31,9 @@ namespace FliGen.Services.Notifications
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<NotificationsContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<NotificationsContext>();
+
             services.AddControllers();
 
             services.AddJaeger();
@@ -46,8 +53,8 @@ namespace FliGen.Services.Notifications
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddAutoMapper();
-            builder.AddRabbitMq("FliGen.Services.Leagues.Application");
-            builder.AddMediator("FliGen.Services.Leagues.Application");
+            builder.AddRabbitMq("FliGen.Services.Notifications.Application");
+            builder.AddMediator("FliGen.Services.Notifications.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
             builder.AddSerilogService();
@@ -65,7 +72,8 @@ namespace FliGen.Services.Notifications
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseRabbitMq();
+            app.UseRabbitMq()
+                .SubscribeEvent<TourRegistrationOpened>("tours");
 
             app.UseEndpoints(endpoints =>
             {
