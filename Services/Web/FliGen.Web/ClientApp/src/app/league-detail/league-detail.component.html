@@ -1,0 +1,17 @@
+<div *ngIf="loaded">
+  <h2>{{leagueInformation.name}}</h2>
+  <div>
+    <p><b>Описание:</b> {{leagueInformation.description}}</p>
+    <p><b>Тип:</b> {{leagueInformation.leagueType.name}}</p>
+    <p><b>Всего сезонов сыграно:</b> {{leagueInformation.seasonsCount}} </p>
+    <p><b>Всего туров сыграно:</b> {{leagueInformation.toursCount}}</p>
+
+    <p><b>Текущий сезон начат:</b> {{leagueInformation.currentSeason.start}}</p>
+    <p><b>В текущем сезоне туров сыграно:</b> {{leagueInformation.currentSeason.toursPlayed}}</p>
+    <p><b>Последний тур был:</b> {{leagueInformation.currentSeason.previousTour.date}}</p>
+    <p><b>Следующий тур:</b> {{leagueInformation.currentSeason.nextTour?.date}}</p>
+
+    <p><b><a [routerLink]="'settings'" class="nav-link">Настройки</a></b></p>
+    <p><a routerLink="/leagues" class="nav-link">Обратно к лигам</a></p>
+  </div>
+</div>

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Common", "FliGen.Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.AuthServer.Persistence", "Services\AuthServer\FliGen.Services.AuthServer.Persistence\FliGen.Services.AuthServer.Persistence.csproj", "{731E5502-319F-40B9-9849-B2975DBED42C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Web", "FliGen.Web\FliGen.Web.csproj", "{60E30C16-215A-4DA5-A68D-8A967032E094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Web", "Services\Web\FliGen.Web\FliGen.Web.csproj", "{60E30C16-215A-4DA5-A68D-8A967032E094}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A714F230-7446-49CB-AD2E-4359036FBE16}"
 EndProject
@@ -109,9 +109,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0C332D00-FFD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7B8904BC-0685-4BAF-89B3-9332D2080C75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Teams.IntegrationTests", "FliGen.Services.Teams.IntegrationTests\FliGen.Services.Teams.IntegrationTests.csproj", "{051E7A6D-F8D0-4EC1-B5FA-4DB060AD1E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Teams.IntegrationTests", "Services\Teams\FliGen.Services.Teams.IntegrationTests\FliGen.Services.Teams.IntegrationTests.csproj", "{051E7A6D-F8D0-4EC1-B5FA-4DB060AD1E50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Players.IntegrationTests", "FliGen.Services.Players.IntegrationTests\FliGen.Services.Players.IntegrationTests.csproj", "{386327EA-D86B-40D2-88F0-BDD4C004B674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Players.IntegrationTests", "Services\Players\FliGen.Services.Players.IntegrationTests\FliGen.Services.Players.IntegrationTests.csproj", "{386327EA-D86B-40D2-88F0-BDD4C004B674}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{644B23F6-249A-4342-9FCC-1D2F8F4116BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7E2FC126-12AA-4168-BD20-7F2EF109D758}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1312C46-160D-45A1-8318-5971FA48CF10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Notifications", "Services\Notifications\FliGen.Services.Notifications\FliGen.Services.Notifications.csproj", "{35DA446C-D395-4E5F-BB18-40381C20BE5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Notifications.Application", "Services\Notifications\FliGen.Services.Notifications.Application\FliGen.Services.Notifications.Application.csproj", "{F6BA4658-F4C1-4436-B876-07D3CB483895}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -231,6 +241,14 @@ Global
 		{386327EA-D86B-40D2-88F0-BDD4C004B674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386327EA-D86B-40D2-88F0-BDD4C004B674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386327EA-D86B-40D2-88F0-BDD4C004B674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35DA446C-D395-4E5F-BB18-40381C20BE5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35DA446C-D395-4E5F-BB18-40381C20BE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35DA446C-D395-4E5F-BB18-40381C20BE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35DA446C-D395-4E5F-BB18-40381C20BE5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6BA4658-F4C1-4436-B876-07D3CB483895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6BA4658-F4C1-4436-B876-07D3CB483895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6BA4658-F4C1-4436-B876-07D3CB483895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6BA4658-F4C1-4436-B876-07D3CB483895}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -288,6 +306,11 @@ Global
 		{7B8904BC-0685-4BAF-89B3-9332D2080C75} = {8950B43A-E1FA-4254-9CF2-481C76E22745}
 		{051E7A6D-F8D0-4EC1-B5FA-4DB060AD1E50} = {C831459E-6234-41C0-A543-79797DF60E20}
 		{386327EA-D86B-40D2-88F0-BDD4C004B674} = {1040D886-AF45-4F46-8514-1AA953165C34}
+		{644B23F6-249A-4342-9FCC-1D2F8F4116BB} = {A714F230-7446-49CB-AD2E-4359036FBE16}
+		{7E2FC126-12AA-4168-BD20-7F2EF109D758} = {644B23F6-249A-4342-9FCC-1D2F8F4116BB}
+		{B1312C46-160D-45A1-8318-5971FA48CF10} = {644B23F6-249A-4342-9FCC-1D2F8F4116BB}
+		{35DA446C-D395-4E5F-BB18-40381C20BE5C} = {7E2FC126-12AA-4168-BD20-7F2EF109D758}
+		{F6BA4658-F4C1-4436-B876-07D3CB483895} = {7E2FC126-12AA-4168-BD20-7F2EF109D758}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4F4FC9-5251-45DB-8C41-967CFEBF4FC3}

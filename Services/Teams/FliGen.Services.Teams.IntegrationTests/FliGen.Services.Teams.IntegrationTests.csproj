@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FliGen.Services.Teams.Application\FliGen.Services.Teams.Application.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Teams.Domain\FliGen.Services.Teams.Domain.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Teams.Persistence\FliGen.Services.Teams.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
