@@ -3,6 +3,7 @@ using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Players.IntegrationTests.Fixtures
@@ -17,6 +18,12 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         public TestDbFixture()
         {
+            CreateContext();
+            InitDb();
+        }
+
+        public void CreateContext()
+        {
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkSqlServer()
                 .BuildServiceProvider();
@@ -25,22 +32,63 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
             builder.UseSqlServer(ConnectionString)
                 .UseInternalServiceProvider(serviceProvider);
-            InitDb(builder.Options);
+
+            Context = new PlayersContext(builder.Options);
+            Context.Database.Migrate();
         }
 
-        public void InitDb(DbContextOptions<PlayersContext> options)
+        public void InitDb()
         {
-            Context = new PlayersContext(options);
-            Context.Database.Migrate();
-
             MockedDataInstance = new MockedData()
             {
                 PlayerExternalIdForDelete = Guid.NewGuid().ToString(),
+                PlayerExternalIdForUpdate= Guid.NewGuid().ToString()
             };
+
             var playerForDelete = Player.Create("for delete", "for delete", externalId: MockedDataInstance.PlayerExternalIdForDelete);
-            var entity = Context.Add(playerForDelete);
+            var entityForDelete = Context.Add(playerForDelete);
+
+            var playerForUpdate = Player.Create("for update", "for update", externalId: MockedDataInstance.PlayerExternalIdForUpdate);
+            var entityForUpdate = Context.Add(playerForUpdate);
+            
             Context.SaveChanges();
-            MockedDataInstance.PlayerInternalIdForDelete = entity.Entity.Id;
+            MockedDataInstance.PlayerInternalIdForDelete = entityForDelete.Entity.Id;
+            MockedDataInstance.PlayerInternalIdForUpdate = entityForUpdate.Entity.Id;
+        }
+
+        public async Task GetPlayerAndRateByExternalId(string externalId, TaskCompletionSource<(Player, PlayerRate)> receivedTask)
+        {
+            if (string.IsNullOrWhiteSpace(externalId))
+            {
+                throw new ArgumentNullException(nameof(externalId));
+            }
+
+            try
+            {
+                RecreateContext();
+                Player playerEntity = await Context.Players.SingleAsync(p => p.ExternalId == externalId);
+                if (playerEntity is null)
+                {
+                    receivedTask.TrySetCanceled();
+                    return;
+                }
+
+                PlayerRate playerRateEntity = 
+                    Context.PlayerRates
+                        .Where(p => p.PlayerId == playerEntity.Id)
+                        .OrderBy(p => p.Date)
+                        .Last();
+                if (playerRateEntity is null)
+                {
+                    receivedTask.TrySetCanceled();
+                    return;
+                }
+                receivedTask.TrySetResult((playerEntity, playerRateEntity));
+            }
+            catch (Exception e)
+            {
+                receivedTask.TrySetException(e);
+            }
         }
 
         public async Task GetPlayerByExternalId(string externalId, TaskCompletionSource<Player> receivedTask)
@@ -52,7 +100,8 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
             try
             {
-                var entity = await Context.Players.SingleAsync(p => p.ExternalId == externalId);
+                RecreateContext();
+                Player entity = await Context.Players.SingleAsync(p => p.ExternalId == externalId);
 
                 if (entity is null)
                 {
@@ -90,10 +139,18 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             Context.Database.EnsureDeleted();
         }
 
+        private void RecreateContext()
+        {
+            Context.Dispose();
+            CreateContext();
+        }
+
         public class MockedData
         {
             public string PlayerExternalIdForDelete { get; set; }
+            public string PlayerExternalIdForUpdate { get; set; }
             public int PlayerInternalIdForDelete { get; set; }
+            public int PlayerInternalIdForUpdate { get; set; }
         }
     }
 

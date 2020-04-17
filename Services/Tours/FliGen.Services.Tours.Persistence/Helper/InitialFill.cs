@@ -34,7 +34,7 @@ namespace FliGen.Services.Tours.Persistence.Helper
             {
                 InsertToursFromList(migrationBuilder, seasonId, seasonStartDate, currentTourDate.ToString("yyyy-MM-dd"), query);
                 currentTourDate = currentTourDate.AddDays(7);
-                if (currentTourDate >= DateTime.Now)
+                if (currentTourDate >= DateTime.UtcNow)
                 {
                     break;
                 }

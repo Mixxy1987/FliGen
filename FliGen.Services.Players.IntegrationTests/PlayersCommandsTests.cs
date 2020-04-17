@@ -1,14 +1,15 @@
 ﻿using FliGen.Services.Players.Application.Commands.AddPlayer;
+using FliGen.Services.Players.Application.Commands.DeletePlayer;
 using FliGen.Services.Players.Application.Events;
 using FliGen.Services.Players.Domain.Entities;
 using FliGen.Services.Players.IntegrationTests.Fixtures;
 using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using FliGen.Services.Players.Application.Commands.DeletePlayer;
-using Microsoft.AspNetCore.Hosting;
+using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 using Xunit;
 
 namespace FliGen.Services.Players.IntegrationTests
@@ -79,9 +80,35 @@ namespace FliGen.Services.Players.IntegrationTests
 
             await _rabbitMqFixture.PublishAsync(command);
 
-            var result = await creationTask.Task;
+            bool result = await creationTask.Task;
 
             result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async Task UpdatePlayerShouldUpdateDbEntity()
+        {
+            var command = new UpdatePlayer()
+            {
+                Id = _testDbFixture.MockedDataInstance.PlayerInternalIdForUpdate,
+                FirstName = "Updated firstname",
+                LastName = "Updated lastname",
+                LeagueId = 1,
+                Rate = "8.0"
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<PlayerUpdated>(
+                _testDbFixture.GetPlayerAndRateByExternalId,
+                _testDbFixture.MockedDataInstance.PlayerExternalIdForUpdate);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            (Player player, PlayerRate playerRate) = await creationTask.Task;
+
+            player.FirstName.Should().Be(command.FirstName);
+            player.LastName.Should().Be(command.LastName);
+
+            playerRate.Value.Should().Be(double.Parse(command.Rate));
         }
     }
 }

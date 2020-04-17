@@ -24,7 +24,7 @@ namespace FliGen.Services.Teams.Persistence.Migrations
                 for (int i = 0; i < InitialFillData.ToursInSeasonCount; i++)
                 {
                     currentTourDate = currentTourDate.AddDays(7);
-                    if (currentTourDate >= DateTime.Now)
+                    if (currentTourDate >= DateTime.UtcNow)
                     {
                         break;
                     }

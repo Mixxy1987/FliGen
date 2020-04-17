@@ -1,5 +1,7 @@
 ﻿using FliGen.Common.Extensions;
+using FliGen.Common.Messages;
 using FliGen.Common.RabbitMq;
+using FliGen.Services.Players.Domain.Entities;
 using RawRabbit;
 using RawRabbit.Common;
 using RawRabbit.Configuration;
@@ -8,8 +10,6 @@ using RawRabbit.Instantiation;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Common.Messages;
-using FliGen.Services.Players.Domain.Entities;
 
 namespace FliGen.Services.Players.IntegrationTests.Fixtures
 {
@@ -45,7 +45,24 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
         {
             return _client.PublishAsync(message, ctx =>
                 ctx.UseMessageContext(CorrelationContext.Empty)
-                    .UsePublishConfiguration(p => p.WithRoutingKey(GetRoutingKey(@message, @namespace))));
+                    .UsePublishConfiguration(p => p.WithRoutingKey(GetRoutingKey(message, @namespace))));
+        }
+
+        public async Task<TaskCompletionSource<(Player, PlayerRate)>> SubscribeAndGetAsync<TEvent>(
+            Func<string, TaskCompletionSource<(Player, PlayerRate)>, Task> onMessageReceived,
+            string id) where TEvent : IEvent
+        {
+            var taskCompletionSource = new TaskCompletionSource<(Player, PlayerRate)>();
+            var guid = Guid.NewGuid().ToString();
+
+            await _client.SubscribeAsync<TEvent>(
+                async _ => await onMessageReceived(id, taskCompletionSource),
+                ctx => ctx.UseSubscribeConfiguration(cfg =>
+                    cfg.FromDeclaredQueue(
+                        builder => builder
+                            .WithDurability(false)
+                            .WithName(guid))));
+            return taskCompletionSource;
         }
 
         public async Task<TaskCompletionSource<Player>> SubscribeAndGetAsync<TEvent>(
@@ -58,8 +75,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             await _client.SubscribeAsync<TEvent>(
                 async _ => await onMessageReceived(id, taskCompletionSource),
                 ctx => ctx.UseSubscribeConfiguration(cfg =>
-                    cfg
-                        .FromDeclaredQueue(
+                    cfg.FromDeclaredQueue(
                             builder => builder
                                 .WithDurability(false)
                                 .WithName(guid))));
@@ -76,8 +92,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             await _client.SubscribeAsync<TEvent>(
                 async _ => await onMessageReceived(id, taskCompletionSource),
                 ctx => ctx.UseSubscribeConfiguration(cfg =>
-                    cfg
-                        .FromDeclaredQueue(
+                    cfg.FromDeclaredQueue(
                             builder => builder
                                 .WithDurability(false)
                                 .WithName(guid))));
@@ -91,7 +106,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         private string GetRoutingKey<T>(T message, string @namespace = null)
         {
-            @namespace = @namespace ?? "players";
+            @namespace ??= "players";
             @namespace = string.IsNullOrWhiteSpace(@namespace) ? string.Empty : $"{@namespace}.";
 
             return $"{@namespace}{typeof(T).Name.Underscore()}".ToLowerInvariant();

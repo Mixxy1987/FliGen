@@ -6,16 +6,21 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Services.Players.Application.Events;
 
 namespace FliGen.Services.Players.Application.Commands.UpdatePlayer
 {
     public class UpdatePlayerHandler : ICommandHandler<UpdatePlayer>
     {
         private readonly IUnitOfWork _uow;
+        private readonly IBusPublisher _busPublisher;
 
-        public UpdatePlayerHandler(IUnitOfWork uow)
+        public UpdatePlayerHandler(
+            IUnitOfWork uow,
+            IBusPublisher busPublisher)
         {
             _uow = uow;
+            _busPublisher = busPublisher;
         }
 
         public async Task HandleAsync(UpdatePlayer command, ICorrelationContext context)
@@ -46,6 +51,7 @@ namespace FliGen.Services.Players.Application.Commands.UpdatePlayer
             }
           
             _uow.SaveChanges();
+            await _busPublisher.PublishAsync(new PlayerUpdated(), context);
         }
     }
 }

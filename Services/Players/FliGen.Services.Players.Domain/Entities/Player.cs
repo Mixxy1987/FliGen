@@ -36,7 +36,7 @@ namespace FliGen.Services.Players.Domain.Entities
 
             Rates = new List<PlayerRate>
             {
-                new PlayerRate(DateTime.Now, rate)
+                new PlayerRate(DateTime.UtcNow, rate)
             };
         }
 

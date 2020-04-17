@@ -44,7 +44,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
 	        PlayerId = playerId;
 	        LeaguePlayerRoleId = roleId;
             LeaguePlayerPriority = leaguePlayerPriority;
-            CreationTime = DateTime.Now;
+            CreationTime = DateTime.UtcNow;
             JoinTime = joinTime;
 	        LeaveTime = leaveTime;
             Actual = true;
@@ -66,17 +66,17 @@ namespace FliGen.Services.Leagues.Domain.Entities
                 playerId,
                 LeaguePlayerRole.User,
                 Enum.LeaguePlayerPriority.Normal,
-                DateTime.Now);
+                DateTime.UtcNow);
         }
 
         public void UpdateToJoined()
         {
-           JoinTime = DateTime.Now;
+           JoinTime = DateTime.UtcNow;
         }
 
         public void UpdateToLeft()
         {
-            LeaveTime = DateTime.Now;
+            LeaveTime = DateTime.UtcNow;
             Actual = false;
         }
 
