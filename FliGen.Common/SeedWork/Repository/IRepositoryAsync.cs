@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FliGen.Common.SeedWork.Repository.Paging;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace FliGen.Common.SeedWork.Repository
@@ -24,13 +25,13 @@ namespace FliGen.Common.SeedWork.Repository
             int index = 0,
             int size = 20,
             bool disableTracking = true,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
-        Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
+        ValueTask<EntityEntry<T>> AddAsync(T entity, CancellationToken cancellationToken = default);
 
         Task AddAsync(params T[] entities);
 
-        Task AddAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken));
+        Task AddAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
 
         void UpdateAsync(T entity);
         void RemoveAsync(T entity);

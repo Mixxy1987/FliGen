@@ -24,6 +24,8 @@ namespace FliGen.Services.Players.Persistence.Configurations
                 .IsRequired();
 
             builder.HasKey(e => new { e.PlayerId, e.MessageId });
+
+            builder.Ignore(x => x.MessageType);
         }
     }
 }

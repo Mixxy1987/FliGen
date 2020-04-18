@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FliGen.Common.SeedWork.Repository.Paging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace FliGen.Common.SeedWork.Repository
@@ -57,9 +58,9 @@ namespace FliGen.Common.SeedWork.Repository
             return query.ToPaginateAsync(index, size, 0, cancellationToken);
         }
 
-        public Task AddAsync(T entity, CancellationToken cancellationToken = default)
+        public ValueTask<EntityEntry<T>> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            return _dbSet.AddAsync(entity, cancellationToken).AsTask(); //todo:: return valuetask
+            return _dbSet.AddAsync(entity, cancellationToken);//.AsTask();
         }
 
         public Task AddAsync(params T[] entities)
@@ -91,7 +92,7 @@ namespace FliGen.Common.SeedWork.Repository
 	        _dbSet.Remove(entity);
         }
 
-        public Task AddAsync(T entity)
+        public ValueTask<EntityEntry<T>> AddAsync(T entity)
         {
             return AddAsync(entity, new CancellationToken());
         }

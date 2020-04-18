@@ -6,6 +6,7 @@ using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Players.Application.Commands.AddPlayer;
 using FliGen.Services.Players.Application.Commands.DeletePlayer;
+using FliGen.Services.Players.Application.Commands.SendMessage;
 using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
@@ -78,7 +79,8 @@ namespace FliGen.Services.Players
             app.UseRabbitMq()
                 .SubscribeCommand<UpdatePlayer>()
                 .SubscribeCommand<AddPlayer>()
-                .SubscribeCommand<DeletePlayer>();
+                .SubscribeCommand<DeletePlayer>()
+                .SubscribeCommand<SendMessage>();
 
 			app.UseEndpoints(endpoints =>
 			{
