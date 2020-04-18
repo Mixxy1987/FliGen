@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 using FliGen.Services.Notifications.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,8 +41,12 @@ namespace FliGen.Services.Notifications
             services.AddOpenTracing();
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
+            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
 
             var builder = new ContainerBuilder();
+
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
 
             ConfigureContainer(builder);
             builder.Populate(services);

@@ -46,8 +46,8 @@ namespace FliGen.Services.Api.Controllers
             return await SendAsync(command);
         }
 
-        [HttpPost("sendMessage")]
-        public async Task<IActionResult> SendMessage([FromBody]SendMessage command)
+        [HttpPost("sendInboxNotification")]
+        public async Task<IActionResult> SendInboxNotification([FromBody]SendInboxNotification command)
         {
             return await SendAsync(command);
         }

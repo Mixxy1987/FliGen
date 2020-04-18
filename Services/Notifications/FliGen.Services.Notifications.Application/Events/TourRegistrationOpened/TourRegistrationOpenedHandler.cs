@@ -1,19 +1,44 @@
 ﻿using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
+using FliGen.Services.Notifications.Application.Builders;
+using FliGen.Services.Notifications.Application.Commands;
+using FliGen.Services.Notifications.Application.Dto;
+using FliGen.Services.Notifications.Application.Queries;
+using FliGen.Services.Notifications.Application.Services;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Notifications.Application.Events.TourRegistrationOpened
 {
     public class TourRegistrationOpenedHandler : IEventHandler<TourRegistrationOpened>
     {
-        public TourRegistrationOpenedHandler()
+        private readonly IBusPublisher _busPublisher;
+        private readonly ILeaguesService _leaguesService;
+
+        public TourRegistrationOpenedHandler(
+            IBusPublisher busPublisher, ILeaguesService leaguesService)
         {
-            
+            _busPublisher = busPublisher;
+            _leaguesService = leaguesService;
         }
 
-        public Task HandleAsync(TourRegistrationOpened @event, ICorrelationContext context)
+        public async Task HandleAsync(TourRegistrationOpened @event, ICorrelationContext context)
         {
-            throw new System.NotImplementedException();
+            IEnumerable<PlayerInternalIdDto> playersDto = 
+                await _leaguesService.GetLeagueJoinedPlayers(new LeagueJoinedPlayersQuery(@event.LeagueId));
+
+            int[] playerIds = playersDto.Select(p => p.InternalId).ToArray();
+
+            SendInboxNotification notification = InboxNotificationBuilder
+                .Create()
+                .WithReceiver(playerIds)
+                .WithSender("NotificationService")
+                .WithTopic("Tour registration opened!")
+                .WithBody($"Tour number: {@event.TourId}.Tour date: {@event.Date}")
+                .Build();
+
+            await _busPublisher.SendAsync(notification, context);
         }
     }
 }

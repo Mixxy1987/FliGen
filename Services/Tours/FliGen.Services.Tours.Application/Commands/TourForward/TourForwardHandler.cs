@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using FliGen.Common.Handlers;
+﻿using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Tours.Application.Events;
-using System.Threading.Tasks;
 using FliGen.Services.Tours.Domain.Entities;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Tours.Application.Commands.TourForward
 {
@@ -39,7 +39,7 @@ namespace FliGen.Services.Tours.Application.Commands.TourForward
 
                 if (tour.TourStatus.Equals(TourStatus.RegistrationOpened))
                 {
-                    await _busPublisher.PublishAsync(new TourRegistrationOpened(tour.Id), context);
+                    await _busPublisher.PublishAsync(new TourRegistrationOpened(tour.Id, command.LeagueId, tour.Date), context);
                 }
 
                 if (tour.TourStatus.Equals(TourStatus.RegistrationClosed))

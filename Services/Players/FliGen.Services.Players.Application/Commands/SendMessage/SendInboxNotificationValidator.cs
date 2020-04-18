@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FliGen.Services.Players.Application.Commands.SendMessage
 {
-    public sealed class SendMessageValidator : AbstractValidator<SendMessage>
+    public sealed class SendInboxNotificationValidator : AbstractValidator<SendInboxNotification>
     {
-        public SendMessageValidator()
+        public SendInboxNotificationValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()
@@ -19,7 +19,7 @@ namespace FliGen.Services.Players.Application.Commands.SendMessage
                 .NotEmpty()
                 .WithMessage("Не задано тело сообщения");
 
-            RuleFor(c => c.From)
+            RuleFor(c => c.Sender)
                 .NotEmpty()
                 .WithMessage("Не задано поле 'От кого'");
         }

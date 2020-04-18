@@ -4,16 +4,20 @@ using Newtonsoft.Json;
 namespace FliGen.Services.Notifications.Application.Commands
 {
     [MessageNamespace("players")]
-    public class SendInboxNotification
+    public class SendInboxNotification : ICommand
     {
-        public string From { get; }
-        public string Topic { get; }
-        public string Body { get; }
+        public int[] PlayerIds { get; set; }
+        public string Sender { get; set; }
+        public string Topic { get; set; }
+        public string Body { get; set; }
+
+        public SendInboxNotification(){}
 
         [JsonConstructor]
-        public SendInboxNotification(string from, string topic, string body)
+        public SendInboxNotification(int[] playerIds, string sender, string topic, string body)
         {
-            From = from;
+            PlayerIds = playerIds;
+            Sender = sender;
             Topic = topic;
             Body = body;
         }

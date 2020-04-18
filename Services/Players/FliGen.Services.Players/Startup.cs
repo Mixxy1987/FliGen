@@ -80,7 +80,7 @@ namespace FliGen.Services.Players
                 .SubscribeCommand<UpdatePlayer>()
                 .SubscribeCommand<AddPlayer>()
                 .SubscribeCommand<DeletePlayer>()
-                .SubscribeCommand<SendMessage>();
+                .SubscribeCommand<SendInboxNotification>();
 
 			app.UseEndpoints(endpoints =>
 			{
