@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Services.Leagues.Application.Common;
 
 namespace FliGen.Services.Leagues.Application.Queries.Leagues
 {
@@ -68,7 +69,7 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
                 var playerInternalIdDto = await _playersService.GetInternalIdAsync(request.PlayerExternalId);
                 if (playerInternalIdDto is null)
                 {
-                    throw new FliGenException("there_is_no_player_with_such_external_id", $"There is no player with external id: {request.PlayerExternalId}");
+                    throw new FliGenException(ErrorCodes.NoPlayerWithSuchExternalId, $"There is no player with external id: {request.PlayerExternalId}");
                 }
                 lplPredicate = l => l.PlayerId == playerInternalIdDto.InternalId;
             }

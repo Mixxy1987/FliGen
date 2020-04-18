@@ -1,5 +1,4 @@
 ﻿using FliGen.Services.Players.Domain.Entities;
-using FliGen.Services.Players.Domain.Entities.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

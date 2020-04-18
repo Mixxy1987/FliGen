@@ -72,11 +72,18 @@ namespace FliGen.Services.Api.Controllers
             return await SendAsync(command);
         }
 
-        [HttpGet("settings/{id}")]
+        [HttpGet("settings")]
         [Produces(typeof(LeagueSettings))]
-        public async Task<LeagueSettings> GetSettings(int id)
+        public async Task<LeagueSettings> GetSettings([FromQuery]LeagueSettingsQuery query)
         {
-            return await _leaguesService.GetLeagueSettings(new LeagueSettingsQuery(){LeagueId = id});
+            return await _leaguesService.GetLeagueSettings(query);
+        }
+
+        [HttpGet("leagueJoinedPlayers")]
+        [Produces(typeof(IEnumerable<PlayerInternalId>))]
+        public async Task<IEnumerable<PlayerInternalId>> GetLeagueJoinedPlayers([FromQuery]LeagueJoinedPlayersQuery query)
+        {
+            return await _leaguesService.GetLeagueJoinedPlayers(query);
         }
     }
 }

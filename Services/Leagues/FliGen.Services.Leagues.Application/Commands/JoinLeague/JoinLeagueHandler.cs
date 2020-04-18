@@ -6,6 +6,7 @@ using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Domain.Entities;
 using System.Threading.Tasks;
+using FliGen.Services.Leagues.Application.Common;
 
 namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
 {
@@ -27,7 +28,7 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
             PlayerInternalIdDto playerIdDto = await _playersService.GetInternalIdAsync(command.PlayerExternalId);
             if (playerIdDto is null)
             {
-                throw new FliGenException("there_is_no_player_with_such_external_id", $"There is no player with external id: {command.PlayerExternalId}");
+                throw new FliGenException(ErrorCodes.NoPlayerWithSuchExternalId, $"There is no player with external id: {command.PlayerExternalId}");
             }
 
             int playerId = playerIdDto.InternalId;
@@ -39,7 +40,7 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
 
             if (leagueSettings is null)
             {
-                throw new FliGenException("there_is_no_league_settings", $"There is no league settings for league: {command.LeagueId}");
+                throw new FliGenException(ErrorCodes.NoLeagueSettings, $"There is no league settings for league: {command.LeagueId}");
             }
 
             var lplinksRepo = _uow.GetRepositoryAsync<LeaguePlayerLink>();

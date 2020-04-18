@@ -2,6 +2,8 @@
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
+using FliGen.Services.Leagues.Application.Common;
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings
 {
@@ -18,10 +20,15 @@ namespace FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings
         {
             var repo = _uow.GetRepositoryAsync<Domain.Entities.LeagueSettings>();
 
-            Domain.Entities.LeagueSettings leagueSetting = await repo.SingleAsync(x => x.LeagueId == command.LeagueId);
+            Domain.Entities.LeagueSettings leagueSettings = await repo.SingleAsync(x => x.LeagueId == command.LeagueId);
+            
+            if (leagueSettings is null)
+            {
+                throw new FliGenException(ErrorCodes.NoLeagueSettings, $"There is no league settings for league: {command.LeagueId}");
+            }
 
             repo.UpdateAsync(Domain.Entities.LeagueSettings.GetUpdated(
-                leagueSetting,
+                leagueSettings,
                 command.Visibility,
                 command.RequireConfirmation,
                 command.PlayersInTeam,
