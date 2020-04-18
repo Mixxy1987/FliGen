@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FliGen.Services.Notifications.Persistence.Configurations
 {
-    public class PlayerNotificationLinksConfiguration : IEntityTypeConfiguration<PlayerNotificationLink>
+    public class PlayerNotificationLinkConfiguration : IEntityTypeConfiguration<PlayerNotificationLink>
     {
         public void Configure(EntityTypeBuilder<PlayerNotificationLink> builder)
         {

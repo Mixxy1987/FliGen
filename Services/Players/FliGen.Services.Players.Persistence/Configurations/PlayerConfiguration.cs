@@ -11,10 +11,10 @@ namespace FliGen.Services.Players.Persistence.Configurations
             builder.ToTable("Player");
             builder.Property(e => e.FirstName)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
             builder.Property(e => e.LastName)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
 
             builder.Property(e => e.ExternalId)
                 .HasMaxLength(450);

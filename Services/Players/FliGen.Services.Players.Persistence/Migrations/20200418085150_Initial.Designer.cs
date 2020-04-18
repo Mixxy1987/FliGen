@@ -4,14 +4,16 @@ using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FliGen.Services.Players.Persistence.Migrations
 {
     [DbContext(typeof(PlayersContext))]
-    partial class PlayersContextModelSnapshot : ModelSnapshot
+    [Migration("20200418085150_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

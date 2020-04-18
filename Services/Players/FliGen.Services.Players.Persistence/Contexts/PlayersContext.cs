@@ -1,4 +1,5 @@
 ﻿using FliGen.Services.Players.Domain.Entities;
+using FliGen.Services.Players.Domain.Entities.Enum;
 using FliGen.Services.Players.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,9 @@ namespace FliGen.Services.Players.Persistence.Contexts
     {
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerRate> PlayerRates { get; set; }
+        public DbSet<MessageType> MessageTypes { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<PlayerMessageLink> PlayerMessageLinks { get; set; }
 
         public PlayersContext(DbContextOptions<PlayersContext> options) :base(options)
         {
