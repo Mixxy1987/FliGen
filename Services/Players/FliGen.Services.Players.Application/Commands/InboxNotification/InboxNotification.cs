@@ -1,9 +1,9 @@
 ﻿using FliGen.Common.Messages;
 
-namespace FliGen.Services.Players.Application.Commands.SendMessage
+namespace FliGen.Services.Players.Application.Commands.InboxNotification
 {
     [MessageNamespace("players")]
-    public class SendInboxNotification : ICommand
+    public class InboxNotification : ICommand
     {
         public int[] PlayerIds { get; set; }
         public string Sender { get; set; }

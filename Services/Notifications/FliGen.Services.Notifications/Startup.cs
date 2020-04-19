@@ -6,17 +6,18 @@ using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Services.Notifications.Application.Events.TeamsCreated;
 using FliGen.Services.Notifications.Application.Events.TourRegistrationOpened;
 using FliGen.Services.Notifications.Application.Services;
+using FliGen.Services.Notifications.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using FliGen.Services.Notifications.Persistence.Contexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace FliGen.Services.Notifications
 {
@@ -42,6 +43,7 @@ namespace FliGen.Services.Notifications
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+            services.RegisterServiceForwarder<IToursService>("tours-service");
 
             var builder = new ContainerBuilder();
 
@@ -78,7 +80,8 @@ namespace FliGen.Services.Notifications
             app.UseAuthorization();
 
             app.UseRabbitMq()
-                .SubscribeEvent<TourRegistrationOpened>("tours");
+                .SubscribeEvent<TourRegistrationOpened>("tours")
+                .SubscribeEvent<TeamsCreated>("teams");
 
             app.UseEndpoints(endpoints =>
             {

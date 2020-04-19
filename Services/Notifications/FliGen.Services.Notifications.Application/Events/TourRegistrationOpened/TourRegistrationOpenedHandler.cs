@@ -30,10 +30,10 @@ namespace FliGen.Services.Notifications.Application.Events.TourRegistrationOpene
 
             int[] playerIds = playersDto.Select(p => p.InternalId).ToArray();
 
-            SendInboxNotification notification = InboxNotificationBuilder
+            InboxNotification notification = InboxNotificationBuilder
                 .Create()
                 .WithReceiver(playerIds)
-                .WithSender("NotificationService")
+                .WithSender("Notification service")
                 .WithTopic("Tour registration opened!")
                 .WithBody($"Tour number: {@event.TourId}.Tour date: {@event.Date}")
                 .Build();

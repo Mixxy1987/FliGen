@@ -2,45 +2,45 @@
 
 namespace FliGen.Services.Notifications.Application.Builders
 {
-    public class InboxNotificationBuilder : IMessageBuilder<SendInboxNotification>
+    public class InboxNotificationBuilder : IMessageBuilder<InboxNotification>
     {
-        private readonly SendInboxNotification _notification;
+        private readonly InboxNotification _notification;
 
         private InboxNotificationBuilder()
         {
-            _notification = new SendInboxNotification();
+            _notification = new InboxNotification();
         }
 
-        public static IMessageBuilder<SendInboxNotification> Create()
+        public static IMessageBuilder<InboxNotification> Create()
         {
             return new InboxNotificationBuilder();
         }
 
-        public IMessageBuilder<SendInboxNotification> WithSender(string sender)
+        public IMessageBuilder<InboxNotification> WithSender(string sender)
         {
             _notification.Sender = sender;
             return this;
         }
 
-        public IMessageBuilder<SendInboxNotification> WithReceiver(object receiver)
+        public IMessageBuilder<InboxNotification> WithReceiver(object receiver)
         {
             _notification.PlayerIds = (int[])receiver;
             return this;
         }
 
-        public IMessageBuilder<SendInboxNotification> WithTopic(string topic)
+        public IMessageBuilder<InboxNotification> WithTopic(string topic)
         {
             _notification.Topic = topic;
             return this;
         }
 
-        public IMessageBuilder<SendInboxNotification> WithBody(string body)
+        public IMessageBuilder<InboxNotification> WithBody(string body)
         {
             _notification.Body = body;
             return this;
         }
 
-        public SendInboxNotification Build()
+        public InboxNotification Build()
         {
             return _notification;
         }

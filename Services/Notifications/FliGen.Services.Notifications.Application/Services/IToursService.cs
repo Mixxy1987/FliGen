@@ -1,5 +1,5 @@
 ﻿using FliGen.Services.Notifications.Application.Dto;
-using FliGen.Services.Notifications.Application.Queries.Players;
+using FliGen.Services.Notifications.Application.Queries.Tours;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace FliGen.Services.Notifications.Application.Services
 {
     [SerializationMethods(Query = QuerySerializationMethod.Serialized)]
-    public interface IPlayersService
+    public interface IToursService
     {
         [AllowAnyStatusCode]
-        [Get("players")]
-        Task<IEnumerable<PlayerWithRateDto>> GetAsync([Query]PlayersQuery playersQuery);
+        [Get("tours/registeredOnTourPlayers")]
+        Task<IEnumerable<PlayerInternalIdDto>> Get([Query]RegisteredOnTourPlayers query);
     }
 }

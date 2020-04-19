@@ -3,7 +3,7 @@
 namespace FliGen.Services.Api.Messages.Commands.Players
 {
     [MessageNamespace("players")]
-    public class SendInboxNotification : ICommand
+    public class InboxNotification : ICommand
     {
         public int[] PlayerId { get; set; }
         public string From { get; set; }

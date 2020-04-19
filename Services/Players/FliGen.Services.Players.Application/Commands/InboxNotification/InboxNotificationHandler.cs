@@ -1,23 +1,23 @@
-﻿using FliGen.Common.Handlers;
+﻿using System.Threading.Tasks;
+using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Players.Domain.Entities;
 using FliGen.Services.Players.Domain.Entities.Enum;
-using System.Threading.Tasks;
 
-namespace FliGen.Services.Players.Application.Commands.SendMessage
+namespace FliGen.Services.Players.Application.Commands.InboxNotification
 {
-    public class SendInboxNotificationHandler : ICommandHandler<SendInboxNotification>
+    public class InboxNotificationHandler : ICommandHandler<InboxNotification>
     {
         private readonly IUnitOfWork _uow;
 
-        public SendInboxNotificationHandler(
+        public InboxNotificationHandler(
             IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        public async Task HandleAsync(SendInboxNotification command, ICorrelationContext context)
+        public async Task HandleAsync(InboxNotification command, ICorrelationContext context)
         {
             var message = Message.Create(
                 command.Sender,

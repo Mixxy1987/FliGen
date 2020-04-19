@@ -1,11 +1,11 @@
 ﻿using FliGen.Common.Extensions;
 using FluentValidation;
 
-namespace FliGen.Services.Players.Application.Commands.SendMessage
+namespace FliGen.Services.Players.Application.Commands.InboxNotification
 {
-    public sealed class SendInboxNotificationValidator : AbstractValidator<SendInboxNotification>
+    public sealed class InboxNotificationValidator : AbstractValidator<InboxNotification>
     {
-        public SendInboxNotificationValidator()
+        public InboxNotificationValidator()
         {
             RuleFor(c => c)
                 .NotEmpty()
