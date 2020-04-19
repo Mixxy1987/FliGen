@@ -11,6 +11,6 @@ namespace FliGen.Services.Notifications.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("tours/registeredOnTourPlayers")]
-        Task<IEnumerable<PlayerInternalIdDto>> Get([Query]RegisteredOnTourPlayers query);
+        Task<IEnumerable<PlayerInternalIdDto>> GetAsync([Query]RegisteredOnTourPlayers query);
     }
 }

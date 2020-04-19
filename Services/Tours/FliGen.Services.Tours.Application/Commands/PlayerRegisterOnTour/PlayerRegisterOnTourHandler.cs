@@ -123,7 +123,7 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
                     $"There is no player with external id: {command.PlayerExternalId}");
             }
 
-            var leagues = await _leaguesService.GetLeagues(
+            var leagues = await _leaguesService.GetLeaguesAsync(
                 new LeaguesQuery()
                 {
                     PlayerExternalId = command.PlayerExternalId,

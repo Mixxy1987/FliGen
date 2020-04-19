@@ -17,10 +17,10 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("tours")]
-        Task<IEnumerable<Tour>> Get([Query]ToursByPlayerIdQuery query);
+        Task<IEnumerable<Tour>> GetAsync([Query]ToursByPlayerIdQuery query);
 
         [AllowAnyStatusCode]
         [Get("tours/registeredOnTourPlayers")]
-        Task<IEnumerable<PlayerInternalId>> Get([Query]RegisteredOnTourPlayers query);
+        Task<IEnumerable<PlayerInternalId>> GetAsync([Query]RegisteredOnTourPlayers query);
     }
 }

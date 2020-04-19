@@ -62,7 +62,7 @@ namespace FliGen.Services.Notifications.Application.Events.TeamsCreated
             }
 
             int[] registeredPlayers =
-                (await _tourService.Get(new RegisteredOnTourPlayers { TourId = @event.TourId }))
+                (await _tourService.GetAsync(new RegisteredOnTourPlayers { TourId = @event.TourId }))
                 .Select(dto => dto.InternalId)
                 .ToArray();
             int[] unhappyPlayers = registeredPlayers.Except(playerIds).ToArray();

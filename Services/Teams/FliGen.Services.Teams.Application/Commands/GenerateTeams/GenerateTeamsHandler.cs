@@ -159,7 +159,7 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
             if (command.PlayersInTeam is null || command.TeamsInTour is null)
             {
                 var leagueSettings =
-                    await _leaguesService.GetLeagueSettings(command.LeagueId);
+                    await _leaguesService.GetLeagueSettingsAsync(command.LeagueId);
 
                 if (leagueSettings.PlayersInTeam is null)
                 {

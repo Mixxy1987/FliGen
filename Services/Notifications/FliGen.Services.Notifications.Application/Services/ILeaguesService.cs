@@ -11,6 +11,6 @@ namespace FliGen.Services.Notifications.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("leagues/leagueJoinedPlayers")]
-        Task<IEnumerable<PlayerInternalIdDto>> GetLeagueJoinedPlayers([Query]LeagueJoinedPlayersQuery query);
+        Task<IEnumerable<PlayerInternalIdDto>> GetLeagueJoinedPlayersAsync([Query]LeagueJoinedPlayersQuery query);
     }
 }

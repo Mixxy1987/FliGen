@@ -27,13 +27,13 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet("HealthCheck")]
-        public Task Get()
+        public Task HealthCheck()
         {
             return Task.FromResult(_leaguesService.HealthCheck());
         }
 
         [HttpGet]
-        public async Task<IEnumerable<League>> GetAsync()
+        public async Task<IEnumerable<League>> GetLeagues()
         {
             var playerId = _identityService.GetUserIdentity();
 
@@ -77,14 +77,14 @@ namespace FliGen.Services.Api.Controllers
         [Produces(typeof(LeagueSettings))]
         public async Task<LeagueSettings> GetSettings([FromQuery]LeagueSettingsQuery query)
         {
-            return await _leaguesService.GetLeagueSettings(query);
+            return await _leaguesService.GetLeagueSettingsAsync(query);
         }
 
         [HttpGet("leagueJoinedPlayers")]
         [Produces(typeof(IEnumerable<PlayerInternalId>))]
         public async Task<IEnumerable<PlayerInternalId>> GetLeagueJoinedPlayers([FromQuery]LeagueJoinedPlayersQuery query)
         {
-            return await _leaguesService.GetLeagueJoinedPlayers(query);
+            return await _leaguesService.GetLeagueJoinedPlayersAsync(query);
         }
     }
 }

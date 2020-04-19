@@ -26,7 +26,7 @@ namespace FliGen.Services.Notifications.Application.Events.TourRegistrationOpene
         public async Task HandleAsync(TourRegistrationOpened @event, ICorrelationContext context)
         {
             IEnumerable<PlayerInternalIdDto> playersDto = 
-                await _leaguesService.GetLeagueJoinedPlayers(new LeagueJoinedPlayersQuery(@event.LeagueId));
+                await _leaguesService.GetLeagueJoinedPlayersAsync(new LeagueJoinedPlayersQuery(@event.LeagueId));
 
             int[] playerIds = playersDto.Select(p => p.InternalId).ToArray();
 

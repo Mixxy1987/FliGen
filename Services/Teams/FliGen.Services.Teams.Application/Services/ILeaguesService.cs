@@ -11,7 +11,7 @@ namespace FliGen.Services.Teams.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("settings/{id}")]
-        Task<LeagueSettingsDto> GetLeagueSettings([Path] int id);
+        Task<LeagueSettingsDto> GetLeagueSettingsAsync([Path] int id);
 
         [AllowAnyStatusCode]
         [Get("leagues")]

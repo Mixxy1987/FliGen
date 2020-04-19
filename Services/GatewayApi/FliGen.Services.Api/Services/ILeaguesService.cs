@@ -21,10 +21,10 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("leagues/settings")]
-        Task<LeagueSettings> GetLeagueSettings([Query]LeagueSettingsQuery leaguesQuery);
+        Task<LeagueSettings> GetLeagueSettingsAsync([Query]LeagueSettingsQuery leaguesQuery);
 
         [AllowAnyStatusCode]
         [Get("leagues/leagueJoinedPlayers")]
-        Task<IEnumerable<PlayerInternalId>> GetLeagueJoinedPlayers([Query]LeagueJoinedPlayersQuery query);
+        Task<IEnumerable<PlayerInternalId>> GetLeagueJoinedPlayersAsync([Query]LeagueJoinedPlayersQuery query);
     }
 }

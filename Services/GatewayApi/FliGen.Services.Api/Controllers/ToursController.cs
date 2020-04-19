@@ -34,13 +34,13 @@ namespace FliGen.Services.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery query)
         {
-            return await _toursService.Get(query);
+            return await _toursService.GetAsync(query);
         }
 
         [HttpGet("registeredOnTourPlayers")]
         public async Task<IEnumerable<PlayerInternalId>> Get([FromQuery]RegisteredOnTourPlayers query)
         {
-            return await _toursService.Get(query);
+            return await _toursService.GetAsync(query);
         }
 
         [HttpPost("cancel")]
