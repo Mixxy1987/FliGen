@@ -1,5 +1,6 @@
 ﻿using FliGen.Common.RabbitMq;
 using FliGen.Services.Api.Messages.Commands.Leagues;
+using FliGen.Services.Api.Models;
 using FliGen.Services.Api.Models.Leagues;
 using FliGen.Services.Api.Queries.Leagues;
 using FliGen.Services.Api.Services;

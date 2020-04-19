@@ -5,15 +5,15 @@ using FliGen.Common.Types;
 using FliGen.Services.Teams.Application.Common;
 using FliGen.Services.Teams.Application.Dto;
 using FliGen.Services.Teams.Application.Dto.Enum;
+using FliGen.Services.Teams.Application.Events;
 using FliGen.Services.Teams.Application.Queries.LeaguesQuery;
 using FliGen.Services.Teams.Application.Queries.PlayersQuery;
 using FliGen.Services.Teams.Application.Services;
 using FliGen.Services.Teams.Application.Services.GenerateTeams;
+using FliGen.Services.Teams.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FliGen.Services.Teams.Application.Events;
-using FliGen.Services.Teams.Domain.Entities;
 
 namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
 {
@@ -61,7 +61,7 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
             CleanPreviousGeneratedTeams(command, teams);
             SaveGeneratedTeams(command, teams);
 
-            await _busPublisher.PublishAsync(new TeamsCreated(teams), context);
+            await _busPublisher.PublishAsync(new TeamsCreated(teams, command.TourId, command.LeagueId), context);
 
             _uow.SaveChanges();
         }

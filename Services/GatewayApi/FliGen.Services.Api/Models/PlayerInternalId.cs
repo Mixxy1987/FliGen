@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Api.Models.Leagues
+﻿namespace FliGen.Services.Api.Models
 {
     public class PlayerInternalId
     {

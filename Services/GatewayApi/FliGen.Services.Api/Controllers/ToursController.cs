@@ -1,11 +1,12 @@
-﻿using System;
-using FliGen.Common.RabbitMq;
+﻿using FliGen.Common.RabbitMq;
 using FliGen.Services.Api.Messages.Commands.Tours;
+using FliGen.Services.Api.Models;
 using FliGen.Services.Api.Models.Tours;
 using FliGen.Services.Api.Queries.Tours;
 using FliGen.Services.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -27,13 +28,19 @@ namespace FliGen.Services.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Single(await _toursService.GetAsync(id));
+            return Single(await _toursService.Get(id));
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Tour>> GetAsync([FromQuery]ToursByPlayerIdQuery toursByPlayerIdQuery)
+        public async Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery query)
         {
-            return await _toursService.GetAsync(toursByPlayerIdQuery);
+            return await _toursService.Get(query);
+        }
+
+        [HttpGet("registeredOnTourPlayers")]
+        public async Task<IEnumerable<PlayerInternalId>> Get([FromQuery]RegisteredOnTourPlayers query)
+        {
+            return await _toursService.Get(query);
         }
 
         [HttpPost("cancel")]

@@ -48,7 +48,5 @@ namespace FliGen.Services.Players.Application.Commands.SendMessage
             }
             _uow.SaveChanges();
         }
-
-
     }
 }

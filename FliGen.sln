@@ -123,9 +123,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notificatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notifications.Application", "Services\Notifications\FliGen.Services.Notifications.Application\FliGen.Services.Notifications.Application.csproj", "{F6BA4658-F4C1-4436-B876-07D3CB483895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Notifications.Domain", "Services\Notifications\FliGen.Services.Notifications.Domain\FliGen.Services.Notifications.Domain.csproj", "{23E92D7C-0BA7-4B84-AB15-A8C01AACA88C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notifications.Domain", "Services\Notifications\FliGen.Services.Notifications.Domain\FliGen.Services.Notifications.Domain.csproj", "{23E92D7C-0BA7-4B84-AB15-A8C01AACA88C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Notifications.Persistence", "Services\Notifications\FliGen.Services.Notifications.Persistence\FliGen.Services.Notifications.Persistence.csproj", "{2B859BEB-1F3D-4A4C-9733-DA675F862E02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notifications.Persistence", "Services\Notifications\FliGen.Services.Notifications.Persistence\FliGen.Services.Notifications.Persistence.csproj", "{2B859BEB-1F3D-4A4C-9733-DA675F862E02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -267,6 +267,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{731E5502-319F-40B9-9849-B2975DBED42C} = {0C332D00-FFD4-4C8E-B6FC-5F40CBF8A4BF}
+		{60E30C16-215A-4DA5-A68D-8A967032E094} = {799701D3-A2BE-48B8-AAA5-68FC36E838E4}
 		{D701E96A-03ED-4F8F-9981-9C359BF6D350} = {A714F230-7446-49CB-AD2E-4359036FBE16}
 		{CED5F0A6-2B75-4FF1-9A1B-DED451B0D28F} = {BB4D31B4-07EB-4AC1-94E1-8DB68C59F289}
 		{EF9EC7C1-4E6A-42C4-8AAD-BF0D66A94222} = {BB4D31B4-07EB-4AC1-94E1-8DB68C59F289}

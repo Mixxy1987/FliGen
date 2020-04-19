@@ -1,4 +1,5 @@
-﻿using FliGen.Services.Api.Models.Tours;
+﻿using FliGen.Services.Api.Models;
+using FliGen.Services.Api.Models.Tours;
 using FliGen.Services.Api.Queries.Tours;
 using RestEase;
 using System.Collections.Generic;
@@ -12,10 +13,14 @@ namespace FliGen.Services.Api.Services
     {
         [AllowAnyStatusCode]
         [Get("tours/{id}")]
-        Task<Tour> GetAsync([Path] int id);
+        Task<Tour> Get([Path] int id);
 
         [AllowAnyStatusCode]
         [Get("tours")]
-        Task<IEnumerable<Tour>> GetAsync([Query]ToursByPlayerIdQuery toursByPlayerIdQuery);
+        Task<IEnumerable<Tour>> Get([Query]ToursByPlayerIdQuery query);
+
+        [AllowAnyStatusCode]
+        [Get("tours/registeredOnTourPlayers")]
+        Task<IEnumerable<PlayerInternalId>> Get([Query]RegisteredOnTourPlayers query);
     }
 }

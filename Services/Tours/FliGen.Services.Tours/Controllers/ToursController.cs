@@ -1,18 +1,19 @@
-﻿using FliGen.Services.Tours.Application.Dto;
+﻿using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
+using FliGen.Services.Tours.Application.Commands.TourCancel;
+using FliGen.Services.Tours.Application.Commands.TourForward;
+using FliGen.Services.Tours.Application.Dto;
+using FliGen.Services.Tours.Application.Queries.RegisteredOnTourPlayers;
+using FliGen.Services.Tours.Application.Queries.TourById;
+using FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
-using FliGen.Services.Tours.Application.Commands.TourCancel;
-using FliGen.Services.Tours.Application.Commands.TourForward;
-using FliGen.Services.Tours.Application.Queries.TourById;
-using FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery;
 
 namespace FliGen.Services.Tours.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class ToursController : ControllerBase
 	{
@@ -39,10 +40,17 @@ namespace FliGen.Services.Tours.Controllers
         }
 
         [HttpGet("{id}")]
-        [Produces(typeof(IEnumerable<Tour>))]
+        [Produces(typeof(Tour))]
         public Task<Tour> Get(int id)
         {
             return _mediatr.Send(new TourByIdQuery(id));
+        }
+
+        [HttpGet("registeredOnTourPlayers")]
+        [Produces(typeof(IEnumerable<PlayerInternalIdDto>))]
+        public Task<IEnumerable<PlayerInternalIdDto>> Get([FromQuery]RegisteredOnTourPlayers query)
+        {
+            return _mediatr.Send(query);
         }
 
         [HttpPost("register")]

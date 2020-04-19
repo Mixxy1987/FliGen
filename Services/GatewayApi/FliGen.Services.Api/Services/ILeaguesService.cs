@@ -1,4 +1,5 @@
-﻿using FliGen.Services.Api.Models.Leagues;
+﻿using FliGen.Services.Api.Models;
+using FliGen.Services.Api.Models.Leagues;
 using FliGen.Services.Api.Queries.Leagues;
 using RestEase;
 using System.Collections.Generic;
