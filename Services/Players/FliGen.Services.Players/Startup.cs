@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
@@ -61,6 +62,8 @@ namespace FliGen.Services.Players
 			builder.AddMediator("FliGen.Services.Players.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();
+            builder.AddRequestValidationCommandHandlerDecorator();
+            builder.AddRequestLogCommandHandlerDecorator();
 			builder.AddSerilogService();
 		}
 

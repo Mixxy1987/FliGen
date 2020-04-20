@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Autofac;
-using FliGen.Common.Mediator.Decorators;
-using FliGen.Common.Mediator.Logging;
+﻿using Autofac;
+using FliGen.Common.Handlers;
 using FluentValidation;
 using MediatR;
+using System.Collections.Generic;
+using System.Reflection;
+using FliGen.Common.Handlers.Decorators;
+using FliGen.Common.Logging;
 
 namespace FliGen.Common.Mediator.Extensions
 {
@@ -37,13 +38,13 @@ namespace FliGen.Common.Mediator.Extensions
 
         public static ContainerBuilder AddRequestValidationDecorator(this ContainerBuilder builder)
         {
-            builder.RegisterGenericDecorator(typeof(RequestValidationDecorator<,>), typeof(IRequestHandler<,>));
+            builder.RegisterGenericDecorator(typeof(RequestValidationCommandHandlerDecorator<>), typeof(ICommandHandler<>));
             return builder;
         }
 
         public static ContainerBuilder AddRequestLogDecorator(this ContainerBuilder builder)
         {
-            builder.RegisterGenericDecorator(typeof(RequestLogDecorator<,>), typeof(IRequestHandler<,>));
+            builder.RegisterGenericDecorator(typeof(Decorators.RequestLogDecorator<,>), typeof(IRequestHandler<,>));
             return builder;
         }
 

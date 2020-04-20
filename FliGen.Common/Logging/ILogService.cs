@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FliGen.Common.Mediator.Logging
+namespace FliGen.Common.Logging
 {
     public interface ILogService
     {

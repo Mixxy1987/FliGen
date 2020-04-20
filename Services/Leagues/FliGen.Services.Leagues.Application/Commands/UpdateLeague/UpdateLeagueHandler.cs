@@ -1,11 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FliGen.Common.Handlers;
+﻿using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Leagues.Domain.Entities.Enum;
-using MediatR;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeague
 {

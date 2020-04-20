@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Chronicle;
 using FliGen.Common;
 using FliGen.Common.Handlers;
+using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mongo;
@@ -64,6 +65,8 @@ namespace FliGen.Services.Operations
             //builder.AddMediator("FliGen.Services.Operations.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
+            builder.AddRequestValidationCommandHandlerDecorator();
+            builder.AddRequestLogCommandHandlerDecorator();
             builder.AddSerilogService();
         }
 

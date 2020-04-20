@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Handlers.Extensions;
+using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
@@ -8,6 +10,8 @@ using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.JoinLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
@@ -17,9 +21,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.Jaeger;
-using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
-using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
 
 namespace FliGen.Services.Leagues
 {
@@ -64,6 +65,8 @@ namespace FliGen.Services.Leagues
             builder.AddMediator("FliGen.Services.Leagues.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
+            builder.AddRequestValidationCommandHandlerDecorator();
+            builder.AddRequestLogCommandHandlerDecorator();
             builder.AddSerilogService();
         }
 

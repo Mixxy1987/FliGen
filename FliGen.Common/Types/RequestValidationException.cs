@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FliGen.Common.Mediator
+namespace FliGen.Common.Types
 {
     public sealed class RequestValidationException : Exception
     {

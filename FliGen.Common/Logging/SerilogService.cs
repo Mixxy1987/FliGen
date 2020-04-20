@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace FliGen.Common.Mediator.Logging
+namespace FliGen.Common.Logging
 {
     public sealed class SerilogService : ILogService
     {

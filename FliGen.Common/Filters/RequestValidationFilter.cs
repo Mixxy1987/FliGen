@@ -1,5 +1,6 @@
 ﻿using System;
 using FliGen.Common.Mediator;
+using FliGen.Common.Types;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

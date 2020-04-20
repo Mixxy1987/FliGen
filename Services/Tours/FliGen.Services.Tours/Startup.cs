@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
@@ -68,6 +69,8 @@ namespace FliGen.Services.Tours
 			builder.AddMediator("FliGen.Services.Tours.Application");
 			builder.AddRequestLogDecorator();
 			builder.AddRequestValidationDecorator();
+            builder.AddRequestValidationCommandHandlerDecorator();
+            builder.AddRequestLogCommandHandlerDecorator();
 			builder.AddSerilogService();
 		}
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.Logging;
 using FliGen.Common.Mediator.Extensions;
-using FliGen.Common.Mediator.Logging;
 using MediatR;
 
 namespace FliGen.Common.Mediator.Decorators

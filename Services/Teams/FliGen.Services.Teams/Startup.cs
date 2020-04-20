@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
 using FliGen.Common.Mvc;
@@ -9,6 +10,7 @@ using FliGen.Common.SeedWork.Repository.DependencyInjection;
 using FliGen.Services.Teams.Application.Commands.GenerateTeams;
 using FliGen.Services.Teams.Application.Events;
 using FliGen.Services.Teams.Application.Services;
+using FliGen.Services.Teams.Application.Services.GenerateTeams;
 using FliGen.Services.Teams.Persistence.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +19,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Services.Teams.Application.Services.GenerateTeams;
 
 namespace FliGen.Services.Teams
 {
@@ -67,6 +68,8 @@ namespace FliGen.Services.Teams
             builder.AddMediator("FliGen.Services.Teams.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
+            builder.AddRequestValidationCommandHandlerDecorator();
+            builder.AddRequestLogCommandHandlerDecorator();
             builder.AddSerilogService();
         }
 
