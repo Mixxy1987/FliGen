@@ -16,7 +16,7 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
 
         public TestDbFixture()
         {
-            CreateContext();
+            CreateContextAndMigrateDb();
             InitDb();
         }
 
@@ -56,20 +56,22 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
 
         public async Task GetTourById(int id, TaskCompletionSource<Tour> receivedTask)
         {
-            try
+            using (var context = CreateContext())
             {
-                RecreateContext();
-                var entity = await Context.Tours.SingleOrDefaultAsync(t => t.Id == id);
-
-                if (entity is null)
+                try
                 {
-                    receivedTask.TrySetCanceled();
+                    var entity = await context.Tours.SingleOrDefaultAsync(t => t.Id == id);
+
+                    if (entity is null)
+                    {
+                        receivedTask.TrySetCanceled();
+                    }
+                    receivedTask.TrySetResult(entity);
                 }
-                receivedTask.TrySetResult(entity);
-            }
-            catch (Exception e)
-            {
-                receivedTask.TrySetException(e);
+                catch (Exception e)
+                {
+                    receivedTask.TrySetException(e);
+                }
             }
         }
 
@@ -80,22 +82,24 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(date));
             }
 
-            try
+            using (var context = CreateContext())
             {
-                RecreateContext();
-                DateTime dt = DateTime.Parse(date);
-                Tour tourEntity = await Context.Tours.SingleAsync(t => t.Date == dt);
-                if (tourEntity is null)
+                try
                 {
-                    receivedTask.TrySetCanceled();
-                    return;
-                }
+                    DateTime dt = DateTime.Parse(date);
+                    Tour tourEntity = await context.Tours.SingleAsync(t => t.Date == dt);
+                    if (tourEntity is null)
+                    {
+                        receivedTask.TrySetCanceled();
+                        return;
+                    }
 
-                receivedTask.TrySetResult(tourEntity);
-            }
-            catch (Exception e)
-            {
-                receivedTask.TrySetException(e);
+                    receivedTask.TrySetResult(tourEntity);
+                }
+                catch (Exception e)
+                {
+                    receivedTask.TrySetException(e);
+                }
             }
         }
 
@@ -104,13 +108,18 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             Context.Database.EnsureDeleted();
         }
 
-        private void RecreateContext()
+        private void CreateContextAndMigrateDb()
         {
-            Context.Dispose();
-            CreateContext();
+            Context = new ToursContext(CreateNewContextOptions());
+            Context.Database.Migrate();
         }
 
-        private void CreateContext()
+        private static ToursContext CreateContext()
+        {
+            return new ToursContext(CreateNewContextOptions());
+        }
+
+        private static DbContextOptions<ToursContext> CreateNewContextOptions()
         {
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkSqlServer()
@@ -121,8 +130,7 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             builder.UseSqlServer(ConnectionString)
                 .UseInternalServiceProvider(serviceProvider);
 
-            Context = new ToursContext(builder.Options);
-            Context.Database.Migrate();
+            return builder.Options;
         }
     }
 }

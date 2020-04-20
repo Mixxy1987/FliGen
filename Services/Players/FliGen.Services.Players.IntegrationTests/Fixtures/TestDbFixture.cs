@@ -17,13 +17,13 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         public TestDbFixture()
         {
-            CreateContext();
             InitDb();
         }
 
         public void InitDb()
         {
-            MockedDataInstance = new MockedData()
+            CreateContextAndMigrateDb();
+            MockedDataInstance = new MockedData
             {
                 PlayerExternalIdForDelete = Guid.NewGuid().ToString(),
                 PlayerExternalIdForUpdate= Guid.NewGuid().ToString()
@@ -47,31 +47,33 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(externalId));
             }
 
-            try
+            using (var context = CreateContext())
             {
-                RecreateContext();
-                Player playerEntity = await Context.Players.SingleAsync(p => p.ExternalId == externalId);
-                if (playerEntity is null)
+                try
                 {
-                    receivedTask.TrySetCanceled();
-                    return;
-                }
+                    Player playerEntity = await context.Players.SingleAsync(p => p.ExternalId == externalId);
+                    if (playerEntity is null)
+                    {
+                        receivedTask.TrySetCanceled();
+                        return;
+                    }
 
-                PlayerRate playerRateEntity = 
-                    Context.PlayerRates
-                        .Where(p => p.PlayerId == playerEntity.Id)
-                        .OrderBy(p => p.Date)
-                        .Last();
-                if (playerRateEntity is null)
-                {
-                    receivedTask.TrySetCanceled();
-                    return;
+                    PlayerRate playerRateEntity =
+                        context.PlayerRates
+                            .Where(p => p.PlayerId == playerEntity.Id)
+                            .OrderBy(p => p.Date)
+                            .Last();
+                    if (playerRateEntity is null)
+                    {
+                        receivedTask.TrySetCanceled();
+                        return;
+                    }
+                    receivedTask.TrySetResult((playerEntity, playerRateEntity));
                 }
-                receivedTask.TrySetResult((playerEntity, playerRateEntity));
-            }
-            catch (Exception e)
-            {
-                receivedTask.TrySetException(e);
+                catch (Exception e)
+                {
+                    receivedTask.TrySetException(e);
+                }
             }
         }
 
@@ -82,39 +84,44 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(externalId));
             }
 
-            try
+            using (var context = CreateContext())
             {
-                RecreateContext();
-                Player entity = await Context.Players.SingleAsync(p => p.ExternalId == externalId);
-
-                if (entity is null)
+                try
                 {
-                    receivedTask.TrySetCanceled();
-                    return;
+                    Player entity = await context.Players.SingleAsync(p => p.ExternalId == externalId);
+
+                    if (entity is null)
+                    {
+                        receivedTask.TrySetCanceled();
+                        return;
+                    }
+                    receivedTask.TrySetResult(entity);
                 }
-                receivedTask.TrySetResult(entity);
-            }
-            catch (Exception e)
-            {
-                receivedTask.TrySetException(e);
+                catch (Exception e)
+                {
+                    receivedTask.TrySetException(e);
+                }
             }
         }
 
         public async Task CheckIfPlayerExists(int internalId, TaskCompletionSource<bool> receivedTask)
         {
-            try
+            using (var context = CreateContext())
             {
-                var entity = await Context.Players.SingleOrDefaultAsync(p => p.Id == internalId);
-
-                if (entity is null)
+                try
                 {
-                    receivedTask.TrySetResult(false);
+                    var entity = await context.Players.SingleOrDefaultAsync(p => p.Id == internalId);
+
+                    if (entity is null)
+                    {
+                        receivedTask.TrySetResult(false);
+                    }
+                    receivedTask.TrySetResult(true);
                 }
-                receivedTask.TrySetResult(true);
-            }
-            catch (Exception e)
-            {
-                receivedTask.TrySetException(e);
+                catch (Exception e)
+                {
+                    receivedTask.TrySetException(e);
+                }
             }
         }
 
@@ -123,13 +130,18 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             Context.Database.EnsureDeleted();
         }
 
-        private void RecreateContext()
+        private void CreateContextAndMigrateDb()
         {
-            Context.Dispose();
-            CreateContext();
+            Context = new PlayersContext(CreateNewContextOptions());
+            Context.Database.Migrate();
         }
 
-        private void CreateContext()
+        private static PlayersContext CreateContext()
+        {
+            return new PlayersContext(CreateNewContextOptions());
+        }
+
+        private static DbContextOptions<PlayersContext> CreateNewContextOptions()
         {
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkSqlServer()
@@ -140,8 +152,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             builder.UseSqlServer(ConnectionString)
                 .UseInternalServiceProvider(serviceProvider);
 
-            Context = new PlayersContext(builder.Options);
-            Context.Database.Migrate();
+            return builder.Options;
         }
     }
 }
