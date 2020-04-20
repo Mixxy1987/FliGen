@@ -2,6 +2,7 @@
 using FliGen.Common.Extensions;
 using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
+using FliGen.Services.Players.Domain.Common;
 
 namespace FliGen.Services.Players.Domain.Entities
 {
@@ -28,22 +29,22 @@ namespace FliGen.Services.Players.Domain.Entities
         {
             if (date > DateTime.UtcNow)
             {
-                throw new FliGenException("cannot_create_player_rate_with_future_date", "Cannot create player rate with future date");
+                throw new FliGenException(ErrorCodes.InvalidDate, "Cannot create player rate with future date");
             }
 
             if (string.IsNullOrWhiteSpace(rate))
             {
-                throw new FliGenException("cannot_create_player_rate_with_empty_value", "Cannot create player rate with empty value");
+                throw new FliGenException(ErrorCodes.InvalidRateValue, "Cannot create player rate with empty value");
             }
 
             if (playerId <= 0)
             {
-                throw new FliGenException("cannot_create_player_with_negative_id", "Cannot create player with negative id");
+                throw new FliGenException(ErrorCodes.InvalidPlayerId, "Cannot create player with negative id");
             }
 
             if (leagueId <= 0)
             {
-                throw new FliGenException("cannot_create_player_with_negative_league_id", "Cannot create player with negative league id");
+                throw new FliGenException(ErrorCodes.InvalidLeagueId, "Cannot create player with negative league id");
             }
 
 

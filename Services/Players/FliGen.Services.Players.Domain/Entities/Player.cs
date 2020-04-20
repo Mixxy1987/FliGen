@@ -1,8 +1,9 @@
-﻿using FliGen.Common.SeedWork;
+﻿using FliGen.Common.Extensions;
+using FliGen.Common.SeedWork;
+using FliGen.Common.Types;
+using FliGen.Services.Players.Domain.Common;
 using System;
 using System.Collections.Generic;
-using FliGen.Common.Extensions;
-using FliGen.Common.Types;
 
 namespace FliGen.Services.Players.Domain.Entities
 {
@@ -22,12 +23,12 @@ namespace FliGen.Services.Players.Domain.Entities
         {
 	        if (string.IsNullOrWhiteSpace(firstName))
 	        {
-		        throw new FliGenException("cannot_create_player_with_empty_firstName", "Cannot create player with empty first Name");
+		        throw new FliGenException(ErrorCodes.EmptyFirstName, "Cannot create player with empty first Name");
 	        }
 
 	        if (string.IsNullOrWhiteSpace(lastName))
 	        {
-		        throw new FliGenException("cannot_create_player_with_empty_lastName", "Cannot create player with empty last Name");
+		        throw new FliGenException(ErrorCodes.EmptyLastName, "Cannot create player with empty last Name");
 	        }
 
             FirstName = firstName;

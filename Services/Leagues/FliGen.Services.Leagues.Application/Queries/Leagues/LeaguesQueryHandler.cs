@@ -5,6 +5,7 @@ using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Dto.Enum;
 using FliGen.Services.Leagues.Application.Services;
+using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Application.Common;
 
 namespace FliGen.Services.Leagues.Application.Queries.Leagues
 {
-    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, IEnumerable<Dto.LeagueDto>>
+    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, IEnumerable<LeagueDto>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
             _playersService = playersService;
         }
 
-        public async Task<IEnumerable<Dto.LeagueDto>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<LeagueDto>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
         {
             var leagueRepo = _uow.GetRepositoryAsync<League>();
 

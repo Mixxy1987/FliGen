@@ -1,6 +1,7 @@
-﻿using System;
-using FliGen.Common.SeedWork;
+﻿using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
+using FliGen.Services.Tours.Domain.Common;
+using System;
 
 namespace FliGen.Services.Tours.Domain.Entities
 {
@@ -17,15 +18,15 @@ namespace FliGen.Services.Tours.Domain.Entities
         {
             if (tourId <= 0)
             {
-                throw new FliGenException("invalid_tourId", $"Invalid tourId - {tourId}");
+                throw new FliGenException(ErrorCodes.InvalidTourId, $"Invalid tourId - {tourId}");
             }
             if (playerId <= 0)
             {
-                throw new FliGenException("invalid_playerId", $"Invalid playerId - {playerId}");
+                throw new FliGenException(ErrorCodes.InvalidPlayerId, $"Invalid playerId - {playerId}");
             }
             if (registrationDate > DateTime.UtcNow)
             {
-                throw new FliGenException("invalid_date", $"Invalid registration date - {registrationDate}");
+                throw new FliGenException(ErrorCodes.InvalidDate, $"Invalid registration date - {registrationDate}");
             }
 
             TourId = tourId;

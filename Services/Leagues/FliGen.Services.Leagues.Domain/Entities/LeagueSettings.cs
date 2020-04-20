@@ -1,5 +1,6 @@
 ﻿using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
+using FliGen.Services.Leagues.Domain.Common;
 
 namespace FliGen.Services.Leagues.Domain.Entities
 {
@@ -29,12 +30,12 @@ namespace FliGen.Services.Leagues.Domain.Entities
             RequireConfirmation = requireConfirmation;
             if (!(playersInTeam is null) && playersInTeam < PlayersInTeamMinCount)
             {
-                throw new FliGenException("invalid_players_count", $"players count must not be less than {PlayersInTeamMinCount}");
+                throw new FliGenException(ErrorCodes.InvalidPlayersCount, $"players count must not be less than {PlayersInTeamMinCount}");
             }
 
             if (!(teamsInTour is null) && teamsInTour < PlayersInTeamMinCount)
             {
-                throw new FliGenException("invalid_teams_count", $"teams count must not be less than {TeamsInTourMinCount}");
+                throw new FliGenException(ErrorCodes.InvalidTeamsCount, $"teams count must not be less than {TeamsInTourMinCount}");
             }
             PlayersInTeam = playersInTeam;
             TeamsInTour = teamsInTour;

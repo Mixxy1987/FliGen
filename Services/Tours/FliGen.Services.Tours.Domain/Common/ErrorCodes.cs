@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Tours.Application.Common
+﻿namespace FliGen.Services.Tours.Domain.Common
 {
     public static class ErrorCodes
     {
@@ -10,5 +10,8 @@
         public const string TourRegistrationIsClosed = "tour_registration_is_closed";
         public const string PlayerAlreadyRegistered = "player_already_registered";
         public const string EmptyPlayersList = "players_list_is_empty";
+        public const string InvalidSeasonId = "invalid_season_id";
+        public const string InvalidDate = "invalid_date";
+        public const string InvalidPlayerId = "invalid_player_id";
     }
 }

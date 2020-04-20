@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using FliGen.Common.SeedWork;
+﻿using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
+using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities.Enum;
+using System.Collections.Generic;
 
 namespace FliGen.Services.Leagues.Domain.Entities
 {
@@ -30,7 +31,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
-				throw new FliGenException("cannot_create_league_with_empty_name", "Cannot create league with empty name.");
+				throw new FliGenException(ErrorCodes.CannotCreateLeagueWithEmptyName, "Cannot create league with empty name.");
 			}
 
 			Name = name;

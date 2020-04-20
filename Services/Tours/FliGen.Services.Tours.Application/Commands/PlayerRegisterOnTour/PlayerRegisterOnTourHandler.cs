@@ -2,7 +2,6 @@
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
-using FliGen.Services.Tours.Application.Common;
 using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Dto.Enum;
 using FliGen.Services.Tours.Application.Queries.LeaguesQuery;
@@ -11,6 +10,7 @@ using FliGen.Services.Tours.Domain.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Domain.Common;
 using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
 
 namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour

@@ -1,7 +1,7 @@
 ﻿using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
-using FliGen.Services.Leagues.Application.Common;
 using FliGen.Services.Leagues.Application.Dto;
+using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

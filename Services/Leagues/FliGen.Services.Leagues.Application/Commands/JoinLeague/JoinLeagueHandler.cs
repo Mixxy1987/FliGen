@@ -4,9 +4,9 @@ using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Services;
+using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Application.Common;
 
 namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
 {

@@ -1,9 +1,9 @@
 ﻿using FliGen.Common.Handlers;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
-using System.Threading.Tasks;
 using FliGen.Common.Types;
-using FliGen.Services.Leagues.Application.Common;
+using FliGen.Services.Leagues.Domain.Common;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings
 {

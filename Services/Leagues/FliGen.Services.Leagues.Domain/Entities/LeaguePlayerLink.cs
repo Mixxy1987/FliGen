@@ -1,6 +1,7 @@
 ﻿using FliGen.Common.Types;
 using FliGen.Services.Leagues.Domain.Entities.Enum;
 using System;
+using FliGen.Services.Leagues.Domain.Common;
 
 namespace FliGen.Services.Leagues.Domain.Entities
 {
@@ -32,12 +33,12 @@ namespace FliGen.Services.Leagues.Domain.Entities
         {
 	        if (leagueId <= 0)
 	        {
-		        throw new FliGenException("invalid_leagueId", $"Invalid leagueId. - {leagueId}");
+		        throw new FliGenException(ErrorCodes.InvalidLeagueId, $"Invalid leagueId. - {leagueId}");
 	        }
 
 	        if (playerId <= 0)
 	        {
-		        throw new FliGenException("invalid_playerId", $"Invalid PlayerId. - {playerId}");
+		        throw new FliGenException(ErrorCodes.InvalidPlayerId, $"Invalid PlayerId. - {playerId}");
 	        }
 
             LeagueId = leagueId;

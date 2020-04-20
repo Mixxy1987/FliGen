@@ -2,7 +2,6 @@
 using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
-using FliGen.Services.Teams.Application.Common;
 using FliGen.Services.Teams.Application.Dto;
 using FliGen.Services.Teams.Application.Dto.Enum;
 using FliGen.Services.Teams.Application.Events;
@@ -10,6 +9,7 @@ using FliGen.Services.Teams.Application.Queries.LeaguesQuery;
 using FliGen.Services.Teams.Application.Queries.PlayersQuery;
 using FliGen.Services.Teams.Application.Services;
 using FliGen.Services.Teams.Application.Services.GenerateTeams;
+using FliGen.Services.Teams.Domain.Common;
 using FliGen.Services.Teams.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;

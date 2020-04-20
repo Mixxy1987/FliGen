@@ -1,4 +1,5 @@
 ﻿using FliGen.Common.Types;
+using FliGen.Services.Teams.Domain.Common;
 
 namespace FliGen.Services.Teams.Domain.Entities
 {
@@ -16,7 +17,7 @@ namespace FliGen.Services.Teams.Domain.Entities
                 teamId <= 0 ||
                 playerId <= 0)
             {
-                throw new FliGenException("invalid_data_for_team_player_link", "Invalid data for team player link");
+                throw new FliGenException(ErrorCodes.InvalidData, "Invalid data for team player link");
             }
 
             TourId = tourId;

@@ -1,6 +1,7 @@
 ﻿using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
 using System;
+using FliGen.Services.Tours.Domain.Common;
 
 namespace FliGen.Services.Tours.Domain.Entities
 {
@@ -27,7 +28,7 @@ namespace FliGen.Services.Tours.Domain.Entities
         {
             if (seasonId <= 0)
             {
-                throw new FliGenException("invalid_seasonId", $"Invalid seasonId. - {seasonId}");
+                throw new FliGenException(ErrorCodes.InvalidSeasonId, $"Invalid seasonId. - {seasonId}");
             }
 
             Date = date;
