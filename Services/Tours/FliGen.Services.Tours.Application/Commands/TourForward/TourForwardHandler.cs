@@ -5,6 +5,7 @@ using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Domain.Entities;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Domain.Entities.Enum;
 
 namespace FliGen.Services.Tours.Application.Commands.TourForward
 {
@@ -28,8 +29,8 @@ namespace FliGen.Services.Tours.Application.Commands.TourForward
             if (command.TourId is null)
             {
                 var newTour = Tour.Create(command.Date, command.SeasonId);
-                await tourRepo.AddAsync(newTour);
-                await _busPublisher.PublishAsync(new TourCreated(newTour.Id), context);
+                var newTourId = (await tourRepo.AddAsync(newTour)).Entity.Id;
+                await _busPublisher.PublishAsync(new TourCreated(newTourId), context);
             }
             else
             {

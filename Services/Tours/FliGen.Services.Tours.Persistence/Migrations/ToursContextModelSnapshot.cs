@@ -19,6 +19,26 @@ namespace FliGen.Services.Tours.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.Enum.TourStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TourStatus");
+                });
+
             modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.Tour", b =>
                 {
                     b.Property<int>("Id")
@@ -67,26 +87,6 @@ namespace FliGen.Services.Tours.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TourRegistration");
-                });
-
-            modelBuilder.Entity("FliGen.Services.Tours.Domain.Entities.TourStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("TourStatus");
                 });
 #pragma warning restore 612, 618
         }

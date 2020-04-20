@@ -1,4 +1,4 @@
-﻿using FliGen.Services.Tours.Domain.Entities;
+﻿using FliGen.Services.Tours.Domain.Entities.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

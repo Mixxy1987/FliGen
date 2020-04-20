@@ -39,7 +39,7 @@ namespace FliGen.Services.Notifications.Application.Events.TeamsCreated
                 PlayerId = playerIds,
                 QueryType = PlayersQueryType.Actual,
                 Page = 1,
-                Size = 1000 //todo:: realize getAll
+                Size = playerIds.Length
             };
 
             List<PlayerWithRateDto> playersInfo = (await _playersService.GetAsync(query)).ToList();

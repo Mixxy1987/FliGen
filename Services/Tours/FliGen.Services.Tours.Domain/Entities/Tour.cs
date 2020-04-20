@@ -2,6 +2,7 @@
 using FliGen.Common.Types;
 using System;
 using FliGen.Services.Tours.Domain.Common;
+using FliGen.Services.Tours.Domain.Entities.Enum;
 
 namespace FliGen.Services.Tours.Domain.Entities
 {

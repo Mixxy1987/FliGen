@@ -34,6 +34,12 @@ namespace FliGen.Services.Api.Controllers
             return await _playersService.GetAsync(playersQuery);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post(AddPlayer command)
+        {
+            return await SendAsync(command);
+        }
+
         [HttpPut]
         public async Task<IActionResult> Put(UpdatePlayer command)
         {

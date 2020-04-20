@@ -34,14 +34,15 @@ namespace FliGen.Services.Tours
 			Configuration = configuration;
 		}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
+            string connectionString = Configuration["TestConnection"] ??
+                                      Configuration.GetConnectionString("DefaultConnection");
+
             services
                 .AddDbContext<ToursContext>(
-                    options => options
-                        .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
-                    contextLifetime:ServiceLifetime.Transient)
+                    options => options.UseSqlServer(connectionString),
+                    contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<ToursContext>();
 
 			services.AddControllers();
@@ -73,9 +74,8 @@ namespace FliGen.Services.Tours
             builder.AddRequestLogCommandHandlerDecorator();
 			builder.AddSerilogService();
 		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{

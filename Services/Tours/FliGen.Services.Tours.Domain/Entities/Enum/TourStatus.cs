@@ -1,6 +1,6 @@
 ﻿using FliGen.Common.SeedWork;
 
-namespace FliGen.Services.Tours.Domain.Entities
+namespace FliGen.Services.Tours.Domain.Entities.Enum
 {
     public class TourStatus : Enumeration
     {

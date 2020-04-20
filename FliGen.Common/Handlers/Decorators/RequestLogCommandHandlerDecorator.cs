@@ -30,7 +30,7 @@ namespace FliGen.Common.Handlers.Decorators
                 await _inner.HandleAsync(request, context);
                 _logService.Trace(innerType, "Executed {name}:\r\n{@request}", requestType.Name);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _logService.Error(innerType, "Error at {name}", requestType.Name);
                 throw;

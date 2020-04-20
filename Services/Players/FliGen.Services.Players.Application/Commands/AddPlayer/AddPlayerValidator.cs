@@ -20,7 +20,7 @@ namespace FliGen.Services.Players.Application.Commands.AddPlayer
                 .WithMessage("Неверная фамилия");
 
             RuleFor(c => c.Rate)
-                .Must(x => double.TryParse(x.CommaToDot(), out _))
+                .Must(x => x == null || double.TryParse(x.CommaToDot(), out _))
                 .WithMessage("Неверный формат рейтинга игрока");
         }
     }

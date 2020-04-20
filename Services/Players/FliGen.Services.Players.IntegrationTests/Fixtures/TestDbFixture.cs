@@ -10,31 +10,15 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        public MockedData MockedDataInstance { get; set; }
-
-        public PlayersContext Context { get; set; }
-        public string ConnectionString { get; set; }
-            = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private const string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private PlayersContext Context { get; set; }
+        
+        public MockedData MockedDataInstance { get; private set; }
 
         public TestDbFixture()
         {
             CreateContext();
             InitDb();
-        }
-
-        public void CreateContext()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkSqlServer()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<PlayersContext>();
-
-            builder.UseSqlServer(ConnectionString)
-                .UseInternalServiceProvider(serviceProvider);
-
-            Context = new PlayersContext(builder.Options);
-            Context.Database.Migrate();
         }
 
         public void InitDb()
@@ -145,12 +129,19 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             CreateContext();
         }
 
-        public class MockedData
+        private void CreateContext()
         {
-            public string PlayerExternalIdForDelete { get; set; }
-            public string PlayerExternalIdForUpdate { get; set; }
-            public int PlayerInternalIdForDelete { get; set; }
-            public int PlayerInternalIdForUpdate { get; set; }
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkSqlServer()
+                .BuildServiceProvider();
+
+            var builder = new DbContextOptionsBuilder<PlayersContext>();
+
+            builder.UseSqlServer(ConnectionString)
+                .UseInternalServiceProvider(serviceProvider);
+
+            Context = new PlayersContext(builder.Options);
+            Context.Database.Migrate();
         }
     }
 }
