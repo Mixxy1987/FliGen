@@ -153,6 +153,4 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             public int PlayerInternalIdForUpdate { get; set; }
         }
     }
-
-
 }
