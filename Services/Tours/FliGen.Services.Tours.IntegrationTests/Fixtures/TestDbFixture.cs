@@ -29,16 +29,29 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             tourForReopen.MoveTourStatusForward();
             tourForReopen.MoveTourStatusForward();
 
-            MockedDataInstance = new MockedData {};
+            var tourForBack = Tour.Create(DateTime.UtcNow.AddDays(5), 10);
+
+            var tourForReadById = Tour.Create(DateTime.UtcNow.AddDays(6), 15);
+            tourForReadById.MoveTourStatusForward();
+
+            MockedDataInstance = new MockedData
+            {
+                TourForReadById = tourForReadById
+            };
 
             var entityForCancel = Context.Tours.Add(tourForCancel);
             var entityForOpen = Context.Tours.Add(tourForOpen);
             var entityForReopen = Context.Tours.Add(tourForReopen);
+            var entityForBack = Context.Tours.Add(tourForBack);
+            var entityForReadById = Context.Tours.Add(tourForReadById);
+            
 
             Context.SaveChanges();
             MockedDataInstance.TourForCancelId = entityForCancel.Entity.Id;
             MockedDataInstance.TourForOpenId = entityForOpen.Entity.Id;
             MockedDataInstance.TourForReopenId = entityForReopen.Entity.Id;
+            MockedDataInstance.TourForBackId = entityForBack.Entity.Id;
+            MockedDataInstance.TourForReadById.Id = entityForReadById.Entity.Id;
         }
 
         public async Task GetTourById(int id, TaskCompletionSource<Tour> receivedTask)

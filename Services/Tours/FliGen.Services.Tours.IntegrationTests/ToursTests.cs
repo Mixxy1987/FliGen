@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FliGen.Services.Tours.Application.Commands.TourBack;
 using Xunit;
+using Newtonsoft.Json;
 
 namespace FliGen.Services.Tours.IntegrationTests
 {
@@ -124,6 +125,23 @@ namespace FliGen.Services.Tours.IntegrationTests
             Tour tour = await creationTask.Task;
 
             tour.TourStatus.Should().Be(TourStatus.RegistrationOpened);
+        }
+
+        [Theory]
+        [InlineData("tours/id?TourId=")]
+        public async Task TourByIdQueryReturnsActualData(string endpoint)
+        {
+            int tourId = _testDbFixture.MockedDataInstance.TourForReadById.Id;
+
+            var response = await _client.GetAsync($"{endpoint}{tourId}");
+            response.IsSuccessStatusCode.Should().BeTrue();
+
+            string tourStr = await response.Content.ReadAsStringAsync();
+            Application.Dto.Tour tour = JsonConvert.DeserializeObject<Application.Dto.Tour>(tourStr);
+
+            tour.Id.Should().Be(tourId);
+            tour.TourStatus.Should().Be((Application.Dto.Enum.TourStatus)_testDbFixture.MockedDataInstance.TourForReadById.TourStatus.Id);
+            tour.SeasonId.Should().Be(_testDbFixture.MockedDataInstance.TourForReadById.SeasonId);
         }
     }
 }

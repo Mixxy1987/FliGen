@@ -25,10 +25,10 @@ namespace FliGen.Services.Api.Controllers
             _toursService = toursService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("id")]
+        public async Task<Tour> Get([FromQuery]TourByIdQuery query)
         {
-            return Single(await _toursService.Get(id));
+            return await _toursService.Get(query);
         }
 
         [HttpGet]

@@ -1,7 +1,4 @@
-﻿using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
-using FliGen.Services.Tours.Application.Commands.TourCancel;
-using FliGen.Services.Tours.Application.Commands.TourForward;
-using FliGen.Services.Tours.Application.Dto;
+﻿using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Queries.RegisteredOnTourPlayers;
 using FliGen.Services.Tours.Application.Queries.TourById;
 using FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery;
@@ -34,16 +31,16 @@ namespace FliGen.Services.Tours.Controllers
 
 		[HttpGet]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery toursByPlayerIdQuery)
+        public Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery query)
         {
-            return _mediatr.Send(toursByPlayerIdQuery);
+            return _mediatr.Send(query);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id")]
         [Produces(typeof(Tour))]
-        public Task<Tour> Get(int id)
+        public Task<Tour> Get([FromQuery]TourByIdQuery query)
         {
-            return _mediatr.Send(new TourByIdQuery(id));
+            return _mediatr.Send(query);
         }
 
         [HttpGet("registeredOnTourPlayers")]
@@ -52,23 +49,5 @@ namespace FliGen.Services.Tours.Controllers
         {
             return _mediatr.Send(query);
         }
-
-        [HttpPost("register")]
-        public async Task TourForward([FromBody]PlayerRegisterOnTour cmd)
-        {
-            await _mediatr.Send(cmd);
-        }
-
-		[HttpPost("forward")]
-		public async Task TourForward([FromBody]TourForward cmd)
-		{
-			await _mediatr.Send(cmd);
-		}
-
-		[HttpPost("cancel")]
-		public async Task TourCancel([FromBody]TourCancel cmd)
-		{
-			await _mediatr.Send(cmd);
-		}
 	}
 }
