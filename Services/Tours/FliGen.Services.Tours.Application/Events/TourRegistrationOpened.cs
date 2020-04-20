@@ -1,6 +1,6 @@
-﻿using System;
-using FliGen.Common.Messages;
+﻿using FliGen.Common.Messages;
 using Newtonsoft.Json;
+using System;
 
 namespace FliGen.Services.Tours.Application.Events
 {
@@ -13,9 +13,14 @@ namespace FliGen.Services.Tours.Application.Events
         [JsonConstructor]
         public TourRegistrationOpened(int tourId, int leagueId, DateTime date)
         {
-            LeagueId = leagueId;
             TourId = tourId;
+            LeagueId = leagueId;
             Date = date;
+        }
+
+        public TourRegistrationOpened(int tourId)
+        {
+            TourId = tourId;
         }
     }
 }

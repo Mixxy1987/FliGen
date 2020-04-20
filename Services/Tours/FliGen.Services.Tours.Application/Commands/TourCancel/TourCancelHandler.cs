@@ -27,10 +27,9 @@ namespace FliGen.Services.Tours.Application.Commands.TourCancel
             Tour tour = await tourRepo.SingleAsync(t => t.Id == command.TourId);
             tour.CancelTour();
             tourRepo.UpdateAsync(tour);
-
-            await _busPublisher.PublishAsync(new TourCanceled(tour.Id), context);
             
             _uow.SaveChanges();
+            await _busPublisher.PublishAsync(new TourCanceled(tour.Id), context);
         }
     }
 }

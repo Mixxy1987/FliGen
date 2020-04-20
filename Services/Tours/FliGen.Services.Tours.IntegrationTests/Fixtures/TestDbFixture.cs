@@ -22,25 +22,37 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
 
         public void InitDb()
         {
-            MockedDataInstance = new MockedData()
-            {
-
-            };
+            var tourForCancel = Tour.Create(DateTime.UtcNow.AddDays(2), 10);
+            var tourForOpen = Tour.Create(DateTime.UtcNow.AddDays(3), 10);
             
+            var tourForReopen = Tour.Create(DateTime.UtcNow.AddDays(4), 10);
+            tourForReopen.MoveTourStatusForward();
+            tourForReopen.MoveTourStatusForward();
+
+            MockedDataInstance = new MockedData {};
+
+            var entityForCancel = Context.Tours.Add(tourForCancel);
+            var entityForOpen = Context.Tours.Add(tourForOpen);
+            var entityForReopen = Context.Tours.Add(tourForReopen);
+
             Context.SaveChanges();
+            MockedDataInstance.TourForCancelId = entityForCancel.Entity.Id;
+            MockedDataInstance.TourForOpenId = entityForOpen.Entity.Id;
+            MockedDataInstance.TourForReopenId = entityForReopen.Entity.Id;
         }
 
-        public async Task CheckIfTourExists(int internalId, TaskCompletionSource<bool> receivedTask)
+        public async Task GetTourById(int id, TaskCompletionSource<Tour> receivedTask)
         {
             try
             {
-                var entity = await Context.Tours.SingleOrDefaultAsync(p => p.Id == internalId);
+                RecreateContext();
+                var entity = await Context.Tours.SingleOrDefaultAsync(t => t.Id == id);
 
                 if (entity is null)
                 {
-                    receivedTask.TrySetResult(false);
+                    receivedTask.TrySetCanceled();
                 }
-                receivedTask.TrySetResult(true);
+                receivedTask.TrySetResult(entity);
             }
             catch (Exception e)
             {
@@ -59,7 +71,7 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             {
                 RecreateContext();
                 DateTime dt = DateTime.Parse(date);
-                Tour tourEntity = await Context.Tours.SingleAsync(p => p.Date == dt);
+                Tour tourEntity = await Context.Tours.SingleAsync(t => t.Date == dt);
                 if (tourEntity is null)
                 {
                     receivedTask.TrySetCanceled();

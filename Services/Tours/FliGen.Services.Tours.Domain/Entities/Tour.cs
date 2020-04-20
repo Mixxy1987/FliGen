@@ -121,6 +121,11 @@ namespace FliGen.Services.Tours.Domain.Entities
             return TourStatus.Equals(TourStatus.Canceled) || TourStatus.Equals(TourStatus.Completed);
         }
 
+        public bool IsRegistrationOpened()
+        {
+            return TourStatus.Equals(TourStatus.RegistrationOpened);
+        }
+
         public bool IsRegistrationIsNotYetOpened()
         {
             return TourStatus.Equals(TourStatus.Planned);

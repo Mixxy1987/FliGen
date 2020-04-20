@@ -31,6 +31,11 @@ namespace FliGen.Services.Tours.Application.Commands.TourBack
             tourRepo.UpdateAsync(tour);
 
             _uow.SaveChanges();
+
+            if (tour.IsRegistrationOpened())
+            { // todo:: or reopened?
+                await _busPublisher.PublishAsync(new TourRegistrationOpened(tour.Id), context);
+            }
         }
     }
 }

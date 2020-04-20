@@ -50,11 +50,11 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
                     .UsePublishConfiguration(p => p.WithRoutingKey(GetRoutingKey(message, @namespace))));
         }
 
-        public async Task<TaskCompletionSource<bool>> SubscribeAndGetAsync<TEvent>(
-            Func<int, TaskCompletionSource<bool>, Task> onMessageReceived,
+        public async Task<TaskCompletionSource<Tour>> SubscribeAndGetAsync<TEvent>(
+            Func<int, TaskCompletionSource<Tour>, Task> onMessageReceived,
             int id) where TEvent : IEvent
         {
-            var taskCompletionSource = new TaskCompletionSource<bool>();
+            var taskCompletionSource = new TaskCompletionSource<Tour>();
             var guid = Guid.NewGuid().ToString();
 
             await _client.SubscribeAsync<TEvent>(

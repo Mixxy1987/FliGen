@@ -1,6 +1,8 @@
-﻿using FliGen.Services.Tours.Application.Commands.TourForward;
+﻿using FliGen.Services.Tours.Application.Commands.TourCancel;
+using FliGen.Services.Tours.Application.Commands.TourForward;
 using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Domain.Entities;
+using FliGen.Services.Tours.Domain.Entities.Enum;
 using FliGen.Services.Tours.IntegrationTests.Fixtures;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using FliGen.Services.Tours.Domain.Entities.Enum;
+using FliGen.Services.Tours.Application.Commands.TourBack;
 using Xunit;
 
 namespace FliGen.Services.Tours.IntegrationTests
@@ -65,6 +67,63 @@ namespace FliGen.Services.Tours.IntegrationTests
             tour.SeasonId.Should().Be(seasonId);
             tour.GuestCount.Should().BeNull();
             tour.HomeCount.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task TourForwardShouldOpenPlannedTour()
+        {
+            var command = new TourForward
+            {
+                TourId = _testDbFixture.MockedDataInstance.TourForOpenId
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<TourRegistrationOpened>(
+                _testDbFixture.GetTourById,
+                _testDbFixture.MockedDataInstance.TourForOpenId);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            Tour tour = await creationTask.Task;
+
+            tour.TourStatus.Should().Be(TourStatus.RegistrationOpened);
+        }
+
+        [Fact]
+        public async Task TourForwardShouldCancelPlannedTour()
+        {
+            var command = new TourCancel
+            {
+                TourId = _testDbFixture.MockedDataInstance.TourForCancelId
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<TourCanceled>(
+                _testDbFixture.GetTourById,
+                command.TourId);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            Tour tour = await creationTask.Task;
+
+            tour.TourStatus.Should().Be(TourStatus.Canceled);
+        }
+
+        [Fact]
+        public async Task TourBackShouldReopenClosedTour()
+        {
+            var command = new TourBack
+            {
+                TourId = _testDbFixture.MockedDataInstance.TourForReopenId
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<TourRegistrationOpened>(
+                _testDbFixture.GetTourById,
+                command.TourId);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            Tour tour = await creationTask.Task;
+
+            tour.TourStatus.Should().Be(TourStatus.RegistrationOpened);
         }
     }
 }
