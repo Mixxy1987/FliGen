@@ -3,5 +3,6 @@
     public class MockedData
     {
         public int LeagueForDeleteId { get; set; }
+        public int LeagueForUpdateId { get; set; }
     }
 }

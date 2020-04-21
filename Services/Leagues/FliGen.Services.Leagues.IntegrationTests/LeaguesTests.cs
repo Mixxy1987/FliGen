@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -84,6 +85,31 @@ namespace FliGen.Services.Leagues.IntegrationTests
 
             var league = await creationTask.Task;
             league.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task UpdateLeagueShouldUpdateDbEntity()
+        {
+            var command = new UpdateLeague()
+            {
+                LeagueId = _testDbFixture.MockedDataInstance.LeagueForUpdateId,
+                Name = "AAA",
+                Description = "BBB",
+                LeagueType = new LeagueType() { Name = "None"}
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<LeagueUpdated>(
+                _testDbFixture.GetLeagueById,
+                command.LeagueId);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            var league = await creationTask.Task;
+
+            league.Should().NotBeNull();
+            league.Name.Should().Be(command.Name);
+            league.Description.Should().Be(command.Description);
+            league.Type.Name.Should().Be(command.LeagueType.Name);
         }
     }
 }
