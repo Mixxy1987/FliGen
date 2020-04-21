@@ -26,7 +26,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             MockedDataInstance = new MockedData
             {
                 PlayerExternalIdForDelete = Guid.NewGuid().ToString(),
-                PlayerExternalIdForUpdate= Guid.NewGuid().ToString()
+                PlayerExternalIdForUpdate = Guid.NewGuid().ToString()
             };
 
             var playerForDelete = Player.Create("for delete", "for delete", externalId: MockedDataInstance.PlayerExternalIdForDelete);

@@ -23,11 +23,13 @@ namespace FliGen.Services.Leagues.Domain.Entities
         private LeagueSettings(
             bool visibility,
             bool requireConfirmation,
+            int leagueId = 0,
             int? playersInTeam = null,
             int? teamsInTour = null) : this()
         {
             Visibility = visibility;
             RequireConfirmation = requireConfirmation;
+            LeagueId = leagueId;
             if (!(playersInTeam is null) && playersInTeam < PlayersInTeamMinCount)
             {
                 throw new FliGenException(ErrorCodes.InvalidPlayersCount, $"players count must not be less than {PlayersInTeamMinCount}");
@@ -44,10 +46,11 @@ namespace FliGen.Services.Leagues.Domain.Entities
         public static LeagueSettings Create(
             bool visibility,
             bool requireConfirmation,
+            int leagueId = 0,
             int? playersInTeam = null,
             int? teamsInTour = null)
         {
-            return new LeagueSettings(visibility,requireConfirmation,playersInTeam,teamsInTour);
+            return new LeagueSettings(visibility,requireConfirmation, leagueId, playersInTeam,teamsInTour);
         }
 
         public static LeagueSettings GetUpdated(
@@ -57,7 +60,7 @@ namespace FliGen.Services.Leagues.Domain.Entities
             int? playersInTeam,
             int? teamsInTour)
         {
-            return new LeagueSettings(visibility, requireConfirmation, playersInTeam, teamsInTour)
+            return new LeagueSettings(visibility, requireConfirmation, oldSettings.LeagueId, playersInTeam, teamsInTour)
             {
                 Id = oldSettings.Id,
                 LeagueId = oldSettings.LeagueId

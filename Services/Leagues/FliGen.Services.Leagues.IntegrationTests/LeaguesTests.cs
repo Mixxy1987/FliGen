@@ -121,7 +121,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
                 TeamsInTour = 50,
                 PlayersInTeam = 10,
                 RequireConfirmation = true,
-                Visibility = false
+                Visibility = true
             };
 
             var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<LeagueSettingsUpdated>(
@@ -136,8 +136,8 @@ namespace FliGen.Services.Leagues.IntegrationTests
             league.LeagueSettings.Should().NotBeNull();
             league.LeagueSettings.TeamsInTour.Should().Be(command.TeamsInTour);
             league.LeagueSettings.PlayersInTeam.Should().Be(command.PlayersInTeam);
-            league.LeagueSettings.RequireConfirmation.Should().Be(command.RequireConfirmation);
-            league.LeagueSettings.Visibility.Should().Be(command.Visibility);
+            league.IsRequireConfirmation().Should().Be(command.RequireConfirmation);
+            league.IsVisible().Should().Be(command.Visibility);
         }
     }
 }

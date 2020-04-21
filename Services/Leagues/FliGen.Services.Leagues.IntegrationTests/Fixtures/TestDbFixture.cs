@@ -25,16 +25,20 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
         {
             var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             var leagueForUpdate = League.Create("for update", "descr", LeagueType.Football);
-
-            MockedDataInstance = new MockedData
-            {
-            };
+           
             var entityForDelete = Context.Leagues.Add(leagueForDelete);
             var entityForUpdate = Context.Leagues.Add(leagueForUpdate);
 
             Context.SaveChanges();
-            MockedDataInstance.LeagueForDeleteId = entityForDelete.Entity.Id;
-            MockedDataInstance.LeagueForUpdateId = entityForDelete.Entity.Id;
+            MockedDataInstance = new MockedData
+            {
+                LeagueForDeleteId = entityForDelete.Entity.Id,
+                LeagueForUpdateId = entityForUpdate.Entity.Id
+            };
+
+            var leagueSettingsForUpdate = LeagueSettings.Create(false, false, leagueId: entityForUpdate.Entity.Id, 10, 50);
+            Context.LeagueSettings.Add(leagueSettingsForUpdate);
+            Context.SaveChanges();
         }
 
         public async Task GetLeagueById(int id, TaskCompletionSource<League> receivedTask)

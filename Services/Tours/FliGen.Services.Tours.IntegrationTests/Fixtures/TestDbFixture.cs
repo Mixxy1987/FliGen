@@ -28,16 +28,9 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             var tourForReopen = Tour.Create(DateTime.UtcNow.AddDays(4), 10);
             tourForReopen.MoveTourStatusForward();
             tourForReopen.MoveTourStatusForward();
-
             var tourForBack = Tour.Create(DateTime.UtcNow.AddDays(5), 10);
-
             var tourForReadById = Tour.Create(DateTime.UtcNow.AddDays(6), 15);
             tourForReadById.MoveTourStatusForward();
-
-            MockedDataInstance = new MockedData
-            {
-                TourForReadById = tourForReadById
-            };
 
             var entityForCancel = Context.Tours.Add(tourForCancel);
             var entityForOpen = Context.Tours.Add(tourForOpen);
@@ -47,10 +40,15 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             
 
             Context.SaveChanges();
-            MockedDataInstance.TourForCancelId = entityForCancel.Entity.Id;
-            MockedDataInstance.TourForOpenId = entityForOpen.Entity.Id;
-            MockedDataInstance.TourForReopenId = entityForReopen.Entity.Id;
-            MockedDataInstance.TourForBackId = entityForBack.Entity.Id;
+
+            MockedDataInstance = new MockedData
+            {
+                TourForReadById = tourForReadById,
+                TourForCancelId = entityForCancel.Entity.Id,
+                TourForOpenId = entityForOpen.Entity.Id,
+                TourForReopenId = entityForReopen.Entity.Id,
+                TourForBackId = entityForBack.Entity.Id,
+            };
             MockedDataInstance.TourForReadById.Id = entityForReadById.Entity.Id;
         }
 

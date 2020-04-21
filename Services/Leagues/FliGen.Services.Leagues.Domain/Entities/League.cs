@@ -51,9 +51,9 @@ namespace FliGen.Services.Leagues.Domain.Entities
 			LeagueSettings = settings;
 		}
 
-		public static League Create(string name, string description, LeagueType type)
+		public static League Create(string name, string description, LeagueType type, LeagueSettings settings = null)
 		{
-			return new League(name, description, type);
+			return new League(name, description, type, settings);
 		}
 
 		public static League GetUpdated(int id, string firstName, string lastName, LeagueType type)
