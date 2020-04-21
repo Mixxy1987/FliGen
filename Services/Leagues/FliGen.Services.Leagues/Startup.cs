@@ -36,9 +36,10 @@ namespace FliGen.Services.Leagues
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LeaguesContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")),
+            string connectionString = Configuration["TestConnection"] ??
+                                      Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<LeaguesContext>(options => options.UseSqlServer(connectionString),
                     contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<LeaguesContext>();
 

@@ -3,12 +3,12 @@ using Newtonsoft.Json;
 
 namespace FliGen.Services.Tours.Application.Events
 {
-    public class TourCreated : IEvent
+    public class TourCanceled : IEvent
     {
         public int TourId { get; set; }
 
         [JsonConstructor]
-        public TourCreated(int tourId)
+        public TourCanceled(int tourId)
         {
             TourId = tourId;
         }
