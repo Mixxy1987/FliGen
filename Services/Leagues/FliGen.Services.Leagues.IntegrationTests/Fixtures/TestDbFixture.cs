@@ -43,7 +43,9 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             {
                 try
                 {
-                    var entity = await context.Leagues.SingleOrDefaultAsync(t => t.Id == id);
+                    var entity = await context.Leagues
+                        .Include(l => l.LeagueSettings)
+                        .SingleOrDefaultAsync(l => l.Id == id);
 
                     receivedTask.TrySetResult(entity);
                 }
@@ -60,7 +62,8 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             {
                 try
                 {
-                    var entity = await context.Leagues.SingleOrDefaultAsync(t => t.Name == name);
+                    var entity = await context.Leagues
+                        .SingleOrDefaultAsync(l => l.Name == name);
 
                     if (entity is null)
                     {

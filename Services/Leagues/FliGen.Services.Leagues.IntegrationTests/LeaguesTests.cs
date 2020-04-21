@@ -1,5 +1,7 @@
-﻿using System;
-using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
+using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Events;
 using FliGen.Services.Leagues.Domain.Entities;
@@ -9,8 +11,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
-using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -110,6 +110,34 @@ namespace FliGen.Services.Leagues.IntegrationTests
             league.Name.Should().Be(command.Name);
             league.Description.Should().Be(command.Description);
             league.Type.Name.Should().Be(command.LeagueType.Name);
+        }
+
+        [Fact]
+        public async Task UpdateLeagueSettingsShouldUpdateDbEntity()
+        {
+            var command = new UpdateLeagueSettings()
+            {
+                LeagueId = _testDbFixture.MockedDataInstance.LeagueForUpdateId,
+                TeamsInTour = 50,
+                PlayersInTeam = 10,
+                RequireConfirmation = true,
+                Visibility = false
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<LeagueSettingsUpdated>(
+                _testDbFixture.GetLeagueById,
+                command.LeagueId);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            var league = await creationTask.Task;
+
+            league.Should().NotBeNull();
+            league.LeagueSettings.Should().NotBeNull();
+            league.LeagueSettings.TeamsInTour.Should().Be(command.TeamsInTour);
+            league.LeagueSettings.PlayersInTeam.Should().Be(command.PlayersInTeam);
+            league.LeagueSettings.RequireConfirmation.Should().Be(command.RequireConfirmation);
+            league.LeagueSettings.Visibility.Should().Be(command.Visibility);
         }
     }
 }
