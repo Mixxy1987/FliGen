@@ -2,6 +2,6 @@
 {
     public class MockedData
     {
-
+        public int LeagueForDeleteId { get; set; }
     }
 }

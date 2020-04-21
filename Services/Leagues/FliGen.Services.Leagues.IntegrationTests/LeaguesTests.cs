@@ -1,4 +1,5 @@
-﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+﻿using System;
+using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Events;
 using FliGen.Services.Leagues.Domain.Entities;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -41,7 +43,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
         }
 
         [Fact]
-        public async Task LeagueCreateShouldCreateDbEntity()
+        public async Task CreateLeagueShouldCreateDbEntity()
         {
             var command = new CreateLeague
             {
@@ -58,9 +60,30 @@ namespace FliGen.Services.Leagues.IntegrationTests
 
             League league = await creationTask.Task;
 
+            league.Should().NotBeNull();
             league.Name.Should().Be(command.Name);
             league.Description.Should().Be(command.Description);
             league.Type.Name.Should().Be(command.LeagueType.Name);
+        }
+
+        [Fact]
+        public async Task DeleteLeagueShouldDeleteDbEntity()
+        {
+            //todo:: test cascade deletion!
+
+            var command = new DeleteLeague()
+            {
+                Id = _testDbFixture.MockedDataInstance.LeagueForDeleteId
+            };
+
+            var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<LeagueDeleted>(
+                _testDbFixture.GetLeagueById,
+                command.Id);
+
+            await _rabbitMqFixture.PublishAsync(command);
+
+            var league = await creationTask.Task;
+            league.Should().BeNull();
         }
     }
 }

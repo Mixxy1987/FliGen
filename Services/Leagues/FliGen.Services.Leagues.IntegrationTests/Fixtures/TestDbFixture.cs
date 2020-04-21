@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using FliGen.Services.Leagues.Domain.Entities.Enum;
 
 namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 {
@@ -22,10 +23,13 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public void InitDb()
         {
+            var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             MockedDataInstance = new MockedData
             {
             };
+            var entityForDelete = Context.Leagues.Add(leagueForDelete);
             Context.SaveChanges();
+            MockedDataInstance.LeagueForDeleteId = entityForDelete.Entity.Id;
         }
 
         public async Task GetLeagueById(int id, TaskCompletionSource<League> receivedTask)
@@ -36,10 +40,6 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
                 {
                     var entity = await context.Leagues.SingleOrDefaultAsync(t => t.Id == id);
 
-                    if (entity is null)
-                    {
-                        receivedTask.TrySetCanceled();
-                    }
                     receivedTask.TrySetResult(entity);
                 }
                 catch (Exception e)
