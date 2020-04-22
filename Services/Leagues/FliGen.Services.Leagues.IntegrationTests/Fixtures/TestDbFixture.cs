@@ -1,35 +1,38 @@
 ﻿using FliGen.Services.Leagues.Domain.Entities;
+using FliGen.Services.Leagues.Domain.Entities.Enum;
 using FliGen.Services.Leagues.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Domain.Entities.Enum;
 
 namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        private const string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Leagues.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private LeaguesContext Context { get; set; }
+        private readonly LeaguesContextFactory _leaguesContextFactory;
+        private LeaguesContext LeaguesContext { get; set; }
         
         public MockedData MockedDataInstance { get; private set; }
 
         public TestDbFixture()
         {
-            CreateContextAndMigrateDb();
-            InitDb();
+            _leaguesContextFactory = new LeaguesContextFactory(
+                "Server=(localdb)\\mssqllocaldb;Database=FliGen.Leagues.Test;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+            LeaguesContext = GetInitiatedLeaguesContext();
         }
 
-        public void InitDb()
+        public LeaguesContext GetInitiatedLeaguesContext()
         {
+            LeaguesContext leaguesContext = CreateContextAndMigrateDb();
+
             var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             var leagueForUpdate = League.Create("for update", "descr", LeagueType.Football);
            
-            var entityForDelete = Context.Leagues.Add(leagueForDelete);
-            var entityForUpdate = Context.Leagues.Add(leagueForUpdate);
+            var entityForDelete = leaguesContext.Leagues.Add(leagueForDelete);
+            var entityForUpdate = leaguesContext.Leagues.Add(leagueForUpdate);
 
-            Context.SaveChanges();
+            leaguesContext.SaveChanges();
             MockedDataInstance = new MockedData
             {
                 LeagueForDeleteId = entityForDelete.Entity.Id,
@@ -37,13 +40,14 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             };
 
             var leagueSettingsForUpdate = LeagueSettings.Create(false, false, leagueId: entityForUpdate.Entity.Id, 10, 50);
-            Context.LeagueSettings.Add(leagueSettingsForUpdate);
-            Context.SaveChanges();
+            leaguesContext.LeagueSettings.Add(leagueSettingsForUpdate);
+            leaguesContext.SaveChanges();
+            return leaguesContext;
         }
 
         public async Task GetLeagueById(int id, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = CreateContext())
+            using (var context = _leaguesContextFactory.Create())
             {
                 try
                 {
@@ -62,7 +66,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public async Task GetLeagueByName(string name, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = CreateContext())
+            using (var context = _leaguesContextFactory.Create())
             {
                 try
                 {
@@ -83,32 +87,14 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
         }
         public void Dispose()
         {
-            Context.Database.EnsureDeleted();
+            LeaguesContext?.Database.EnsureDeleted();
         }
 
-        private void CreateContextAndMigrateDb()
+        private LeaguesContext CreateContextAndMigrateDb()
         {
-            Context = new LeaguesContext(CreateNewContextOptions());
-            Context.Database.Migrate();
-        }
-
-        private static LeaguesContext CreateContext()
-        {
-            return new LeaguesContext(CreateNewContextOptions());
-        }
-
-        private static DbContextOptions<LeaguesContext> CreateNewContextOptions()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkSqlServer()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<LeaguesContext>();
-
-            builder.UseSqlServer(ConnectionString)
-                .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
+            var leaguesContext = _leaguesContextFactory.Create();
+            leaguesContext.Database.Migrate();
+            return leaguesContext;
         }
     }
 }

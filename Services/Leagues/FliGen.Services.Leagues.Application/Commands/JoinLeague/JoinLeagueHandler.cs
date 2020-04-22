@@ -3,6 +3,8 @@ using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Dto;
+using FliGen.Services.Leagues.Application.Dto.Enum;
+using FliGen.Services.Leagues.Application.Events.PlayerLeagueStatus;
 using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities;
@@ -14,13 +16,16 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
     {
         private readonly IUnitOfWork _uow;
         private readonly IPlayersService _playersService;
+        private readonly IBusPublisher _busPublisher;
 
         public JoinLeagueHandler(
             IUnitOfWork uow,
-            IPlayersService playersService)
+            IPlayersService playersService,
+            IBusPublisher busPublisher)
         {
             _uow = uow;
             _playersService = playersService;
+            _busPublisher = busPublisher;
         }
 
         public async Task HandleAsync(JoinLeague command, ICorrelationContext context)
@@ -51,11 +56,23 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
                     x.LeagueId == command.LeagueId &&
                     x.Actual);
 
+            PlayerLeagueJoinStatus newStatus;
             if (lastLink is null || lastLink.InLeftStatus())
             {
 	            LeaguePlayerLink link = leagueSettings.RequireConfirmation
 		            ? LeaguePlayerLink.CreateWaitingLink(command.LeagueId, playerId)
 		            : LeaguePlayerLink.CreateJoinedLink(command.LeagueId, playerId);
+
+                if (leagueSettings.RequireConfirmation)
+                {
+                    LeaguePlayerLink.CreateWaitingLink(command.LeagueId, playerId);
+                    newStatus = PlayerLeagueJoinStatus.Waiting;
+                }
+                else
+                {
+                    LeaguePlayerLink.CreateJoinedLink(command.LeagueId, playerId);
+                    newStatus = PlayerLeagueJoinStatus.Joined;
+                }
 
 	            await lplinksRepo.AddAsync(link);
             }
@@ -64,20 +81,25 @@ namespace FliGen.Services.Leagues.Application.Commands.JoinLeague
                 if (leagueSettings.RequireConfirmation)
                 {
                     lplinksRepo.RemoveAsync(lastLink);
+                    newStatus = PlayerLeagueJoinStatus.None;
                 }
                 else
                 {
 	                lastLink.UpdateToJoined();
                     lplinksRepo.UpdateAsync(lastLink);
+                    newStatus = PlayerLeagueJoinStatus.Joined;
                 }
             }
             else
             {
 	            lastLink.UpdateToLeft();
                 lplinksRepo.UpdateAsync(lastLink);
+                newStatus = PlayerLeagueJoinStatus.None;
             }
 
             _uow.SaveChanges();
+
+            await _busPublisher.PublishAsync(new PlayerLeagueJoinStatusChanged(playerId, command.LeagueId, newStatus), context);
         }
     }
 }

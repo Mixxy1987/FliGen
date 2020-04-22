@@ -139,5 +139,11 @@ namespace FliGen.Services.Leagues.IntegrationTests
             league.IsRequireConfirmation().Should().Be(command.RequireConfirmation);
             league.IsVisible().Should().Be(command.Visibility);
         }
+
+        [Fact]
+        public async Task JoinLeagueShouldChangePlayerStatus()
+        {
+
+        }
     }
 }
