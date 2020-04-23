@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FliGen.Services.Players.Persistence.Migrations
 {
     [DbContext(typeof(PlayersContext))]
-    [Migration("20200418085150_Initial")]
+    [Migration("20200422192559_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,10 +109,6 @@ namespace FliGen.Services.Players.Persistence.Migrations
 
                     b.HasKey("PlayerId", "MessageId");
 
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("MessageTypeId");
-
                     b.ToTable("PlayerMessageLink");
                 });
 
@@ -141,21 +137,6 @@ namespace FliGen.Services.Players.Persistence.Migrations
                     b.HasIndex("PlayerId");
 
                     b.ToTable("PlayerRate");
-                });
-
-            modelBuilder.Entity("FliGen.Services.Players.Domain.Entities.PlayerMessageLink", b =>
-                {
-                    b.HasOne("FliGen.Services.Players.Domain.Entities.Message", "Message")
-                        .WithMany()
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FliGen.Services.Players.Domain.Entities.Enum.MessageType", "MessageType")
-                        .WithMany()
-                        .HasForeignKey("MessageTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("FliGen.Services.Players.Domain.Entities.PlayerRate", b =>

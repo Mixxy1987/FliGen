@@ -17,7 +17,12 @@ namespace FliGen.Services.Players.Domain.Entities
         public MessageType MessageType { get; private set; }
         public bool Read { get; private set; }
 
-        private PlayerMessageLink(int playerId, int messageId, int messageTypeId)
+        public PlayerMessageLink()
+        {
+            MessageType ??= MessageType.Personal;
+        }
+
+        private PlayerMessageLink(int playerId, int messageId, int messageTypeId) : this()
         {
             PlayerId = playerId;
             MessageId = messageId;

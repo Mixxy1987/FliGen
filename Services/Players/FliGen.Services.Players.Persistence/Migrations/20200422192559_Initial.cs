@@ -1,4 +1,5 @@
-﻿using FliGen.Common.Sql;
+﻿using System;
+using FliGen.Common.Sql;
 using FliGen.Services.Players.Persistence.Helper;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -15,16 +16,16 @@ namespace FliGen.Services.Players.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PlayerMessageLink");
-
-            migrationBuilder.DropTable(
-                name: "PlayerRate");
-
-            migrationBuilder.DropTable(
                 name: "Message");
 
             migrationBuilder.DropTable(
                 name: "MessageType");
+
+            migrationBuilder.DropTable(
+                name: "PlayerMessageLink");
+
+            migrationBuilder.DropTable(
+                name: "PlayerRate");
 
             migrationBuilder.DropTable(
                 name: "Player");

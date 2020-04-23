@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace FliGen.Services.Players.Persistence.Contexts
 {
-    public class FliGenContextFactory : IDesignTimeDbContextFactory<PlayersContext>
+    public class PlayersContextFactory : IDesignTimeDbContextFactory<PlayersContext>
     {
         public PlayersContext CreateDbContext(string[] args)
         {

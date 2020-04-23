@@ -43,6 +43,11 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             });
         }
 
+        public IBusPublisher GetPublisher()
+        {
+            return new BusPublisher(_client);
+        }
+
         public Task PublishAsync<TMessage>(TMessage message, string @namespace = null) where TMessage : class
         {
             return _client.PublishAsync(message, ctx =>

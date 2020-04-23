@@ -131,7 +131,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Tours.Integ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues.IntegrationTests", "Services\Leagues\FliGen.Services.Leagues.IntegrationTests\FliGen.Services.Leagues.IntegrationTests.csproj", "{025DE74A-13BA-4859-A6BC-9AF545DC4F8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FliGen.Services.Notifications.IntegrationTests", "Services\Notifications\FliGen.Services.Notifications.IntegrationTests\FliGen.Services.Notifications.IntegrationTests.csproj", "{0C747515-6C87-4288-8413-F6986DE47108}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notifications.IntegrationTests", "Services\Notifications\FliGen.Services.Notifications.IntegrationTests\FliGen.Services.Notifications.IntegrationTests.csproj", "{0C747515-6C87-4288-8413-F6986DE47108}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{753DA997-9552-4EC0-827E-E43BACBBB952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
