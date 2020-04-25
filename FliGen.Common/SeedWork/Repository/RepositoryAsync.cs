@@ -44,7 +44,7 @@ namespace FliGen.Common.SeedWork.Repository
             int index = 0,
             int size = 20,
             bool disableTracking = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = _dbSet;
             if (disableTracking) query = query.AsNoTracking();
@@ -60,7 +60,7 @@ namespace FliGen.Common.SeedWork.Repository
 
         public ValueTask<EntityEntry<T>> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            return _dbSet.AddAsync(entity, cancellationToken);//.AsTask();
+            return _dbSet.AddAsync(entity, cancellationToken);
         }
 
         public Task AddAsync(params T[] entities)

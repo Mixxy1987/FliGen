@@ -4,5 +4,7 @@
     {
         public int LeagueForDeleteId { get; set; }
         public int LeagueForUpdateId { get; set; }
+        public int PlayersInTeam { get; set; }
+        public int TeamsInTour { get; set; }
     }
 }

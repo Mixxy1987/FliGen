@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
@@ -13,18 +11,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AutoFixture;
-using FliGen.Common.RabbitMq;
-using FliGen.Common.SeedWork.Repository;
-using FliGen.Services.Leagues.Application.Commands.JoinLeague;
-using FliGen.Services.Leagues.Application.Services;
-using NSubstitute;
+using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
+using Newtonsoft.Json;
 using Xunit;
-using LeagueSettings = FliGen.Services.Leagues.Domain.Entities.LeagueSettings;
 
 namespace FliGen.Services.Leagues.IntegrationTests
 {
-    public class LeaguesTests :
+    public class LeaguesIntegrationTests :
         IClassFixture<TestDbFixture>,
         IClassFixture<RabbitMqFixture>,
         IClassFixture<WebApplicationFactory<TestStartup>>
@@ -33,7 +26,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
         private readonly RabbitMqFixture _rabbitMqFixture;
         private readonly HttpClient _client;
 
-        public LeaguesTests(
+        public LeaguesIntegrationTests(
             TestDbFixture testDbFixture,
             RabbitMqFixture rabbitMqFixture,
             WebApplicationFactory<TestStartup> factory)
@@ -127,8 +120,8 @@ namespace FliGen.Services.Leagues.IntegrationTests
             var command = new UpdateLeagueSettings()
             {
                 LeagueId = _testDbFixture.MockedDataInstance.LeagueForUpdateId,
-                TeamsInTour = 50,
-                PlayersInTeam = 10,
+                TeamsInTour = _testDbFixture.MockedDataInstance.TeamsInTour,
+                PlayersInTeam = _testDbFixture.MockedDataInstance.PlayersInTeam,
                 RequireConfirmation = true,
                 Visibility = true
             };
@@ -149,94 +142,17 @@ namespace FliGen.Services.Leagues.IntegrationTests
             league.IsVisible().Should().Be(command.Visibility);
         }
 
-        [Fact]
-        public async Task JoinLeagueShouldChangePlayerStatus()
+        [Theory]
+        [InlineData("leagues/settings")]
+        public async Task LeagueSettingsQueryShouldReturnSettings(string endpoint)
         {
-            var fix = new Fixture();
-            int leagueId = fix.Create<int>();
-            int playerId = fix.Create<int>();
-            var command = new JoinLeague()
-            {
-                LeagueId = leagueId,
-                PlayerExternalId = Guid.NewGuid().ToString()
-            };
+            var response = await _client.GetAsync($"{endpoint}?LeagueId={_testDbFixture.MockedDataInstance.LeagueForUpdateId}");
 
-            var retDto = new PlayerInternalIdDto()
-            {
-                InternalId = playerId
-            };
+            string str = await response.Content.ReadAsStringAsync();
+            var settings = JsonConvert.DeserializeObject<Application.Dto.LeagueSettings>(str);
 
-            var uow = Substitute.For<IUnitOfWork>();
-            var playersService = Substitute.For<IPlayersService>();
-
-            playersService.GetInternalIdAsync(command.PlayerExternalId).ReturnsForAnyArgs(retDto);
-
-            var leagueSettingsRepo = Substitute.For<IRepositoryAsync<LeagueSettings>>();
-            var leaguePlayerLinksRepo = Substitute.For<IRepositoryAsync<LeaguePlayerLink>>();
-
-            var lsWithoutConfirm = LeagueSettings.Create(true, false, leagueId);
-            var lsWithConfirm = LeagueSettings.Create(true, true, leagueId);
-
-            var leftLpl = LeaguePlayerLink.CreateJoinedLink(leagueId, playerId);
-            leftLpl.UpdateToLeft();
-            
-            var hs = new HashSet<(LeagueSettings, LeaguePlayerLink, Action)>
-            {
-                (
-                    lsWithoutConfirm,
-                    null,
-                    () => leaguePlayerLinksRepo.Received().AddAsync(Arg.Is<LeaguePlayerLink>(x => x.InJoinedStatus()))
-                ),
-                (
-                    lsWithoutConfirm,
-                    leftLpl,
-                    () => leaguePlayerLinksRepo.Received().AddAsync(Arg.Is<LeaguePlayerLink>(x => x.InJoinedStatus()))
-                ),
-                (
-                    lsWithoutConfirm,
-                    LeaguePlayerLink.CreateWaitingLink(leagueId, playerId),
-                    () => leaguePlayerLinksRepo.Received().UpdateAsync(Arg.Is<LeaguePlayerLink>(x => x.InJoinedStatus()))
-                ),
-                (
-                    lsWithoutConfirm,
-                    LeaguePlayerLink.CreateJoinedLink(leagueId, playerId),
-                    () => leaguePlayerLinksRepo.Received().UpdateAsync(Arg.Is<LeaguePlayerLink>(x => x.InLeftStatus()))
-                ),
-                (
-                    lsWithConfirm,
-                    null,
-                    () => leaguePlayerLinksRepo.Received().AddAsync(Arg.Is<LeaguePlayerLink>(x => x.InWaitingStatus()))
-                ),
-                (
-                    lsWithConfirm,
-                    leftLpl,
-                    () => leaguePlayerLinksRepo.Received().AddAsync(Arg.Is<LeaguePlayerLink>(x => x.InJoinedStatus()))
-                ),
-                (
-                    lsWithConfirm,
-                    LeaguePlayerLink.CreateWaitingLink(leagueId, playerId),
-                    () => leaguePlayerLinksRepo.Received().RemoveAsync(Arg.Is<LeaguePlayerLink>(x => x.InWaitingStatus()))
-                ),
-                (
-                    lsWithConfirm,
-                    LeaguePlayerLink.CreateJoinedLink(leagueId, playerId),
-                    () => leaguePlayerLinksRepo.Received().UpdateAsync(Arg.Is<LeaguePlayerLink>(x => x.InLeftStatus()))
-                ),
-            };
-
-            foreach (var (lsItem, lplItem, checkAction) in hs)
-            {
-                leagueSettingsRepo.SingleAsync().ReturnsForAnyArgs(lsItem);
-                leaguePlayerLinksRepo.SingleAsync().ReturnsForAnyArgs(lplItem);
-
-                uow.GetRepositoryAsync<LeagueSettings>().ReturnsForAnyArgs(leagueSettingsRepo);
-                uow.GetRepositoryAsync<LeaguePlayerLink>().ReturnsForAnyArgs(leaguePlayerLinksRepo);
-
-                var commandHandler = new JoinLeagueHandler(uow, playersService);
-                await commandHandler.HandleAsync(command, new CorrelationContext());
-                
-                checkAction();
-            }
+            settings.TeamsInTour.Should().Be(_testDbFixture.MockedDataInstance.TeamsInTour);
+            settings.PlayersInTeam.Should().Be(_testDbFixture.MockedDataInstance.PlayersInTeam);
         }
     }
 }

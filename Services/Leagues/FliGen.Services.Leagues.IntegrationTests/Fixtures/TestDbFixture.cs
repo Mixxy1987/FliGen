@@ -36,10 +36,18 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             MockedDataInstance = new MockedData
             {
                 LeagueForDeleteId = entityForDelete.Entity.Id,
-                LeagueForUpdateId = entityForUpdate.Entity.Id
+                LeagueForUpdateId = entityForUpdate.Entity.Id,
+                PlayersInTeam = 10,
+                TeamsInTour = 50,
             };
 
-            var leagueSettingsForUpdate = LeagueSettings.Create(false, false, leagueId: entityForUpdate.Entity.Id, 10, 50);
+            var leagueSettingsForUpdate = LeagueSettings.Create(
+                false, 
+                false, 
+                leagueId: entityForUpdate.Entity.Id,
+                MockedDataInstance.PlayersInTeam, 
+                MockedDataInstance.TeamsInTour);
+
             leaguesContext.LeagueSettings.Add(leagueSettingsForUpdate);
             leaguesContext.SaveChanges();
             return leaguesContext;

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using MediatR;
 using System.Threading;
@@ -20,8 +21,9 @@ namespace FliGen.Services.Leagues.Application.Queries.LeagueSettings
         public async Task<Dto.LeagueSettings> Handle(LeagueSettingsQuery request, CancellationToken cancellationToken)
         {
             var leagueSettingsRepo = _uow.GetRepositoryAsync<Domain.Entities.LeagueSettings>();
-            
-            return _mapper.Map<Dto.LeagueSettings>(await leagueSettingsRepo.SingleAsync(x => x.Id == request.LeagueId));
+            var settings = await leagueSettingsRepo.SingleAsync(x => x.LeagueId == request.LeagueId);
+
+            return _mapper.Map<Dto.LeagueSettings>(settings);
         }
     }
 }
