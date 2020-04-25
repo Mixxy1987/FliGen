@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
@@ -14,8 +16,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FliGen.Common.Extensions;
+using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
+using FliGen.Services.Leagues.Domain.Common;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -167,6 +173,27 @@ namespace FliGen.Services.Leagues.IntegrationTests
             var types = await response.ReadContentAs<IEnumerable<LeagueType>>();
 
             types.Count().Should().BePositive();
+        }
+
+        [Theory]
+        [InlineData("leagues/joinedPlayers")]
+        public async Task LeagueJoinedPlayersQueryShouldReturnValidCount(string endpoint)
+        {
+            var response = await _client.GetAsync($"{endpoint}?LeagueId={_testDbFixture.MockedDataInstance.LeagueForJoinId}");
+
+            var data = await response.ReadContentAs<IEnumerable<PlayerInternalIdDto>>();
+
+            data.Count().Should().Be(_testDbFixture.MockedDataInstance.JoinedPlayersCount);
+        }
+
+        [Theory]
+        [InlineData("leagues/joinedPlayers")]
+        public async Task LeagueJoinedPlayersQueryShouldThrowExceptionForNonExistingLeague(string endpoint)
+        {
+            var response = await _client.GetAsync($"{endpoint}?LeagueId={int.MaxValue}");
+
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
 }

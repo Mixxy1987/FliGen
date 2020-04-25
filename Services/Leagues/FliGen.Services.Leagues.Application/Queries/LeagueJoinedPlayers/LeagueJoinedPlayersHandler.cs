@@ -40,7 +40,7 @@ namespace FliGen.Services.Leagues.Application.Queries.LeagueJoinedPlayers
 
             return league.LeaguePlayerLinks
                 .Where(lpl => lpl.InJoinedStatus())
-                .Select(lpl => new PlayerInternalIdDto() {InternalId = lpl.PlayerId});
+                .Select(lpl => new PlayerInternalIdDto {InternalId = lpl.PlayerId});
         }
     }
 }

@@ -53,7 +53,7 @@ namespace FliGen.Services.Leagues.Controllers
             return _mediatr.Send(query);
         }
 
-        [HttpGet("leagueJoinedPlayers")]
+        [HttpGet("joinedPlayers")]
         [Produces(typeof(IEnumerable<PlayerInternalIdDto>))]
         public Task<IEnumerable<PlayerInternalIdDto>> GetLeagueJoinedPlayers([FromQuery]LeagueJoinedPlayers query)
         {

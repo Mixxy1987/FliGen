@@ -80,7 +80,7 @@ namespace FliGen.Services.Api.Controllers
             return await _leaguesService.GetLeagueSettingsAsync(query);
         }
 
-        [HttpGet("leagueJoinedPlayers")]
+        [HttpGet("joinedPlayers")]
         [Produces(typeof(IEnumerable<PlayerInternalId>))]
         public async Task<IEnumerable<PlayerInternalId>> GetLeagueJoinedPlayers([FromQuery]LeagueJoinedPlayersQuery query)
         {

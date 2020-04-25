@@ -3,6 +3,7 @@ using FliGen.Services.Leagues.Domain.Entities.Enum;
 using FliGen.Services.Leagues.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
@@ -28,18 +29,34 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
             var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             var leagueForUpdate = League.Create("for update", "descr", LeagueType.Football);
-           
+            var leagueForJoin = League.Create("for join", "descr", LeagueType.Football);
+
             var entityForDelete = leaguesContext.Leagues.Add(leagueForDelete);
             var entityForUpdate = leaguesContext.Leagues.Add(leagueForUpdate);
+            var entityForJoin = leaguesContext.Leagues.Add(leagueForJoin);
 
             leaguesContext.SaveChanges();
             MockedDataInstance = new MockedData
             {
                 LeagueForDeleteId = entityForDelete.Entity.Id,
                 LeagueForUpdateId = entityForUpdate.Entity.Id,
+                LeagueForJoinId = entityForJoin.Entity.Id,
                 PlayersInTeam = 10,
                 TeamsInTour = 50,
             };
+            int joinedPlayer1 = 1;
+            int joinedPlayer2 = 2;
+            int waitingPlayer3 = 3;
+            MockedDataInstance.JoinedPlayersCount = 2;
+
+            IEnumerable<LeaguePlayerLink> links = new[]
+            {
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId, joinedPlayer1),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId, joinedPlayer2),
+                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId, waitingPlayer3)
+            };
+            
+            leaguesContext.LeaguePlayerLinks.AddRange(links);
 
             var leagueSettingsForUpdate = LeagueSettings.Create(
                 false, 
