@@ -1,4 +1,6 @@
-﻿using FliGen.Services.Leagues.Application.Commands.CreateLeague;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FliGen.Common.Extensions;
 using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
 using Newtonsoft.Json;
 using Xunit;
@@ -147,12 +150,23 @@ namespace FliGen.Services.Leagues.IntegrationTests
         public async Task LeagueSettingsQueryShouldReturnSettings(string endpoint)
         {
             var response = await _client.GetAsync($"{endpoint}?LeagueId={_testDbFixture.MockedDataInstance.LeagueForUpdateId}");
+            response.IsSuccessStatusCode.Should().BeTrue();
 
-            string str = await response.Content.ReadAsStringAsync();
-            var settings = JsonConvert.DeserializeObject<Application.Dto.LeagueSettings>(str);
+            var settings = await response.ReadContentAs<Application.Dto.LeagueSettings>();
 
             settings.TeamsInTour.Should().Be(_testDbFixture.MockedDataInstance.TeamsInTour);
             settings.PlayersInTeam.Should().Be(_testDbFixture.MockedDataInstance.PlayersInTeam);
+        }
+
+        [Theory]
+        [InlineData("leagues/types")]
+        public async Task LeagueTypeQueryShouldReturnTypes(string endpoint)
+        {
+            var response = await _client.GetAsync($"{endpoint}");
+
+            var types = await response.ReadContentAs<IEnumerable<LeagueType>>();
+
+            types.Count().Should().BePositive();
         }
     }
 }

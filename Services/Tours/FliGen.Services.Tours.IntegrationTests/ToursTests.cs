@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FliGen.Common.Extensions;
 using FliGen.Services.Tours.Application.Commands.TourBack;
 using Xunit;
 using Newtonsoft.Json;
@@ -136,8 +137,7 @@ namespace FliGen.Services.Tours.IntegrationTests
             var response = await _client.GetAsync($"{endpoint}{tourId}");
             response.IsSuccessStatusCode.Should().BeTrue();
 
-            string tourStr = await response.Content.ReadAsStringAsync();
-            Application.Dto.Tour tour = JsonConvert.DeserializeObject<Application.Dto.Tour>(tourStr);
+            var tour = await response.ReadContentAs<Application.Dto.Tour>();
 
             tour.Id.Should().Be(tourId);
             tour.TourStatus.Should().Be((Application.Dto.Enum.TourStatus)_testDbFixture.MockedDataInstance.TourForReadById.TourStatus.Id);
