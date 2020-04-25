@@ -10,14 +10,14 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        private readonly LeaguesContextFactory _leaguesContextFactory;
+        public LeaguesContextFactory LeaguesContextFactory;
         private LeaguesContext LeaguesContext { get; set; }
         
         public MockedData MockedDataInstance { get; private set; }
 
         public TestDbFixture()
         {
-            _leaguesContextFactory = new LeaguesContextFactory(
+            LeaguesContextFactory = new LeaguesContextFactory(
                 "Server=(localdb)\\mssqllocaldb;Database=FliGen.Leagues.Test;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             LeaguesContext = GetInitiatedLeaguesContext();
@@ -29,32 +29,58 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
             var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             var leagueForUpdate = League.Create("for update", "descr", LeagueType.Football);
-            var leagueForJoin = League.Create("for join", "descr", LeagueType.Football);
+            var leagueForJoin1 = League.Create("for join 1", "descr", LeagueType.Football);
+            var leagueForJoin2 = League.Create("for join 2", "descr", LeagueType.Hockey);
+            var leagueForJoin3 = League.Create("for join 3", "descr", LeagueType.Hockey);
 
             var entityForDelete = leaguesContext.Leagues.Add(leagueForDelete);
             var entityForUpdate = leaguesContext.Leagues.Add(leagueForUpdate);
-            var entityForJoin = leaguesContext.Leagues.Add(leagueForJoin);
+            var entityForJoin1 = leaguesContext.Leagues.Add(leagueForJoin1);
+            var entityForJoin2 = leaguesContext.Leagues.Add(leagueForJoin2);
+            var entityForJoin3 = leaguesContext.Leagues.Add(leagueForJoin3);
 
             leaguesContext.SaveChanges();
             MockedDataInstance = new MockedData
             {
                 LeagueForDeleteId = entityForDelete.Entity.Id,
                 LeagueForUpdateId = entityForUpdate.Entity.Id,
-                LeagueForJoinId = entityForJoin.Entity.Id,
+                LeagueForJoinId1 = entityForJoin1.Entity.Id,
+                LeagueForJoinId2 = entityForJoin2.Entity.Id,
+                LeagueForJoinId3 = entityForJoin3.Entity.Id,
                 PlayersInTeam = 10,
                 TeamsInTour = 50,
+                Player1 = 100,
+                Player2 = 101,
+                Player3 = 102,
+                Player4 = 103,
+                Player5 = 104
             };
-            int joinedPlayer1 = 1;
-            int joinedPlayer2 = 2;
-            int waitingPlayer3 = 3;
-            MockedDataInstance.JoinedPlayersCount = 2;
 
             IEnumerable<LeaguePlayerLink> links = new[]
             {
-                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId, joinedPlayer1),
-                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId, joinedPlayer2),
-                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId, waitingPlayer3)
+                // 1 league
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId1, MockedDataInstance.Player1),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId1, MockedDataInstance.Player2),
+                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId1, MockedDataInstance.Player3),
+                // 2 league
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId2, MockedDataInstance.Player2),
+                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId2, MockedDataInstance.Player3),
+                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId2, MockedDataInstance.Player4),
+                LeaguePlayerLink.CreateWaitingLink(MockedDataInstance.LeagueForJoinId2, MockedDataInstance.Player5),
+                // 3 league
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId3, MockedDataInstance.Player1),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId3, MockedDataInstance.Player2),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId3, MockedDataInstance.Player3),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId3, MockedDataInstance.Player4),
+                LeaguePlayerLink.CreateJoinedLink(MockedDataInstance.LeagueForJoinId3, MockedDataInstance.Player5)
             };
+            MockedDataInstance.League1JoinedPlayersCount = 2;
+            MockedDataInstance.League2JoinedPlayersCount = 1;
+            MockedDataInstance.League3JoinedPlayersCount = 5;
+
+            MockedDataInstance.League1WaitingPlayersCount = 1;
+            MockedDataInstance.League1WaitingPlayersCount = 3;
+            MockedDataInstance.League1WaitingPlayersCount = 0;
             
             leaguesContext.LeaguePlayerLinks.AddRange(links);
 
@@ -72,7 +98,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public async Task GetLeagueById(int id, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = _leaguesContextFactory.Create())
+            using (var context = LeaguesContextFactory.Create())
             {
                 try
                 {
@@ -91,7 +117,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public async Task GetLeagueByName(string name, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = _leaguesContextFactory.Create())
+            using (var context = LeaguesContextFactory.Create())
             {
                 try
                 {
@@ -117,7 +143,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         private LeaguesContext CreateContextAndMigrateDb()
         {
-            var leaguesContext = _leaguesContextFactory.Create();
+            var leaguesContext = LeaguesContextFactory.Create();
             leaguesContext.Database.Migrate();
             return leaguesContext;
         }

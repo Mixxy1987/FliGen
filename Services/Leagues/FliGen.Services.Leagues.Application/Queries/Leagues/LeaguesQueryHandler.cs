@@ -46,7 +46,7 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
 
             IPaginate<League> leagues = 
                 await leagueRepo.GetListAsync(
-                    predicate: lPredicate,
+                    lPredicate,
                     include: q => q.Include(league => league.LeaguePlayerLinks),
                     cancellationToken : cancellationToken);
 
@@ -80,7 +80,8 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
                     .Where(lplPredicate)
                     .OrderBy(p => p.CreationTime)
                     .GroupBy(p => p.PlayerId)
-                    .Select(g => g.Last()).ToList();
+                    .Select(g => g.Last())
+                    .ToList();
 
                 resultLeagues.First(x => x.Id == league.Id).PlayersLeagueStatuses = EnrichByPlayerInformation(distinctLinks);
             }

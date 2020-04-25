@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using FliGen.Common.Extensions;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
@@ -13,15 +11,20 @@ using FliGen.Services.Leagues.IntegrationTests.Fixtures;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Common.Extensions;
-using FliGen.Common.Types;
-using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
-using FliGen.Services.Leagues.Domain.Common;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using NSubstitute.ExceptionExtensions;
+using AutoMapper;
+using FliGen.Common.RabbitMq;
+using FliGen.Common.SeedWork.Repository;
+using FliGen.Services.Leagues.Application.Queries.Leagues;
+using FliGen.Services.Leagues.Application.Services;
+using FliGen.Services.Leagues.Mappings;
+using FliGen.Services.Leagues.Persistence.Contexts;
+using NSubstitute;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -34,7 +37,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
         private readonly TestDbFixture _testDbFixture;
         private readonly RabbitMqFixture _rabbitMqFixture;
         private readonly HttpClient _client;
-
+        private readonly Mapper _mapper;
         public LeaguesIntegrationTests(
             TestDbFixture testDbFixture,
             RabbitMqFixture rabbitMqFixture,
@@ -44,6 +47,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
             _rabbitMqFixture = rabbitMqFixture;
             _client = factory.WithWebHostBuilder(builder => builder.UseStartup<TestStartup>())
                 .CreateClient();
+            _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<LeaguesProfile>(); }));
         }
 
         [Theory]
@@ -179,11 +183,11 @@ namespace FliGen.Services.Leagues.IntegrationTests
         [InlineData("leagues/joinedPlayers")]
         public async Task LeagueJoinedPlayersQueryShouldReturnValidCount(string endpoint)
         {
-            var response = await _client.GetAsync($"{endpoint}?LeagueId={_testDbFixture.MockedDataInstance.LeagueForJoinId}");
+            var response = await _client.GetAsync($"{endpoint}?LeagueId={_testDbFixture.MockedDataInstance.LeagueForJoinId1}");
 
             var data = await response.ReadContentAs<IEnumerable<PlayerInternalIdDto>>();
 
-            data.Count().Should().Be(_testDbFixture.MockedDataInstance.JoinedPlayersCount);
+            data.Count().Should().Be(_testDbFixture.MockedDataInstance.League1JoinedPlayersCount);
         }
 
         [Theory]
@@ -194,6 +198,134 @@ namespace FliGen.Services.Leagues.IntegrationTests
 
             response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task LeagueQueryWithExternalIdOnlyShouldReturnValidData()
+        {
+            var command = new LeaguesQuery
+            {
+                PlayerExternalId = Guid.NewGuid().ToString(),
+            };
+
+            var retDto = new PlayerInternalIdDto
+            {
+                InternalId = _testDbFixture.MockedDataInstance.Player1
+            };
+
+            var playersService = Substitute.For<IPlayersService>();
+            playersService.GetInternalIdAsync(command.PlayerExternalId).ReturnsForAnyArgs(retDto);
+
+            await using (var context = _testDbFixture.LeaguesContextFactory.Create())
+            {
+                var uow = new UnitOfWork<LeaguesContext>(context);
+                var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+                result.Count.Should().Be(context.Leagues.Count());
+
+                List<PlayerWithLeagueStatusDto> playerWithLeagueStatuses = result.SelectMany(l => l.PlayersLeagueStatuses).ToList();
+
+                const int player1ExistsInLeaguesCount = 2;
+                playerWithLeagueStatuses.Count.Should().Be(player1ExistsInLeaguesCount);
+            }
+        }
+
+        [Fact]
+        public async Task LeagueQueryWithExternalIdAndLeaguesFilterShouldReturnValidData()
+        {
+            var command = new LeaguesQuery
+            {
+                PlayerExternalId = Guid.NewGuid().ToString(),
+                LeagueId = new []
+                {
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId1,
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId2,
+                }
+            };
+
+            var retDto = new PlayerInternalIdDto
+            {
+                InternalId = _testDbFixture.MockedDataInstance.Player1
+            };
+
+            var playersService = Substitute.For<IPlayersService>();
+            playersService.GetInternalIdAsync(command.PlayerExternalId).ReturnsForAnyArgs(retDto);
+
+            await using (var context = _testDbFixture.LeaguesContextFactory.Create())
+            {
+                var uow = new UnitOfWork<LeaguesContext>(context);
+                var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+
+                const int expectedLeaguesCount = 2;
+                result.Count.Should().Be(expectedLeaguesCount);
+
+                List<PlayerWithLeagueStatusDto> playerWithLeagueStatuses = result.SelectMany(l => l.PlayersLeagueStatuses).ToList();
+
+                const int player1ExistsInLeaguesCount = 1;
+                playerWithLeagueStatuses.Count.Should().Be(player1ExistsInLeaguesCount);
+            }
+        }
+
+        [Fact]
+        public async Task LeagueQueryLeaguesFilterShouldReturnValidData()
+        {
+            var command = new LeaguesQuery
+            {
+                LeagueId = new[]
+                {
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId1,
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId2,
+                }
+            };
+
+            var playersService = Substitute.For<IPlayersService>();
+
+            await using (var context = _testDbFixture.LeaguesContextFactory.Create())
+            {
+                var uow = new UnitOfWork<LeaguesContext>(context);
+                var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+
+                const int expectedLeaguesCount = 2;
+                result.Count.Should().Be(expectedLeaguesCount);
+            }
+        }
+
+        [Fact]
+        public async Task LeagueQueryPlayerInternalIdsFilterAndLeaguesFilterShouldReturnValidData()
+        {
+            var command = new LeaguesQuery
+            {
+                LeagueId = new[]
+                {
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId1,
+                    _testDbFixture.MockedDataInstance.LeagueForJoinId2,
+                },
+                Pid = new []
+                {
+                    _testDbFixture.MockedDataInstance.Player1,
+                    _testDbFixture.MockedDataInstance.Player3,
+                    _testDbFixture.MockedDataInstance.Player5,
+                }
+            };
+
+            var playersService = Substitute.For<IPlayersService>();
+
+            await using (var context = _testDbFixture.LeaguesContextFactory.Create())
+            {
+                var uow = new UnitOfWork<LeaguesContext>(context);
+                var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+
+                const int expectedLeaguesCount = 2;
+                result.Count.Should().Be(expectedLeaguesCount);
+
+                List<PlayerWithLeagueStatusDto> playerWithLeagueStatuses = result.SelectMany(l => l.PlayersLeagueStatuses).ToList();
+
+                const int player1ExistsInLeaguesCount = 4;
+                playerWithLeagueStatuses.Count.Should().Be(player1ExistsInLeaguesCount);
+            }
         }
     }
 }

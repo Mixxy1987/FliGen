@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace FliGen.Services.Leagues.Application.Queries.Leagues
 {
     /*
-     * Get short information about league
+     * Get short information about leagues
      * if PlayerExternalId is set than filter information for this player
      * if PlayerInternalId is set than filter information for this players(only when PlayerExternalId is not set)
      * if leagueId[] is not empty than filter information for this leagues 

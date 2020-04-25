@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using FliGen.Services.Leagues.Application.Dto.Enum;
 
 namespace FliGen.Services.Leagues.Application.Dto
 {
