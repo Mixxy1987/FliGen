@@ -1,7 +1,6 @@
 ﻿using FliGen.Services.Players.Domain.Entities;
 using FliGen.Services.Players.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,19 +9,21 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        private const string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private PlayersContext Context { get; set; }
+        public PlayersContextFactory PlayersContextFactory { get; }
+        private PlayersContext PlayersContext { get; }
         
         public MockedData MockedDataInstance { get; private set; }
 
         public TestDbFixture()
         {
-            InitDb();
+            PlayersContextFactory = new PlayersContextFactory(
+                "Server=(localdb)\\mssqllocaldb;Database=FliGen.Players.Test;Trusted_Connection=True;MultipleActiveResultSets=true");
+            PlayersContext = GetInitiatedPlayersContext();
         }
 
-        public void InitDb()
+        public PlayersContext GetInitiatedPlayersContext()
         {
-            CreateContextAndMigrateDb();
+            PlayersContext context = CreateContextAndMigrateDb();
             MockedDataInstance = new MockedData
             {
                 PlayerExternalIdForDelete = Guid.NewGuid().ToString(),
@@ -30,14 +31,23 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
             };
 
             var playerForDelete = Player.Create("for delete", "for delete", externalId: MockedDataInstance.PlayerExternalIdForDelete);
-            var entityForDelete = Context.Add(playerForDelete);
+            var entityForDelete = context.Add(playerForDelete);
 
             var playerForUpdate = Player.Create("for update", "for update", externalId: MockedDataInstance.PlayerExternalIdForUpdate);
-            var entityForUpdate = Context.Add(playerForUpdate);
-            
-            Context.SaveChanges();
+            var entityForUpdate = context.Add(playerForUpdate);
+
+            MockedDataInstance.ExistingPlayer = Guid.NewGuid().ToString();
+            MockedDataInstance.NotExistingPlayer = Guid.NewGuid().ToString();
+
+            var existingPlayer = Player.Create("exist", "d", externalId: MockedDataInstance.ExistingPlayer);
+            var entityOfExistingPlayer = context.Players.Add(existingPlayer);
+
+            context.SaveChanges();
             MockedDataInstance.PlayerInternalIdForDelete = entityForDelete.Entity.Id;
             MockedDataInstance.PlayerInternalIdForUpdate = entityForUpdate.Entity.Id;
+            MockedDataInstance.ExistingPlayerInternalId = entityOfExistingPlayer.Entity.Id;
+
+            return context;
         }
 
         public async Task GetPlayerAndRateByExternalId(string externalId, TaskCompletionSource<(Player, PlayerRate)> receivedTask)
@@ -47,7 +57,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(externalId));
             }
 
-            using (var context = CreateContext())
+            await using (var context = PlayersContextFactory.Create())
             {
                 try
                 {
@@ -84,7 +94,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(externalId));
             }
 
-            using (var context = CreateContext())
+            await using(var context = PlayersContextFactory.Create())
             {
                 try
                 {
@@ -106,7 +116,7 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         public async Task CheckIfPlayerExists(int internalId, TaskCompletionSource<bool> receivedTask)
         {
-            using (var context = CreateContext())
+            using (var context = PlayersContextFactory.Create())
             {
                 try
                 {
@@ -127,32 +137,14 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         public void Dispose()
         {
-            Context.Database.EnsureDeleted();
+            PlayersContext.Database.EnsureDeleted();
         }
 
-        private void CreateContextAndMigrateDb()
+        private PlayersContext CreateContextAndMigrateDb()
         {
-            Context = new PlayersContext(CreateNewContextOptions());
-            Context.Database.Migrate();
-        }
-
-        private static PlayersContext CreateContext()
-        {
-            return new PlayersContext(CreateNewContextOptions());
-        }
-
-        private static DbContextOptions<PlayersContext> CreateNewContextOptions()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkSqlServer()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<PlayersContext>();
-
-            builder.UseSqlServer(ConnectionString)
-                .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
+            var leaguesContext = PlayersContextFactory.Create();
+            leaguesContext.Database.Migrate();
+            return leaguesContext;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        public LeaguesContextFactory LeaguesContextFactory;
-        private LeaguesContext LeaguesContext { get; set; }
+        public LeaguesContextFactory LeaguesContextFactory { get; }
+        private LeaguesContext LeaguesContext { get; }
         
         public MockedData MockedDataInstance { get; private set; }
 
@@ -25,7 +25,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public LeaguesContext GetInitiatedLeaguesContext()
         {
-            LeaguesContext leaguesContext = CreateContextAndMigrateDb();
+            LeaguesContext context = CreateContextAndMigrateDb();
 
             var leagueForDelete = League.Create("for delete", "descr", LeagueType.Football);
             var leagueForUpdate = League.Create("for update", "descr", LeagueType.Football);
@@ -33,13 +33,13 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             var leagueForJoin2 = League.Create("for join 2", "descr", LeagueType.Hockey);
             var leagueForJoin3 = League.Create("for join 3", "descr", LeagueType.Hockey);
 
-            var entityForDelete = leaguesContext.Leagues.Add(leagueForDelete);
-            var entityForUpdate = leaguesContext.Leagues.Add(leagueForUpdate);
-            var entityForJoin1 = leaguesContext.Leagues.Add(leagueForJoin1);
-            var entityForJoin2 = leaguesContext.Leagues.Add(leagueForJoin2);
-            var entityForJoin3 = leaguesContext.Leagues.Add(leagueForJoin3);
+            var entityForDelete = context.Leagues.Add(leagueForDelete);
+            var entityForUpdate = context.Leagues.Add(leagueForUpdate);
+            var entityForJoin1 = context.Leagues.Add(leagueForJoin1);
+            var entityForJoin2 = context.Leagues.Add(leagueForJoin2);
+            var entityForJoin3 = context.Leagues.Add(leagueForJoin3);
 
-            leaguesContext.SaveChanges();
+            context.SaveChanges();
             MockedDataInstance = new MockedData
             {
                 LeagueForDeleteId = entityForDelete.Entity.Id,
@@ -81,8 +81,8 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
             MockedDataInstance.League1WaitingPlayersCount = 1;
             MockedDataInstance.League1WaitingPlayersCount = 3;
             MockedDataInstance.League1WaitingPlayersCount = 0;
-            
-            leaguesContext.LeaguePlayerLinks.AddRange(links);
+
+            context.LeaguePlayerLinks.AddRange(links);
 
             var leagueSettingsForUpdate = LeagueSettings.Create(
                 false, 
@@ -91,14 +91,14 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
                 MockedDataInstance.PlayersInTeam, 
                 MockedDataInstance.TeamsInTour);
 
-            leaguesContext.LeagueSettings.Add(leagueSettingsForUpdate);
-            leaguesContext.SaveChanges();
-            return leaguesContext;
+            context.LeagueSettings.Add(leagueSettingsForUpdate);
+            context.SaveChanges();
+            return context;
         }
 
         public async Task GetLeagueById(int id, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = LeaguesContextFactory.Create())
+            await using(var context = LeaguesContextFactory.Create())
             {
                 try
                 {
@@ -117,7 +117,7 @@ namespace FliGen.Services.Leagues.IntegrationTests.Fixtures
 
         public async Task GetLeagueByName(string name, TaskCompletionSource<League> receivedTask)
         {
-            using (var context = LeaguesContextFactory.Create())
+            await using(var context = LeaguesContextFactory.Create())
             {
                 try
                 {

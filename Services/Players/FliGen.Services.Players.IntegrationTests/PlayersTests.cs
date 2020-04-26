@@ -1,14 +1,20 @@
-﻿using FliGen.Services.Players.Application.Commands.AddPlayer;
+﻿using AutoMapper;
+using FliGen.Common.SeedWork.Repository;
+using FliGen.Services.Players.Application.Commands.AddPlayer;
 using FliGen.Services.Players.Application.Commands.DeletePlayer;
 using FliGen.Services.Players.Application.Commands.UpdatePlayer;
 using FliGen.Services.Players.Application.Events;
+using FliGen.Services.Players.Application.Queries.PlayerInternalId;
 using FliGen.Services.Players.Domain.Entities;
 using FliGen.Services.Players.IntegrationTests.Fixtures;
+using FliGen.Services.Players.Mappings;
+using FliGen.Services.Players.Persistence.Contexts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -22,6 +28,7 @@ namespace FliGen.Services.Players.IntegrationTests
         private readonly TestDbFixture _testDbFixture;
         private readonly RabbitMqFixture _rabbitMqFixture;
         private readonly HttpClient _client;
+        private readonly Mapper _mapper;
 
         public PlayersTests(
             TestDbFixture testDbFixture,
@@ -32,6 +39,7 @@ namespace FliGen.Services.Players.IntegrationTests
             _rabbitMqFixture = rabbitMqFixture;
             _client = factory.WithWebHostBuilder(builder => builder.UseStartup<TestStartup>())
                 .CreateClient();
+            _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<PlayersProfile>(); }));
         }
 
         [Theory]
@@ -109,6 +117,25 @@ namespace FliGen.Services.Players.IntegrationTests
             player.LastName.Should().Be(command.LastName);
 
             playerRate.Value.Should().Be(double.Parse(command.Rate));
+        }
+
+        [Fact]
+        public async Task PlayerInternalIdQueryShouldReturnValidData()
+        {
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var uow = new UnitOfWork<PlayersContext>(context);
+                var handler = new PlayerInternalIdQueryHandler(uow, _mapper);
+                var dto = await handler.Handle(
+                    new PlayerInternalIdQuery(_testDbFixture.MockedDataInstance.ExistingPlayer),
+                    CancellationToken.None);
+
+                dto.InternalId.Should().Be(_testDbFixture.MockedDataInstance.ExistingPlayerInternalId);
+
+                (await handler.Handle(
+                    new PlayerInternalIdQuery(_testDbFixture.MockedDataInstance.NotExistingPlayer),
+                    CancellationToken.None)).Should().BeNull();
+            }
         }
     }
 }

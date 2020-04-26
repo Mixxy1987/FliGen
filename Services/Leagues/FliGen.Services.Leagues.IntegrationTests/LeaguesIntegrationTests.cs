@@ -1,30 +1,29 @@
-﻿using System;
+﻿using AutoMapper;
 using FliGen.Common.Extensions;
+using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeague;
 using FliGen.Services.Leagues.Application.Commands.UpdateLeagueSettings;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Events;
+using FliGen.Services.Leagues.Application.Queries.Leagues;
+using FliGen.Services.Leagues.Application.Services;
 using FliGen.Services.Leagues.Domain.Entities;
 using FliGen.Services.Leagues.IntegrationTests.Fixtures;
+using FliGen.Services.Leagues.Mappings;
+using FliGen.Services.Leagues.Persistence.Contexts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using FliGen.Common.RabbitMq;
-using FliGen.Common.SeedWork.Repository;
-using FliGen.Services.Leagues.Application.Queries.Leagues;
-using FliGen.Services.Leagues.Application.Services;
-using FliGen.Services.Leagues.Mappings;
-using FliGen.Services.Leagues.Persistence.Contexts;
-using NSubstitute;
 using Xunit;
 
 namespace FliGen.Services.Leagues.IntegrationTests
@@ -38,6 +37,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
         private readonly RabbitMqFixture _rabbitMqFixture;
         private readonly HttpClient _client;
         private readonly Mapper _mapper;
+
         public LeaguesIntegrationTests(
             TestDbFixture testDbFixture,
             RabbitMqFixture rabbitMqFixture,
