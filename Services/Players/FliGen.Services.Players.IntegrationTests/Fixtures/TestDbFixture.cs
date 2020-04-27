@@ -142,9 +142,9 @@ namespace FliGen.Services.Players.IntegrationTests.Fixtures
 
         private PlayersContext CreateContextAndMigrateDb()
         {
-            var leaguesContext = PlayersContextFactory.Create();
-            leaguesContext.Database.Migrate();
-            return leaguesContext;
+            var context = PlayersContextFactory.Create();
+            context.Database.Migrate();
+            return context;
         }
     }
 }

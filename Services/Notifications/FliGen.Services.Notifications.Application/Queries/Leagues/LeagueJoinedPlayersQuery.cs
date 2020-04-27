@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Notifications.Application.Queries
+﻿namespace FliGen.Services.Notifications.Application.Queries.Leagues
 {
     public class LeagueJoinedPlayersQuery
     {

@@ -8,6 +8,7 @@ using FliGen.Services.Notifications.Application.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Services.Notifications.Application.Queries.Leagues;
 
 namespace FliGen.Services.Notifications.Application.Events.TourRegistrationOpened
 {
@@ -35,7 +36,7 @@ namespace FliGen.Services.Notifications.Application.Events.TourRegistrationOpene
                 .WithReceiver(playerIds)
                 .WithSender("Notification service")
                 .WithTopic("Tour registration opened!")
-                .WithBody($"Tour number: {@event.TourId}.Tour date: {@event.Date}")
+                .WithBody($"Tour number: {@event.TourId}. Tour date: {@event.Date}")
                 .Build();
 
             await _busPublisher.SendAsync(notification, context);

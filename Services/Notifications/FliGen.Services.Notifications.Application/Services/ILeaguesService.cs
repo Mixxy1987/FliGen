@@ -3,6 +3,7 @@ using FliGen.Services.Notifications.Application.Queries;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Notifications.Application.Queries.Leagues;
 
 namespace FliGen.Services.Notifications.Application.Services
 {

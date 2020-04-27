@@ -1,16 +1,16 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Players.Application.Dto;
+using FliGen.Services.Players.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Services.Players.Domain.Entities;
 
 namespace FliGen.Services.Players.Application.Queries.Players
 {
@@ -36,7 +36,7 @@ namespace FliGen.Services.Players.Application.Queries.Players
             }
 
             IPaginate<Player> players = await repo.GetListAsync(
-                predicate: predicate,
+                predicate,
                 include: p => p.Include(a => a.Rates),
                 size: request.Size,
                 cancellationToken: cancellationToken);

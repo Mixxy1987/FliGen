@@ -133,8 +133,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Leagues.Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FliGen.Services.Notifications.IntegrationTests", "Services\Notifications\FliGen.Services.Notifications.IntegrationTests\FliGen.Services.Notifications.IntegrationTests.csproj", "{0C747515-6C87-4288-8413-F6986DE47108}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{753DA997-9552-4EC0-827E-E43BACBBB952}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

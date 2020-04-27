@@ -1,7 +1,6 @@
 ﻿using FliGen.Services.Tours.Domain.Entities;
 using FliGen.Services.Tours.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -9,19 +8,22 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
 {
     public class TestDbFixture : IDisposable
     {
-        private const string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=FliGen.Tours.Test;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private ToursContext Context { get; set; }
-        
         public MockedData MockedDataInstance { get; private set; }
+
+        public ToursContextFactory ToursContextFactory { get; }
+        private ToursContext Context { get; }
+
 
         public TestDbFixture()
         {
-            CreateContextAndMigrateDb();
-            InitDb();
+            ToursContextFactory = new ToursContextFactory(
+                "Server=(localdb)\\mssqllocaldb;Database=FliGen.Tours.Test;Trusted_Connection=True;MultipleActiveResultSets=true");
+            Context = GetInitiatedToursContext();
         }
 
-        public void InitDb()
+        public ToursContext GetInitiatedToursContext()
         {
+            ToursContext context = CreateContextAndMigrateDb();
             var tourForCancel = Tour.Create(DateTime.UtcNow.AddDays(2), 10);
             var tourForOpen = Tour.Create(DateTime.UtcNow.AddDays(3), 10);
             
@@ -37,9 +39,9 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             var entityForReopen = Context.Tours.Add(tourForReopen);
             var entityForBack = Context.Tours.Add(tourForBack);
             var entityForReadById = Context.Tours.Add(tourForReadById);
-            
 
-            Context.SaveChanges();
+
+            context.SaveChanges();
 
             MockedDataInstance = new MockedData
             {
@@ -50,11 +52,12 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
                 TourForBackId = entityForBack.Entity.Id,
             };
             MockedDataInstance.TourForReadById.Id = entityForReadById.Entity.Id;
+            return context;
         }
 
         public async Task GetTourById(int id, TaskCompletionSource<Tour> receivedTask)
         {
-            using (var context = CreateContext())
+            using (var context = ToursContextFactory.Create())
             {
                 try
                 {
@@ -80,7 +83,7 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
                 throw new ArgumentNullException(nameof(date));
             }
 
-            using (var context = CreateContext())
+            using (var context = ToursContextFactory.Create())
             {
                 try
                 {
@@ -106,29 +109,11 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             Context.Database.EnsureDeleted();
         }
 
-        private void CreateContextAndMigrateDb()
+        private ToursContext CreateContextAndMigrateDb()
         {
-            Context = new ToursContext(CreateNewContextOptions());
-            Context.Database.Migrate();
-        }
-
-        private static ToursContext CreateContext()
-        {
-            return new ToursContext(CreateNewContextOptions());
-        }
-
-        private static DbContextOptions<ToursContext> CreateNewContextOptions()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkSqlServer()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<ToursContext>();
-
-            builder.UseSqlServer(ConnectionString)
-                .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
+            var context = ToursContextFactory.Create();
+            context.Database.Migrate();
+            return context;
         }
     }
 }

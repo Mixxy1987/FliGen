@@ -34,8 +34,13 @@ namespace FliGen.Services.Notifications
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration["TestConnection"] ??
+                                      Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<NotificationsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))).AddUnitOfWork<NotificationsContext>();
+                        options.UseSqlServer(connectionString),
+                    contextLifetime: ServiceLifetime.Transient)
+                .AddUnitOfWork<NotificationsContext>();
 
             services.AddControllers();
 
