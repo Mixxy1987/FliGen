@@ -13,7 +13,6 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
         public ToursContextFactory ToursContextFactory { get; }
         private ToursContext Context { get; }
 
-
         public TestDbFixture()
         {
             ToursContextFactory = new ToursContextFactory(
@@ -34,11 +33,11 @@ namespace FliGen.Services.Tours.IntegrationTests.Fixtures
             var tourForReadById = Tour.Create(DateTime.UtcNow.AddDays(6), 15);
             tourForReadById.MoveTourStatusForward();
 
-            var entityForCancel = Context.Tours.Add(tourForCancel);
-            var entityForOpen = Context.Tours.Add(tourForOpen);
-            var entityForReopen = Context.Tours.Add(tourForReopen);
-            var entityForBack = Context.Tours.Add(tourForBack);
-            var entityForReadById = Context.Tours.Add(tourForReadById);
+            var entityForCancel = context.Tours.Add(tourForCancel);
+            var entityForOpen = context.Tours.Add(tourForOpen);
+            var entityForReopen = context.Tours.Add(tourForReopen);
+            var entityForBack = context.Tours.Add(tourForBack);
+            var entityForReadById = context.Tours.Add(tourForReadById);
 
 
             context.SaveChanges();

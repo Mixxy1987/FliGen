@@ -16,16 +16,16 @@ namespace FliGen.Services.Notifications.Application.Events.TeamsCreated
     public class TeamsCreatedHandler : IEventHandler<TeamsCreated>
     {
         private readonly IBusPublisher _busPublisher;
-        private readonly IToursService _tourService;
+        private readonly IToursService _toursService;
         private readonly IPlayersService _playersService;
 
         public TeamsCreatedHandler(
             IBusPublisher busPublisher,
-            IToursService tourService,
+            IToursService toursService,
             IPlayersService playersService)
         {
             _busPublisher = busPublisher;
-            _tourService = tourService;
+            _toursService = toursService;
             _playersService = playersService;
         }
 
@@ -33,7 +33,7 @@ namespace FliGen.Services.Notifications.Application.Events.TeamsCreated
         {
             int[] playerIds = @event.Teams.SelectMany(inner => inner).ToArray();
 
-            var query = new PlayersQuery()
+            var query = new PlayersQuery
             {
                 LeagueId = new []{ @event.LeagueId },
                 PlayerId = playerIds,
@@ -62,7 +62,7 @@ namespace FliGen.Services.Notifications.Application.Events.TeamsCreated
             }
 
             int[] registeredPlayers =
-                (await _tourService.GetAsync(new RegisteredOnTourPlayers { TourId = @event.TourId }))
+                (await _toursService.GetAsync(new RegisteredOnTourPlayers { TourId = @event.TourId }))
                 .Select(dto => dto.InternalId)
                 .ToArray();
             int[] unhappyPlayers = registeredPlayers.Except(playerIds).ToArray();

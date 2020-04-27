@@ -1,4 +1,6 @@
-﻿using FliGen.Services.Tours.Application.Commands.TourCancel;
+﻿using FliGen.Common.Extensions;
+using FliGen.Services.Tours.Application.Commands.TourBack;
+using FliGen.Services.Tours.Application.Commands.TourCancel;
 using FliGen.Services.Tours.Application.Commands.TourForward;
 using FliGen.Services.Tours.Application.Events;
 using FliGen.Services.Tours.Domain.Entities;
@@ -10,10 +12,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using FliGen.Common.Extensions;
-using FliGen.Services.Tours.Application.Commands.TourBack;
 using Xunit;
-using Newtonsoft.Json;
 
 namespace FliGen.Services.Tours.IntegrationTests
 {
