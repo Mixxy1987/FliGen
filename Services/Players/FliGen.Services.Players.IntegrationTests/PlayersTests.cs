@@ -18,8 +18,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture;
+using FliGen.Common.RabbitMq;
 using FliGen.Common.SeedWork.Repository.Paging;
+using FliGen.Services.Players.Application.Commands.InboxNotification;
 using FliGen.Services.Players.Application.Queries.Players;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NSubstitute;
 using Xunit;
 
@@ -242,6 +247,37 @@ namespace FliGen.Services.Players.IntegrationTests
                 result.Count.Should().Be(query.PlayerId.Length);
                 result[0].PlayerLeagueRates.Count().Should().Be(1);
                 result[1].PlayerLeagueRates.Count().Should().Be(1);
+            }
+        }
+
+        [Theory]
+        [InlineData(null, 1)]
+        [InlineData(new[] { 1 }, 1)]
+        [InlineData(new[] { 1,2,3,4,5,6 }, 6)]
+        public async Task InboxNotificationShouldCreateDbEntities(int[] playerIds, int expectedCount)
+        {
+            var fix = new Fixture();
+            var notification = new InboxNotification
+            {
+                Sender = fix.Create<string>(),
+                Body = fix.Create<string>(),
+                Topic = fix.Create<string>(),
+                PlayerIds = playerIds
+            };
+
+            var uow = Substitute.For<IUnitOfWork>();
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var messageRepo = Substitute.For<RepositoryAsync<Message>>(context);
+                var messageLinkRepo = Substitute.For<RepositoryAsync<PlayerMessageLink>>(context);
+
+                uow.GetRepositoryAsync<Message>().ReturnsForAnyArgs(messageRepo);
+                uow.GetRepositoryAsync<PlayerMessageLink>().ReturnsForAnyArgs(messageLinkRepo);
+
+                var handler = new InboxNotificationHandler(uow);
+                await handler.HandleAsync(notification, new CorrelationContext());
+
+                await messageLinkRepo.Received(expectedCount).AddAsync();
             }
         }
     }
