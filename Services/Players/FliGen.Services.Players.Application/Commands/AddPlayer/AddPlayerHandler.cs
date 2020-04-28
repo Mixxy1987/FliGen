@@ -24,8 +24,7 @@ namespace FliGen.Services.Players.Application.Commands.AddPlayer
             var player = Domain.Entities.Player.Create(
                 command.FirstName,
                 command.LastName,
-                externalId: command.ExternalId,
-                rate: command.Rate);
+                externalId: command.ExternalId);
 
             var repo = _uow.GetRepositoryAsync<Domain.Entities.Player>();
 

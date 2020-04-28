@@ -13,9 +13,14 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.SeedWork.Repository.Paging;
+using FliGen.Services.Players.Application.Queries.Players;
+using NSubstitute;
 using Xunit;
 
 namespace FliGen.Services.Players.IntegrationTests
@@ -135,6 +140,108 @@ namespace FliGen.Services.Players.IntegrationTests
                 (await handler.Handle(
                     new PlayerInternalIdQuery(_testDbFixture.MockedDataInstance.NotExistingPlayer),
                     CancellationToken.None)).Should().BeNull();
+            }
+        }
+
+        [Fact]
+        public async Task PlayersQueryAllTypeShouldReturnData()
+        {
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var uow = new UnitOfWork<PlayersContext>(context);
+
+                var query = new PlayersQuery
+                {
+                    Page = 0,
+                    Size = 10,
+                    QueryType = PlayersQueryType.All
+                };
+
+                var handler = new PlayersQueryHandler(uow, _mapper);
+                var result = (await handler.Handle(query, CancellationToken.None)).ToList();
+
+                result.Count.Should().Be(query.Size);
+            }
+        }
+
+        [Fact]
+        public async Task PlayersQueryActualTypeShouldReturnData()
+        {
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var uow = new UnitOfWork<PlayersContext>(context);
+
+                var query = new PlayersQuery
+                {
+                    Page = 0,
+                    Size = 10,
+                    QueryType = PlayersQueryType.Actual
+                };
+
+                var handler = new PlayersQueryHandler(uow, _mapper);
+                var result = (await handler.Handle(query, CancellationToken.None)).ToList();
+
+                result.Count.Should().Be(query.Size);
+            }
+        }
+
+        [Fact]
+        public async Task PlayersQueryForConcretePlayersShouldReturnValidData()
+        {
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var uow = new UnitOfWork<PlayersContext>(context);
+
+                var query = new PlayersQuery
+                {
+                    Page = 0,
+                    Size = 10,
+                    QueryType = PlayersQueryType.Actual,
+                    PlayerId = new []
+                    {
+                        _testDbFixture.MockedDataInstance.PlayerForFilter1,
+                        _testDbFixture.MockedDataInstance.PlayerForFilter2,
+                    }
+                };
+
+                var handler = new PlayersQueryHandler(uow, _mapper);
+                var result = (await handler.Handle(query, CancellationToken.None)).ToList();
+
+                result.Count.Should().Be(query.PlayerId.Length);
+                result[0].PlayerLeagueRates.Count().Should().Be(2);
+                result[1].PlayerLeagueRates.Count().Should().Be(2);
+            }
+        }
+
+        [Fact]
+        public async Task PlayersQueryForConcretePlayersAndConcreteLeaguesShouldReturnValidData()
+        {
+            await using (var context = _testDbFixture.PlayersContextFactory.Create())
+            {
+                var uow = new UnitOfWork<PlayersContext>(context);
+
+                var query = new PlayersQuery
+                {
+                    Page = 0,
+                    Size = 10,
+                    QueryType = PlayersQueryType.Actual,
+                    PlayerId = new[]
+                    {
+                        _testDbFixture.MockedDataInstance.PlayerForFilter1,
+                        _testDbFixture.MockedDataInstance.PlayerForFilter2,
+                    },
+                    LeagueId = new []
+                    {
+                        _testDbFixture.MockedDataInstance.LeagueForFilter1
+                    }
+                };
+
+                var handler = new PlayersQueryHandler(uow, _mapper);
+                var result = (await handler.Handle(query, CancellationToken.None)).ToList();
+
+                result.Count.Should().Be(query.PlayerId.Length);
+                result[0].PlayerLeagueRates.Count().Should().Be(1);
+                result[1].PlayerLeagueRates.Count().Should().Be(1);
             }
         }
     }

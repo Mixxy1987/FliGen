@@ -27,19 +27,20 @@ namespace FliGen.Services.Players.Application.Queries.Players
 
         public async Task<IEnumerable<PlayerWithRate>> Handle(PlayersQuery request, CancellationToken cancellationToken)
         {
-            var repo = _uow.GetRepositoryAsync<Player>();
+            var repo = _uow.GetReadOnlyRepository<Player>();
 
             Expression<Func<Player, bool>> predicate = null;
-            if (request.PlayerId.Length != 0)
+            if (request.PlayerId != null && 
+                request.PlayerId.Length != 0)
             {
                 predicate = player => request.PlayerId.Contains(player.Id);
             }
 
-            IPaginate<Player> players = await repo.GetListAsync(
+            IPaginate<Player> players = repo.GetList(
                 predicate,
                 include: p => p.Include(a => a.Rates),
-                size: request.Size,
-                cancellationToken: cancellationToken);
+                index: request.Page,
+                size: request.Size);
 
             if (players.Count == 0)
             {
@@ -61,7 +62,9 @@ namespace FliGen.Services.Players.Application.Queries.Players
 
                 foreach (var rate in rates)
                 {
-                    if (request.LeagueId.Length != 0 && !request.LeagueId.Contains(rate.LeagueId))
+                    if (request.LeagueId != null &&
+                        request.LeagueId.Length != 0 && 
+                        !request.LeagueId.Contains(rate.LeagueId))
                     {
                         continue;
                     }

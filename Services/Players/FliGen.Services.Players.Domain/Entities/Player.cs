@@ -1,16 +1,12 @@
-﻿using FliGen.Common.Extensions;
-using FliGen.Common.SeedWork;
+﻿using FliGen.Common.SeedWork;
 using FliGen.Common.Types;
 using FliGen.Services.Players.Domain.Common;
-using System;
 using System.Collections.Generic;
 
 namespace FliGen.Services.Players.Domain.Entities
 {
     public class Player: Entity, IAggregateRoot
     {
-	    private const string DefaultRate = "7.0";
-
         public string FirstName { get; }
         public string LastName { get; }
         public string ExternalId { get; }
@@ -19,7 +15,7 @@ namespace FliGen.Services.Players.Domain.Entities
         public Player()
         {}
 
-        private Player(string firstName, string lastName, double rate, string externalId) : this()
+        private Player(string firstName, string lastName, string externalId) : this()
         {
 	        if (string.IsNullOrWhiteSpace(firstName))
 	        {
@@ -35,10 +31,7 @@ namespace FliGen.Services.Players.Domain.Entities
             LastName = lastName;
             ExternalId = externalId;
 
-            Rates = new List<PlayerRate>
-            {
-                new PlayerRate(DateTime.UtcNow, rate)
-            };
+            Rates = new List<PlayerRate>();
         }
 
         private Player(string firstName, string lastName, List<PlayerRate> rates, string externalId) : this()
@@ -49,10 +42,9 @@ namespace FliGen.Services.Players.Domain.Entities
 	        Rates = rates;
         }
 
-        public static Player Create(string firstName, string lastName, string rate = DefaultRate, string externalId = null)
+        public static Player Create(string firstName, string lastName, string externalId = null)
         {
-            rate ??= DefaultRate;
-            return new Player(firstName, lastName, double.Parse(rate.CommaToDot()), externalId);
+            return new Player(firstName, lastName, externalId);
         }
 
         public static Player GetUpdated(int id, string firstName, string lastName, string externalId = null)

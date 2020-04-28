@@ -9,11 +9,9 @@ namespace FliGen.Services.Players.Application.Queries.Players
      * 2) get all rates
      * 3) only in concrete leagues
      * 4) 1,2,3 for concrete players
-     */ //todo:: PagedQuery
-    public class PlayersQuery : IRequest<IEnumerable<PlayerWithRate>>
+     */
+    public class PlayersQuery : PagedQuery, IRequest<IEnumerable<PlayerWithRate>>
     {
-        public int Page { get; set; }
-        public int Size { get; set; }
         public PlayersQueryType QueryType { get; set; }
         public int[] PlayerId { get; set; }
         public int[] LeagueId { get; set; }

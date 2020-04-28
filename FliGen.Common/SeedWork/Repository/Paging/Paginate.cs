@@ -36,7 +36,7 @@ namespace FliGen.Common.SeedWork.Repository.Paging
             }
         }
 
-        internal Paginate()
+        public Paginate()
         {
             Items = new T[0];
         }
