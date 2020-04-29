@@ -60,7 +60,7 @@ namespace FliGen.Services.Api.Controllers
         }
 
 
-        [HttpPost("Join")]
+        [HttpPost("join")]
         public async Task<IActionResult> Join([FromBody]int id)
         {
             var playerId = _identityService.GetUserIdentity();

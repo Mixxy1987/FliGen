@@ -19,9 +19,8 @@ export class AuthorizeInterceptor implements HttpInterceptor {
   // and adds it to the request in case it's targeted at the same origin as the
   // single page application.
   private processRequestWithToken(token: string, req: HttpRequest<any>, next: HttpHandler) {
-    debugger;
+    //debugger;
     if (!!token /*&& this.isSameOriginUrl(req)*/) {
-      debugger;
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`

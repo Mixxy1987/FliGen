@@ -74,7 +74,7 @@ namespace FliGen.Services.Players.Application.Queries.Players
                 if (list.Count != 0)
                 {
                     playersWithRates.Add(
-                        new PlayerWithRate()
+                        new PlayerWithRate
                         {
                             Id = player.Id,
                             FirstName = player.FirstName,

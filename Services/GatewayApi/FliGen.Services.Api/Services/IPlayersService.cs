@@ -16,6 +16,10 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("players")]
-        Task<IEnumerable<PlayerWithRate>> GetAsync([Query]PlayersQuery playersQuery);
+        Task<IEnumerable<PlayerWithRate>> GetAsync([Query]PlayersQuery query);
+
+        [AllowAnyStatusCode]
+        [Get("players/info")]
+        Task<PlayersInfo> GetPlayersInfoAsync([Query]PlayersInfoQuery query);
     }
 }

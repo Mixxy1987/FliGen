@@ -1,4 +1,5 @@
-﻿using FliGen.Common.RabbitMq;
+﻿using System;
+using FliGen.Common.RabbitMq;
 using FliGen.Services.Api.Messages.Commands.Players;
 using FliGen.Services.Api.Models.Players;
 using FliGen.Services.Api.Queries.Players;
@@ -29,9 +30,18 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PlayerWithRate>> GetAsync([FromQuery]PlayersQuery playersQuery)
+        public async Task<IEnumerable<PlayerWithRate>> GetAsync([FromQuery]PlayersQuery query)
         {
-            return await _playersService.GetAsync(playersQuery);
+            query.PlayerId ??= Array.Empty<int>();
+            query.LeagueId ??= Array.Empty<int>();
+
+            return await _playersService.GetAsync(query);
+        }
+
+        [HttpGet("info")]
+        public async Task<PlayersInfo> GetAsync([FromQuery]PlayersInfoQuery query)
+        {
+            return await _playersService.GetPlayersInfoAsync(query);
         }
 
         [HttpPost]

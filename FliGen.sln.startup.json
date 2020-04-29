@@ -2,7 +2,7 @@
   "Version": 3,
   "ListAllProjects": true,
   "MultiProjectConfigurations": {
-    "All services": {
+    "All services + Web": {
       "Projects": {
         "FliGen.Services.Api": {},
         "FliGen.Services.Leagues": {},
@@ -13,6 +13,19 @@
         "FliGen.Services.Operations": {},
         "FliGen.Services.Notifications": {},
         "FliGen.Web": {}
+        //"FliGen.Services.Signalr": {}
+      }
+    },
+    "All services": {
+      "Projects": {
+        "FliGen.Services.Api": {},
+        "FliGen.Services.Leagues": {},
+        "FliGen.Services.Players": {},
+        "FliGen.Services.Seasons": {},
+        "FliGen.Services.Tours": {},
+        "FliGen.Services.Teams": {},
+        "FliGen.Services.Operations": {},
+        "FliGen.Services.Notifications": {}
         //"FliGen.Services.Signalr": {}
       }
     }
