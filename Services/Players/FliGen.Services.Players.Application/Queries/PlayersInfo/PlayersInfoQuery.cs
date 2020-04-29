@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FliGen.Services.Players.Application.Queries.PlayersInfo
 {
-    public class PlayersInfoQuery : PagedQuery, IRequest<PlayersInfoDto>
+    public class PlayersInfoQuery : IRequest<PlayersInfoDto>
     {
     }
 }

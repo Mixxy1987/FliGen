@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FliGen.Services.Leagues.Application.Queries.LeagueJoinedPlayers;
+using FliGen.Services.Leagues.Application.Queries.LeaguesInfo;
 
 namespace FliGen.Services.Leagues.Controllers
 {
@@ -45,6 +46,14 @@ namespace FliGen.Services.Leagues.Controllers
         {
             return _mediatr.Send(leaguesQuery);
         }
+
+        [HttpGet("info")]
+        [Produces(typeof(LeaguesInfoDto))]
+        public async Task<LeaguesInfoDto> GetAsync([FromQuery]LeaguesInfoQuery query)
+        {
+            return await _mediatr.Send(query);
+        }
+
 
         [HttpGet("settings")]
         [Produces(typeof(LeagueSettings))]

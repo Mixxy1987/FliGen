@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FliGen.Services.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class LeaguesController : BaseController
     {
         private readonly ILeaguesService _leaguesService;
@@ -39,6 +39,12 @@ namespace FliGen.Services.Api.Controllers
         {
             var playerId = _identityService.GetUserIdentity();
             return await _leaguesService.GetAsync(new LeaguesQuery{ PlayerId = playerId });
+        }
+
+        [HttpGet("info")]
+        public async Task<LeaguesInfo> GetLeaguesInfo([FromQuery]LeaguesInfoQuery query)
+        {
+            return await _leaguesService.GetLeaguesInfoAsync(query);
         }
 
         [HttpGet("types")]

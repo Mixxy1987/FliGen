@@ -17,7 +17,7 @@ namespace FliGen.Services.Players.Application.Queries.PlayersInfo
             _uow = uow;
         }
 
-        public async Task<PlayersInfoDto> Handle(PlayersInfoQuery request, CancellationToken cancellationToken)
+        public Task<PlayersInfoDto> Handle(PlayersInfoQuery request, CancellationToken cancellationToken)
         {
             var repo = _uow.GetReadOnlyRepository<Player>();
 
@@ -28,7 +28,7 @@ namespace FliGen.Services.Players.Application.Queries.PlayersInfo
                 Count = players.Count
             };
            
-            return playersInfoDto;
+            return Task.FromResult(playersInfoDto);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace FliGen.Services.Players.Controllers
         }
 
         [HttpGet("info")]
-        [Produces(typeof(PlayersInfoQuery))]
+        [Produces(typeof(PlayersInfoDto))]
         public async Task<PlayersInfoDto> GetAsync([FromQuery]PlayersInfoQuery query)
         {
             return await _mediatr.Send(query);
