@@ -3,7 +3,9 @@ import { Inject, Injectable } from '@angular/core';
 import { League } from "../common/league";
 import { LeagueInformation } from "../common/leagueInformation";
 import { LeagueSettings } from "../common/leagueSettings";
+import { LeaguesInfo } from "../common/leaguesInfo";
 import { LeagueType } from "../common/leagueType";
+import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
 import { Player } from '../players/player';
 
@@ -41,6 +43,10 @@ export class DataService {
     return this.http.get<League[]>(this.leaguesUrl);
   }
 
+  async getLeaguesInfo() {
+    return await this.http.get<LeaguesInfo>(this.leaguesUrl + "/info").toPromise();
+  }
+
   getLeagueTypes() {
     return this.http.get<LeagueType[]>(this.leaguesUrl + "/types");
   }
@@ -64,6 +70,10 @@ export class DataService {
 
   getPlayers() {
     return this.http.get<Player[]>(this.playersUrl);
+  }
+
+  async getPlayersInfo() {
+    return await this.http.get<PlayersInfo>(this.playersUrl + "/info").toPromise();
   }
 
   createPlayer(player: Player) {
