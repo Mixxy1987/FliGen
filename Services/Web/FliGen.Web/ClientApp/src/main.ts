@@ -5,7 +5,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return document.getElementsByTagName('base')[0].href;
+  return "http://localhost:5000/"; //todo:: how do it right
+  //return document.getElementsByTagName('base')[0].href;
 }
 
 const providers = [

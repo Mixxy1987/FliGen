@@ -1,4 +1,4 @@
-using EventBus.Base.Standard;
+using FliGen.Services.AuthServer.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using FliGen.Services.AuthServer.Persistence.Contexts;
 
 namespace FliGen.Web.Areas.Identity.Pages.Account
 {
@@ -26,7 +25,6 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IEventBus _eventBus;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
 
         public RegisterModel(
@@ -34,15 +32,13 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAuthenticationSchemeProvider schemeProvider,
-            IEventBus eventBus)
+            IAuthenticationSchemeProvider schemeProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _schemeProvider = schemeProvider;
-            _eventBus = eventBus;
         }
 
         [BindProperty]

@@ -1,7 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using EventBus.RabbitMQ.Standard.Configuration;
-using EventBus.RabbitMQ.Standard.Options;
 using FliGen.Common.Mvc;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -17,6 +15,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
 using FliGen.Services.AuthServer.Persistence.Contexts;
+using IdentityModel;
+using IdentityServer4;
 
 namespace FliGen.Web
 {
@@ -33,6 +33,14 @@ namespace FliGen.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", cors =>
+                    cors.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
@@ -40,10 +48,12 @@ namespace FliGen.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
                 .AddApiAuthorization<AppUser, ApplicationDbContext>(options =>
                     {
                         var apiResource = options.ApiResources.First();
                         apiResource.UserClaims = new[] { "hasUsersGroup" };
+                        apiResource.Scopes.Add(new Scope("resourceapi"));
 
                         var identityResource = new IdentityResource
                         {
@@ -53,6 +63,8 @@ namespace FliGen.Web
                         };
                         identityResource.Properties.Add(ApplicationProfilesPropertyNames.Clients, "*");
                         options.IdentityResources.Add(identityResource);
+                        var client = options.Clients.First();
+                        client.AllowedScopes.Add("resourceapi");
                     }
                 );
 
@@ -84,10 +96,6 @@ namespace FliGen.Web
                 options.AddPolicy("ShouldHasUsersGroup", policy => { policy.RequireClaim("hasUsersGroup"); });
             });
 
-            var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
-            services.AddRabbitMqConnection(rabbitMqOptions);
-            services.AddRabbitMqRegistration(rabbitMqOptions);
-
             var builder = new ContainerBuilder();
             builder.Populate(services);
             Container = builder.Build();
@@ -108,10 +116,13 @@ namespace FliGen.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("CorsPolicy");
+
+            app.UseHttpsRedirection();
+
             app.UseErrorHandler();
             app.UseAuthentication();
             app.UseAuthorization();

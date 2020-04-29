@@ -44,10 +44,6 @@ namespace FliGen.Services.Players
 			services.AddControllers();
 
 			var builder = new ContainerBuilder();
-
-            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
-                .AsImplementedInterfaces();
-
 			ConfigureContainer(builder);
 			builder.Populate(services);
 			Container = builder.Build();
@@ -57,6 +53,8 @@ namespace FliGen.Services.Players
 
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
 			builder.AddAutoMapper();
 			builder.AddRabbitMq("FliGen.Services.Players.Application");
 			builder.AddMediator("FliGen.Services.Players.Application");

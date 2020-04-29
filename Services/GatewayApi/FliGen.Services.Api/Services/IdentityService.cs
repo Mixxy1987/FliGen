@@ -6,17 +6,17 @@ namespace FliGen.Services.Api.Services
 {
 	public class IdentityService : IIdentityService
 	{
-		//private readonly IHttpContextAccessor _context;
+		private readonly IHttpContextAccessor _context;
 
-		public IdentityService(/*IHttpContextAccessor context*/)
+		public IdentityService(IHttpContextAccessor context)
 		{
-			//_context = context ?? throw new ArgumentNullException(nameof(context));
+			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
 
 		public string GetUserIdentity()
         {
-            return "038132fd-ade3-4946-a555-efa6686ac8d5"; //todo:: ?
-			//return _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var test = _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			return "038132fd-ade3-4946-a555-efa6686ac8d5"; //todo:: ?
 		}
 	}
 }

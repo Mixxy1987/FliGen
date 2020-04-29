@@ -12,7 +12,8 @@
         "FliGen.Services.Teams": {},
         "FliGen.Services.Operations": {},
         "FliGen.Services.Notifications": {},
-        "FliGen.Services.Signalr": {}
+        "FliGen.Web": {}
+        //"FliGen.Services.Signalr": {}
       }
     }
   }

@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FliGen.Services.Api.Controllers
 {
+    [Authorize]
     public class LeaguesController : BaseController
     {
         private readonly ILeaguesService _leaguesService;
