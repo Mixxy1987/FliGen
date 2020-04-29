@@ -47,6 +47,8 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
             IPaginate<League> leagues = 
                 await leagueRepo.GetListAsync(
                     lPredicate,
+                    size: request.Size,
+                    index: request.Page,
                     include: q => q.Include(league => league.LeaguePlayerLinks),
                     cancellationToken : cancellationToken);
 
@@ -69,7 +71,8 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
                 var playerInternalIdDto = await _playersService.GetInternalIdAsync(request.PlayerExternalId);
                 if (playerInternalIdDto is null)
                 {
-                    throw new FliGenException(ErrorCodes.NoPlayerWithSuchExternalId, $"There is no player with external id: {request.PlayerExternalId}");
+                    return null;
+                    //throw new FliGenException(ErrorCodes.NoPlayerWithSuchExternalId, $"There is no player with external id: {request.PlayerExternalId}");
                 }
                 lplPredicate = l => l.PlayerId == playerInternalIdDto.InternalId;
             }

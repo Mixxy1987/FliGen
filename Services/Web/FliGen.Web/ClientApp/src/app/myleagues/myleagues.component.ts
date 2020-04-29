@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { AuthorizeService } from "../api-authorization/authorize.service";
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
-import { AuthorizeService } from "../api-authorization/authorize.service";
-import { take } from 'rxjs/operators';
 import { DataService } from "../data-service/data.service";
 
 @Component({
@@ -14,12 +14,12 @@ export class MyLeaguesComponent implements OnInit {
 
   private leagues: League[];
   private leagueTypes: LeagueType[];
-
-  isAuthenticated: boolean;
+  private loaded: boolean = false;
+  private isAuthenticated: boolean;
 
   constructor(
-    private dataService: DataService,
-    private authorizeService: AuthorizeService) {
+    private readonly dataService: DataService,
+    private readonly authorizeService: AuthorizeService) {
   }
 
   async ngOnInit() {
@@ -27,20 +27,17 @@ export class MyLeaguesComponent implements OnInit {
       take(1)
     ).toPromise();
 
-    this.loadLeagues();
-    this.loadLeagueTypes();
+    await this.loadLeagues();
+    await this.loadLeagueTypes();
+    this.loaded = true;
   }
 
-  loadLeagues() {
-    this.dataService.getMyLeagues().subscribe(result => {
-      this.leagues = result;
-    }, error => console.error(error));
+  async loadLeagues() {
+    this.leagues = await this.dataService.getMyLeagues();
   }
 
-  loadLeagueTypes() {
-    this.dataService.getLeagueTypes().subscribe(result => {
-      this.leagueTypes = result;
-    }, error => console.error(error));
+  async loadLeagueTypes() {
+    this.leagueTypes = await this.dataService.getLeagueTypes();
   }
 
   joinLeague(l: League) {

@@ -16,34 +16,28 @@ export class LeaguesComponent implements OnInit {
   private leagueTypes: LeagueType[];
   private newLeagueType: LeagueType;
 
-  tableMode: boolean = true;
-  isAuthenticated: boolean;
+  private tableMode: boolean = true;
+  private isAuthenticated: boolean;
 
   constructor(
-    private dataService: DataService,
-    private authorizeService: AuthorizeService) {
+    private readonly dataService: DataService,
+    private readonly authorizeService: AuthorizeService) {
   }
 
   async ngOnInit() {
     this.isAuthenticated = await this.authorizeService.isAuthenticated().pipe(
       take(1)
     ).toPromise();
-    this.loadLeagues();
-    this.loadLeagueTypes();
+    await this.loadLeagues();
+    await this.loadLeagueTypes();
   }
 
-  loadLeagues() {
-    this.dataService.getLeagues().subscribe(result => {
-        this.leagues = result;
-      },
-      error => console.error(error));
+  async loadLeagues() {
+    this.leagues = await this.dataService.getLeagues();
   }
 
-  loadLeagueTypes() {
-    this.dataService.getLeagueTypes().subscribe(result => {
-        this.leagueTypes = result;
-      },
-      error => console.error(error));
+  async loadLeagueTypes() {
+    this.leagueTypes = await this.dataService.getLeagueTypes();
   }
 
   editLeague(l: League) {

@@ -2,6 +2,8 @@
 {
     public class LeaguesQuery
     {
-        public string PlayerId { get; set; }
+        public string PlayerExternalId { get; set; }
+        public int[] LeaguesId { get; set; }
+        public int[] PlayersId { get; set; }
     }
 }

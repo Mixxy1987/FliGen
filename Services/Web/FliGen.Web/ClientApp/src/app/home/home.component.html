@@ -1,5 +1,8 @@
+<h2>Привет путник!</h2>
+
+<p *ngIf="!loaded"><em>Загрузка...</em></p>
+
 <div *ngIf="loaded">
-  <h2>Привет путник!</h2>
   <div>
     <p><b>Лиг создано: </b> {{ leaguesInfo?.count }}</p>
     <p><b>Игроков зарегистрировано: </b> {{ playersInfo?.count }} </p>

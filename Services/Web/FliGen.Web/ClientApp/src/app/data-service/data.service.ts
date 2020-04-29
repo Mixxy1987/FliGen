@@ -14,7 +14,6 @@ export class DataService {
   private playersUrl: string;
   private leaguesUrl: string;
   private leagueUrl: string;
-  private myLeaguesUrl: string;
   private myToursUrl: string;
 
   constructor(
@@ -23,7 +22,6 @@ export class DataService {
       this.playersUrl = this.baseUrl + "players";
       this.leaguesUrl = this.baseUrl + "leagues";
       this.leagueUrl = this.baseUrl + "league";
-      this.myLeaguesUrl = this.baseUrl + "myleagues";
       this.myToursUrl = this.baseUrl + "mytours";
   }
 
@@ -31,24 +29,24 @@ export class DataService {
     return this.http.get<Tour[]>(this.myToursUrl);
   }
 
-  getMyLeagues() {
-    return this.http.get<League[]>(this.myLeaguesUrl);
+  async getMyLeagues() {
+    return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
   joinLeague(id: number) {
-    return this.http.post(this.myLeaguesUrl + "/join", id);
+    return this.http.post(this.leaguesUrl + "/join", id);
   }
 
-  getLeagues() {
-    return this.http.get<League[]>(this.leaguesUrl);
+  async getLeagues() {
+    return await this.http.get<League[]>(this.leaguesUrl).toPromise();
   }
 
   async getLeaguesInfo() {
     return await this.http.get<LeaguesInfo>(this.leaguesUrl + "/info").toPromise();
   }
 
-  getLeagueTypes() {
-    return this.http.get<LeagueType[]>(this.leaguesUrl + "/types");
+  async getLeagueTypes() {
+    return await this.http.get<LeagueType[]>(this.leaguesUrl + "/types").toPromise();
   }
 
   createLeague(league: League) {

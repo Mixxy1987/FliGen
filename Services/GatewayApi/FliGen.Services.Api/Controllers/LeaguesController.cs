@@ -4,9 +4,9 @@ using FliGen.Services.Api.Models;
 using FliGen.Services.Api.Models.Leagues;
 using FliGen.Services.Api.Queries.Leagues;
 using FliGen.Services.Api.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,10 +35,25 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<League>> GetLeagues()
+        public async Task<IEnumerable<League>> GetLeagues([FromQuery]int[] leaguesId)
         {
-            var playerId = _identityService.GetUserIdentity();
-            return await _leaguesService.GetAsync(new LeaguesQuery{ PlayerId = playerId });
+            var query = new LeaguesQuery()
+            {
+                LeaguesId = leaguesId
+            };
+            return await _leaguesService.GetAsync(query);
+        }
+
+        [HttpGet("my")]
+        public async Task<IEnumerable<League>> GetMyLeagues([FromQuery]int[] leaguesId)
+        {
+            var query = new LeaguesQuery()
+            {
+                PlayersId = Array.Empty<int>(),
+                LeaguesId = leaguesId ?? Array.Empty<int>(),
+                PlayerExternalId = _identityService.GetUserIdentity()
+            };
+            return await _leaguesService.GetAsync(query);
         }
 
         [HttpGet("info")]
