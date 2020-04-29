@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Mvc;
+using FliGen.Services.AuthServer.Persistence.Contexts;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
@@ -14,9 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
-using FliGen.Services.AuthServer.Persistence.Contexts;
-using IdentityModel;
-using IdentityServer4;
 
 namespace FliGen.Web
 {

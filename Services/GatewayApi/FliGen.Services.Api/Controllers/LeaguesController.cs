@@ -4,11 +4,11 @@ using FliGen.Services.Api.Models;
 using FliGen.Services.Api.Models.Leagues;
 using FliGen.Services.Api.Queries.Leagues;
 using FliGen.Services.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FliGen.Services.Api.Controllers
 {
@@ -38,8 +38,13 @@ namespace FliGen.Services.Api.Controllers
         public async Task<IEnumerable<League>> GetLeagues()
         {
             var playerId = _identityService.GetUserIdentity();
-
             return await _leaguesService.GetAsync(new LeaguesQuery{ PlayerId = playerId });
+        }
+
+        [HttpGet("types")]
+        public async Task<IEnumerable<League>> GetLeagueTypes()
+        {
+            return await _leaguesService.GetLeagueTypesAsync(new LeagueTypesQuery());
         }
 
         [HttpPost]

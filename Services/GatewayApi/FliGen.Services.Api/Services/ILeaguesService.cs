@@ -20,6 +20,10 @@ namespace FliGen.Services.Api.Services
         Task<IEnumerable<League>> GetAsync([Query]LeaguesQuery leaguesQuery);
 
         [AllowAnyStatusCode]
+        [Get("leagues/types")]
+        Task<IEnumerable<League>> GetLeagueTypesAsync([Query]LeagueTypesQuery leaguesQuery);
+
+        [AllowAnyStatusCode]
         [Get("leagues/settings")]
         Task<LeagueSettings> GetLeagueSettingsAsync([Query]LeagueSettingsQuery leaguesQuery);
 

@@ -15,8 +15,7 @@ namespace FliGen.Services.Api.Services
 
 		public string GetUserIdentity()
         {
-			var test = _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-			return "038132fd-ade3-4946-a555-efa6686ac8d5"; //todo:: ?
+			return _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 		}
 	}
 }
