@@ -2,7 +2,7 @@
 {
     public enum PlayersQueryType
     {
-        All = 1,
+        All,
         Actual
     }
 }

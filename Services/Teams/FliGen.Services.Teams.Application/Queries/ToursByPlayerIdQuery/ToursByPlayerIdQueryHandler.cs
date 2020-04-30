@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Teams.Application.Dto;
 using FliGen.Services.Teams.Domain.Entities;
 using MediatR;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 {
@@ -42,14 +42,11 @@ namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 
             var toursByPlayerIdDto = new ToursByPlayerIdDto()
             {
-                TourDtos = teamRepo.GetList(
+                ToursId = teamRepo.GetList(
                         predicate: x => teamIds.Contains(x.Id),
                         size: teamIds.Count)
                     .Items
-                    .Select(x => new TourDto()
-                    {
-                        TourId = x.TourId
-                    })
+                    .Select(x => x.TourId)
                     .ToArray()
             };
 

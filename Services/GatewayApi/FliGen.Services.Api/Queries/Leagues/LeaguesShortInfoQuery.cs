@@ -1,5 +1,5 @@
 ﻿namespace FliGen.Services.Api.Queries.Leagues
 {
-    public class LeaguesInfoQuery
+    public class LeaguesShortInfoQuery
     { }
 }

@@ -11,7 +11,11 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
+    <ProjectReference Include="..\FliGen.Services.Seasons.Domain\FliGen.Services.Seasons.Domain.csproj" />
   </ItemGroup>
 
 </Project>

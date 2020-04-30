@@ -21,7 +21,11 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("leagues/info")]
-        Task<LeaguesInfo> GetLeaguesInfoAsync([Query]LeaguesInfoQuery query);
+        Task<LeaguesShortInfo> GetLeaguesShortInfoAsync([Query]LeaguesShortInfoQuery query);
+
+        [AllowAnyStatusCode]
+        [Get("leagues/information")]
+        Task<LeagueInformation> GetLeagueInformationAsync([Query]LeagueInformationQuery query);
 
         [AllowAnyStatusCode]
         [Get("leagues/types")]

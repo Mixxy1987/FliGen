@@ -7,7 +7,7 @@ import { LeaguesInfo } from "../common/leaguesInfo";
 import { LeagueType } from "../common/leagueType";
 import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
-import { Player } from '../players/player';
+import { Player } from "../common/player";
 
 @Injectable()
 export class DataService {
@@ -59,12 +59,12 @@ export class DataService {
     return this.http.delete(this.leaguesUrl + "/" + id);
   }
   
-  getLeagueInformation(id: number) {
-    return this.http.get<LeagueInformation>(this.leaguesUrl + "/" + id);
+  async getLeagueInformation(id: number) {
+    return await this.http.get<LeagueInformation>(this.leaguesUrl + "/" + id).toPromise();
   }
 
-  getPlayers() {
-    return this.http.get<Player[]>(this.playersUrl);
+  async getPlayers() {
+    return await this.http.get<Player[]>(this.playersUrl).toPromise();
   }
 
   async getPlayersInfo() {

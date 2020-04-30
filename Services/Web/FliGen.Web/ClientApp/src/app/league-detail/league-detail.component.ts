@@ -11,10 +11,10 @@ import { DataService } from "../data-service/data.service";
   providers: [DataService]
 })
 export class LeagueDetailComponent implements OnInit {
-  isAuthenticated: boolean;
-  id: number;
-  leagueInformation: LeagueInformation;
-  loaded: boolean = false;
+  private isAuthenticated: boolean;
+  private readonly id: number;
+  private leagueInformation: LeagueInformation;
+  private loaded: boolean = false;
 
   constructor(
     private dataService: DataService,
@@ -29,11 +29,9 @@ export class LeagueDetailComponent implements OnInit {
       take(1)
     ).toPromise();
 
-    if (this.id)
-      this.dataService.getLeagueInformation(this.id)
-        .subscribe((data: LeagueInformation) => {
-          this.leagueInformation = data;
-          this.loaded = true;
-        });
+    if (this.id) {
+      this.leagueInformation = await this.dataService.getLeagueInformation(this.id);
+      this.loaded = true;
+    }
   }
 }

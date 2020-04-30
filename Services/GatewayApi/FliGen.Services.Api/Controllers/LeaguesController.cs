@@ -57,15 +57,22 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet("info")]
-        public async Task<LeaguesInfo> GetLeaguesInfo([FromQuery]LeaguesInfoQuery query)
+        public async Task<LeaguesShortInfo> GetLeaguesShortInfo([FromQuery]LeaguesShortInfoQuery query)
         {
-            return await _leaguesService.GetLeaguesInfoAsync(query);
+            return await _leaguesService.GetLeaguesShortInfoAsync(query);
         }
 
         [HttpGet("types")]
         public async Task<IEnumerable<League>> GetLeagueTypes()
         {
             return await _leaguesService.GetLeagueTypesAsync(new LeagueTypesQuery());
+        }
+
+        [HttpGet("{id}")]
+        [Produces(typeof(LeagueInformation))]
+        public async Task<LeagueInformation> GetLeagues(int id)
+        {
+            return await _leaguesService.GetLeagueInformationAsync(new LeagueInformationQuery{ Id = id });
         }
 
         [HttpPost]

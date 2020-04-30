@@ -4,9 +4,11 @@ using System.Security.Claims;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FliGen.Common.Authentication;
+using FliGen.Common.Extensions;
 using FliGen.Common.RestEase;
 using FliGen.Common.Jaeger;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.Swagger;
 using FliGen.Services.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +24,8 @@ namespace FliGen.Services.Api
     public class Startup
     {
         private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
+        private SwaggerOptions _swaggerOptions;
+
         public IContainer Container { get; private set; }
         public IConfiguration Configuration { get; }
 
@@ -34,8 +38,24 @@ namespace FliGen.Services.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true; // temp
+            _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
+
             services.AddJaeger();
             services.AddOpenTracing();
+            if (_swaggerOptions.Enabled)
+            {
+                services.AddSwaggerDocument(config =>
+                {
+                    config.PostProcess = document =>
+                    {
+                        document.Info.Version = "v1";
+                        document.Info.Title = "Gateway Api";
+                        document.Info.Description = "Gateway Service Api";
+                        document.Info.TermsOfService = "None";
+                    };
+                });
+            }
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", cors =>
@@ -104,9 +124,14 @@ namespace FliGen.Services.Api
             app.UseRouting();
             app.UseCors("CorsPolicy");
 
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            if (_swaggerOptions.Enabled)
+            {
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+            }
 
             app.UseEndpoints(endpoints =>
             {

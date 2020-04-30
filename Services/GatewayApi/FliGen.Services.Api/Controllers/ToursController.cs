@@ -28,13 +28,33 @@ namespace FliGen.Services.Api.Controllers
         [HttpGet("id")]
         public async Task<Tour> Get([FromQuery]TourByIdQuery query)
         {
-            return await _toursService.Get(query);
+            return await _toursService.GetAsync(query);
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery query)
+        [HttpGet("playerId/{playerId}/seasons")]
+        [Produces(typeof(IEnumerable<Tour>))]
+        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int[] id, [FromQuery]int queryType)
         {
-            return await _toursService.GetAsync(query);
+            var query = new ToursByPlayerIdQuery
+            {
+                PlayerId = playerId,
+                SeasonIds = id,
+                QueryType = queryType
+            };
+
+            return _toursService.GetWithSeasonsAsync(playerId, query);
+        }
+
+        [HttpGet("playerId/{playerId}")]
+        [Produces(typeof(IEnumerable<Tour>))]
+        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int queryType)
+        {
+            var query = new ToursByPlayerIdQuery
+            {
+                QueryType = queryType
+            };
+
+            return _toursService.GetAsync(playerId, query);
         }
 
         [HttpGet("registeredOnTourPlayers")]

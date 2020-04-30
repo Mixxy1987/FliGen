@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Leagues.Application.Queries
+﻿namespace FliGen.Common.Types
 {
     public abstract class PagedQuery
     {

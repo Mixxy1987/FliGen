@@ -2,6 +2,6 @@
 {
     public class ToursByPlayerIdDto
     {
-        public TourDto[] TourDtos { get; set; }
+        public int[] ToursId { get; set; }
     }
 }

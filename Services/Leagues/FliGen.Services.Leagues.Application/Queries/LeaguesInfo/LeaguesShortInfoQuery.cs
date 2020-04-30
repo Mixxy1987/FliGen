@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FliGen.Services.Leagues.Application.Queries.LeaguesInfo
 {
-    public class LeaguesInfoQuery : IRequest<LeaguesInfoDto>
+    public class LeaguesShortInfoQuery : IRequest<LeaguesShortInfoDto>
     {
     }
 }

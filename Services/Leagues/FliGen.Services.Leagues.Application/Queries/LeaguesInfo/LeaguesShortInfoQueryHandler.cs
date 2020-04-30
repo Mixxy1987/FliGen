@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace FliGen.Services.Leagues.Application.Queries.LeaguesInfo
 {
-    public class LeaguesInfoQueryHandler : IRequestHandler<LeaguesInfoQuery, LeaguesInfoDto>
+    public class LeaguesShortInfoQueryHandler : IRequestHandler<LeaguesShortInfoQuery, LeaguesShortInfoDto>
     {
         private readonly IUnitOfWork _uow;
 
-        public LeaguesInfoQueryHandler(IUnitOfWork uow)
+        public LeaguesShortInfoQueryHandler(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        public Task<LeaguesInfoDto> Handle(LeaguesInfoQuery request, CancellationToken cancellationToken)
+        public Task<LeaguesShortInfoDto> Handle(LeaguesShortInfoQuery request, CancellationToken cancellationToken)
         {
             var repo = _uow.GetReadOnlyRepository<League>();
 
             IPaginate<League> leagues = repo.GetList();
 
-            var leaguesInfoDto = new LeaguesInfoDto
+            var leaguesInfoDto = new LeaguesShortInfoDto
             {
                 Count = leagues.Count
             };

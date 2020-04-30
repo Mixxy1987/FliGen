@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Extensions;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
@@ -7,6 +8,7 @@ using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Common.Swagger;
 using FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour;
 using FliGen.Services.Tours.Application.Commands.TourBack;
 using FliGen.Services.Tours.Application.Commands.TourCancel;
@@ -24,10 +26,12 @@ using System;
 
 namespace FliGen.Services.Tours
 {
-	public class Startup
-	{
-		public IConfiguration Configuration { get; }
+    public class Startup
+    {
+        private SwaggerOptions _swaggerOptions;
+        public IConfiguration Configuration { get; }
         public IContainer Container { get; private set; }
+		
 
 		public Startup(IConfiguration configuration)
 		{
@@ -39,13 +43,29 @@ namespace FliGen.Services.Tours
             string connectionString = Configuration["TestConnection"] ??
                                       Configuration.GetConnectionString("DefaultConnection");
 
-            services
+            _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
+
+			services
                 .AddDbContext<ToursContext>(
                     options => options.UseSqlServer(connectionString),
                     contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<ToursContext>();
 
 			services.AddControllers();
+
+            if (_swaggerOptions.Enabled)
+            {
+                services.AddSwaggerDocument(config =>
+                {
+                    config.PostProcess = document =>
+                    {
+                        document.Info.Version = "v1";
+                        document.Info.Title = "Tours Api";
+                        document.Info.Description = "Tours service Api";
+                        document.Info.TermsOfService = "None";
+                    };
+                });
+            }
 
             services.AddJaeger();
             services.AddOpenTracing();
@@ -89,6 +109,12 @@ namespace FliGen.Services.Tours
 			app.UseRouting();
 
 			app.UseAuthorization();
+
+            if (_swaggerOptions.Enabled)
+            {
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+            }
 
             app.UseRabbitMq()
                 .SubscribeCommand<PlayerRegisterOnTour>(onError: (c, e) =>

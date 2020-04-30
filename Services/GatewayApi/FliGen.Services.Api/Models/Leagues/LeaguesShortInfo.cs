@@ -1,6 +1,6 @@
 ﻿namespace FliGen.Services.Api.Models.Leagues
 {
-    public class LeaguesInfo
+    public class LeaguesShortInfo
     {
         public int Count { get; set; }
     }

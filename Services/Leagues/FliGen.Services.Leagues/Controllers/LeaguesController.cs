@@ -1,14 +1,15 @@
 ﻿using FliGen.Services.Leagues.Application.Dto;
+using FliGen.Services.Leagues.Application.Queries.LeagueInformation;
+using FliGen.Services.Leagues.Application.Queries.LeagueJoinedPlayers;
 using FliGen.Services.Leagues.Application.Queries.Leagues;
 using FliGen.Services.Leagues.Application.Queries.LeagueSettings;
+using FliGen.Services.Leagues.Application.Queries.LeaguesInfo;
 using FliGen.Services.Leagues.Application.Queries.LeagueTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Services.Leagues.Application.Queries.LeagueJoinedPlayers;
-using FliGen.Services.Leagues.Application.Queries.LeaguesInfo;
 
 namespace FliGen.Services.Leagues.Controllers
 {
@@ -42,14 +43,21 @@ namespace FliGen.Services.Leagues.Controllers
 
         [HttpGet]
         [Produces(typeof(IEnumerable<LeagueDto>))]
-        public Task<IEnumerable<LeagueDto>> GetLeagues([FromQuery]LeaguesQuery leaguesQuery)
+        public Task<IEnumerable<LeagueDto>> GetLeagues([FromQuery]LeaguesQuery query)
         {
-            return _mediatr.Send(leaguesQuery);
+            return _mediatr.Send(query);
+        }
+
+        [HttpGet("information")]
+        [Produces(typeof(LeagueInformationDto))]
+        public Task<LeagueInformationDto> GetLeagues([FromQuery]LeagueInformationQuery query)
+        {
+            return _mediatr.Send(query);
         }
 
         [HttpGet("info")]
-        [Produces(typeof(LeaguesInfoDto))]
-        public async Task<LeaguesInfoDto> GetAsync([FromQuery]LeaguesInfoQuery query)
+        [Produces(typeof(LeaguesShortInfoDto))]
+        public async Task<LeaguesShortInfoDto> GetAsync([FromQuery]LeaguesShortInfoQuery query)
         {
             return await _mediatr.Send(query);
         }

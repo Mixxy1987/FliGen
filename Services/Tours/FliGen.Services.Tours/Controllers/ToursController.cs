@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Application.Queries.Tours;
 
 namespace FliGen.Services.Tours.Controllers
 {
@@ -29,16 +30,43 @@ namespace FliGen.Services.Tours.Controllers
             return Ok("Tours service ready!");
         }
 
-		[HttpGet]
-        [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromQuery]ToursByPlayerIdQuery query)
+        [HttpGet]
+        [Produces(typeof(IEnumerable<TourDto>))]
+        public Task<IEnumerable<TourDto>> GetTours([FromBody]ToursQuery query)
         {
             return _mediatr.Send(query);
         }
 
+        [HttpGet("playerId/{playerId}/seasons")]
+        [Produces(typeof(IEnumerable<TourDto>))]
+        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery]int[] id, [FromQuery]ToursByPlayerIdQueryType queryType)
+        {
+            var query = new ToursByPlayerIdQuery
+            {
+                PlayerId = playerId,
+                SeasonIds = id,
+                QueryType = queryType
+            };
+
+            return _mediatr.Send(query);
+        }
+
+        [HttpGet("playerId/{playerId}")]
+        [Produces(typeof(IEnumerable<TourDto>))]
+        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery]ToursByPlayerIdQueryType queryType)
+        {
+            var query = new ToursByPlayerIdQuery
+            {
+                PlayerId = playerId,
+                QueryType = queryType
+            };  
+
+            return _mediatr.Send(query);
+        }
+
         [HttpGet("id")]
-        [Produces(typeof(Tour))]
-        public Task<Tour> Get([FromQuery]TourByIdQuery query)
+        [Produces(typeof(TourDto))]
+        public Task<TourDto> Get([FromQuery]TourByIdQuery query)
         {
             return _mediatr.Send(query);
         }

@@ -2,7 +2,7 @@
 {
     public enum ToursByPlayerIdQueryType
     {
-        All = 1,
+        All = 0,
         Incoming
     }
 }

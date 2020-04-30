@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
 using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Services;
 using MediatR;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Tour = FliGen.Services.Tours.Domain.Entities.Tour;
 
 namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
 {
-    public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, IEnumerable<Dto.Tour>>
+    public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, IEnumerable<TourDto>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
             _teamsService = teamsService;
         }
 
-        public async Task<IEnumerable<Dto.Tour>> Handle(ToursByPlayerIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TourDto>> Handle(ToursByPlayerIdQuery request, CancellationToken cancellationToken)
         {
             ToursByPlayerIdDto toursByPlayerIdDto = await _teamsService.GetToursByPlayerIdAsync(request.Size, request.Page, request.PlayerId);
 
@@ -37,7 +37,7 @@ namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
                 return null;
             }
 
-            List<int> tourIds = toursByPlayerIdDto.TourDtos.Select(x => x.TourId).ToList();
+            List<int> tourIds = toursByPlayerIdDto.ToursId.ToList();
 
             var toursRepo = _uow.GetReadOnlyRepository<Tour>();
 
@@ -45,7 +45,7 @@ namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
                 t => tourIds.Contains(t.Id),
                 size: tourIds.Count);
 
-            var toursDtos = new List<Dto.Tour>();
+            var toursDtos = new List<TourDto>();
 
             foreach (var tour in tours.Items)
             {
@@ -57,7 +57,7 @@ namespace FliGen.Services.Tours.Application.Queries.ToursByPlayerIdQuery
                 { // we want tours for specific seasons, but this tour is from another season - continue
                     continue;
                 }
-                toursDtos.Add(_mapper.Map<Dto.Tour>(tour));
+                toursDtos.Add(_mapper.Map<TourDto>(tour));
             }
 
             return toursDtos;

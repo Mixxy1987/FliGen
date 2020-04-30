@@ -6,7 +6,7 @@ namespace FliGen.Services.Tours.Mappings
     {
         public ToursProfile()
         {
-            CreateMap<Domain.Entities.Tour, Application.Dto.Tour>()
+            CreateMap<Domain.Entities.Tour, Application.Dto.TourDto>()
                 .ForMember(x => x.Date, ls => ls.MapFrom(s => s.Date.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.HomeCount, ls => ls.MapFrom(s => s.HomeCount))
                 .ForMember(x => x.GuestCount, ls => ls.MapFrom(s => s.GuestCount))

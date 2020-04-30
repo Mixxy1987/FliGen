@@ -1,12 +1,12 @@
 ﻿using FliGen.Common.Messages;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FliGen.Common.Types;
 
 namespace FliGen.Services.Api.Controllers
 {

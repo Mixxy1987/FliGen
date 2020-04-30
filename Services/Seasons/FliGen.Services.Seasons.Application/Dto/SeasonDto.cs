@@ -1,6 +1,6 @@
 ﻿namespace FliGen.Services.Seasons.Application.Dto
 {
-    public class Season
+    public class SeasonDto
     {
         public string Start { get; set; }
         public int ToursPlayed { get; set; }

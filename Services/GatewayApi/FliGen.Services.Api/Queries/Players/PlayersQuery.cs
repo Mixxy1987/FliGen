@@ -1,4 +1,6 @@
-﻿namespace FliGen.Services.Api.Queries.Players
+﻿using FliGen.Common.Types;
+
+namespace FliGen.Services.Api.Queries.Players
 {
     public class PlayersQuery : PagedQuery
     {

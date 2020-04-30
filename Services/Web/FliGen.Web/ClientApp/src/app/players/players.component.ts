@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from "../data-service/data.service";
-import { Player } from "./player";
+import { Player } from "../common/player";
 
 @Component({
   selector: 'app-players',
@@ -11,19 +11,20 @@ export class PlayersComponent implements OnInit {
 
   private player: Player = new Player();
   private players: Player[];
-  tableMode: boolean = true;
+  private tableMode: boolean = true;
+  private loaded: boolean = false;
 
   constructor(
     private dataService: DataService) { }
 
-  ngOnInit(): void {
-    this.loadPlayers();
+  async ngOnInit(){
+    await this.loadPlayers();
+    this.loaded = true;
   }
 
-  loadPlayers() {
-    this.dataService.getPlayers().subscribe(result => {
-      this.players = result;
-    }, error => console.error(error));
+  async loadPlayers() {
+    this.players = await this.dataService.getPlayers();
+    debugger;
   }
 
   editPlayer(p: Player) {

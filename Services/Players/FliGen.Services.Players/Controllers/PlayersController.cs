@@ -33,7 +33,6 @@ namespace FliGen.Services.Players.Controllers
         [Produces(typeof(IEnumerable<PlayerWithRate>))]
         public async Task<IEnumerable<PlayerWithRate>> GetAsync([FromQuery]PlayersQuery query)
         {
-
             return await _mediatr.Send(query);
         }
 

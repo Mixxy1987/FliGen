@@ -1,6 +1,8 @@
-﻿namespace FliGen.Services.Api.Queries.Leagues
+﻿using FliGen.Common.Types;
+
+namespace FliGen.Services.Api.Queries.Leagues
 {
-    public class LeaguesQuery
+    public class LeaguesQuery : PagedQuery
     {
         public string PlayerExternalId { get; set; }
         public int[] LeaguesId { get; set; }

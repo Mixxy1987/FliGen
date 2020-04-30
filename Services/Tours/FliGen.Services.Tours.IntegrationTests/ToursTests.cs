@@ -136,7 +136,7 @@ namespace FliGen.Services.Tours.IntegrationTests
             var response = await _client.GetAsync($"{endpoint}{tourId}");
             response.IsSuccessStatusCode.Should().BeTrue();
 
-            var tour = await response.ReadContentAs<Application.Dto.Tour>();
+            var tour = await response.ReadContentAs<Application.Dto.TourDto>();
 
             tour.Id.Should().Be(tourId);
             tour.TourStatus.Should().Be((Application.Dto.Enum.TourStatus)_testDbFixture.MockedDataInstance.TourForReadById.TourStatus.Id);

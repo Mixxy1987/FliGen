@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using FliGen.Common.Types;
 using FliGen.Services.Players.Application.Dto;
 using MediatR;
+using System.Collections.Generic;
 
 namespace FliGen.Services.Players.Application.Queries.Players
 {

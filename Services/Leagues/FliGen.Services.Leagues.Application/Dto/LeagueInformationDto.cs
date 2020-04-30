@@ -1,6 +1,6 @@
 ﻿namespace FliGen.Services.Leagues.Application.Dto
 {
-    public class LeagueInformation
+    public class LeagueInformationDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
