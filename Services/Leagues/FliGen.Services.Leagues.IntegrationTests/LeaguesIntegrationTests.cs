@@ -107,7 +107,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
         {
             var command = new UpdateLeague()
             {
-                LeagueId = _testDbFixture.MockedDataInstance.LeagueForUpdateId,
+                Id = _testDbFixture.MockedDataInstance.LeagueForUpdateId,
                 Name = "AAA",
                 Description = "BBB",
                 LeagueType = new LeagueType() { Name = "None"}
@@ -115,7 +115,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
 
             var creationTask = await _rabbitMqFixture.SubscribeAndGetAsync<LeagueUpdated>(
                 _testDbFixture.GetLeagueById,
-                command.LeagueId);
+                command.Id);
 
             await _rabbitMqFixture.PublishAsync(command);
 

@@ -89,13 +89,13 @@ namespace FliGen.Services.Api.Controllers
             return await SendAsync(new JoinLeague(id, playerId));
         }
 
-        [HttpPut("updateLeague")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateLeague(UpdateLeague command)
         {
             return await SendAsync(command);
         }
 
-        [HttpPut("updateLeagueSettings")]
+        [HttpPut("updateSettings")]
         public async Task<IActionResult> UpdateLeagueSettings(UpdateLeagueSettings command)
         {
             return await SendAsync(command);

@@ -13,7 +13,6 @@ import { Player } from '../players/player';
 export class DataService {
   private playersUrl: string;
   private leaguesUrl: string;
-  private leagueUrl: string;
   private myToursUrl: string;
 
   constructor(
@@ -21,7 +20,6 @@ export class DataService {
     @Inject('BASE_URL') private baseUrl: string) {
       this.playersUrl = this.baseUrl + "players";
       this.leaguesUrl = this.baseUrl + "leagues";
-      this.leagueUrl = this.baseUrl + "league";
       this.myToursUrl = this.baseUrl + "mytours";
   }
 
@@ -49,13 +47,12 @@ export class DataService {
     return await this.http.get<LeagueType[]>(this.leaguesUrl + "/types").toPromise();
   }
 
-  createLeague(league: League) {
-    return this.http.post<League>(this.leaguesUrl, league);
+  async createLeague(league: League) {
+    return await this.http.post<League>(this.leaguesUrl, league).toPromise();;
   }
 
-  updateLeague(league: League) {
-    debugger;
-    return this.http.put(this.leagueUrl, league);
+  async updateLeague(league: League) {
+    return await this.http.put(this.leaguesUrl + "/update", league).toPromise();
   }
 
   deleteLeague(id: number) {
@@ -63,7 +60,7 @@ export class DataService {
   }
   
   getLeagueInformation(id: number) {
-    return this.http.get<LeagueInformation>(this.leagueUrl + "/" + id);
+    return this.http.get<LeagueInformation>(this.leaguesUrl + "/" + id);
   }
 
   getPlayers() {
@@ -87,11 +84,11 @@ export class DataService {
   }
 
   getLeagueSettings(id: number) {
-    return this.http.get<LeagueSettings>(this.leagueUrl + "/settings/" + id);
+    return this.http.get<LeagueSettings>(this.leaguesUrl + "/settings/" + id);
   }
 
   updateLeagueSettings(leagueSettings: LeagueSettings) {
     debugger;
-    return this.http.put(this.leagueUrl + "/changeSettings", leagueSettings);
+    return this.http.put(this.leaguesUrl + "/updateSettings", leagueSettings);
   }
 }

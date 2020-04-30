@@ -45,18 +45,14 @@ export class LeaguesComponent implements OnInit {
     this.league = l;
   }
 
-  save() {
+  async save() {
     this.league.leagueType = new LeagueType(this.newLeagueType.name);
     if (this.league.id == null) {
-      this.dataService.createLeague(this.league)
-        .subscribe((data: League) => {
-          this.leagues.push(data);
-          this.loadLeagues();
-        });
+      await this.dataService.createLeague(this.league);
     } else {
-      this.dataService.updateLeague(this.league)
-        .subscribe(data => this.loadLeagues());
+      await this.dataService.updateLeague(this.league);
     }
+    await this.loadLeagues();
     this.cancel();
   }
 

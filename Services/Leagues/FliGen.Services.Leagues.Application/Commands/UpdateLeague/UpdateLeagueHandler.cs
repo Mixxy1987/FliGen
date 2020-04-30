@@ -26,14 +26,14 @@ namespace FliGen.Services.Leagues.Application.Commands.UpdateLeague
             var repo = _uow.GetRepositoryAsync<Domain.Entities.League>();
 
             repo.UpdateAsync(Domain.Entities.League.GetUpdated(
-                command.LeagueId,
+                command.Id,
                 command.Name,
                 command.Description,
                 Enumeration.FromDisplayName<LeagueType>(command.LeagueType.Name)));
 
             _uow.SaveChanges();
 
-            await _busPublisher.PublishAsync(new LeagueUpdated(command.LeagueId), context);
+            await _busPublisher.PublishAsync(new LeagueUpdated(command.Id), context);
         }
     }
 }
