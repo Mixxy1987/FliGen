@@ -45,7 +45,7 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
             List<PlayerWithLeagueStatusDto> playersWithLeagueStatus = await GetPlayersInformationFromLeagueService(command);
             List<PlayerWithRateDto> playersWithRate = await GetPlayersRate(command);
 
-            await ValidateDataOrThrow(
+            ValidateDataOrThrow(
                 playersWithLeagueStatus,
                 playersWithRate,
                 playersInTeam,
@@ -66,7 +66,7 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
             _uow.SaveChanges();
         }
 
-        private async Task ValidateDataOrThrow(
+        private void ValidateDataOrThrow(
             List<PlayerWithLeagueStatusDto> playersWithLeagueStatus,
             List<PlayerWithRateDto> playersWithRate,
             int playersInTeam,

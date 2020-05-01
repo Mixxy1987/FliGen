@@ -3,6 +3,7 @@
     public enum ToursQueryType
     {
         All,
-        Last // {x} of last tours
+        Last, // {x} of last tours
+        Incoming
     }
 }

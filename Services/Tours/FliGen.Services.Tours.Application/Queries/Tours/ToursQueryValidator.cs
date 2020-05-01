@@ -9,6 +9,10 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             RuleFor(c => c)
                 .NotEmpty()
                 .WithMessage("Не задан запрос на получение информации о турах");
+
+            RuleFor(c => c.QueryType)
+                .IsInEnum()
+                .WithMessage("Невалидное значение QueryType");
         }
     }
 }

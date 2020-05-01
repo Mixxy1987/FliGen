@@ -33,13 +33,14 @@ namespace FliGen.Services.Api.Controllers
 
         [HttpGet("playerId/{playerId}/seasons")]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int[] id, [FromQuery]int queryType)
+        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int[] id, [FromQuery]int queryType, [FromQuery]int last)
         {
-            var query = new ToursByPlayerIdQuery
+            var query = new ToursQuery
             {
                 PlayerId = playerId,
                 SeasonIds = id,
-                QueryType = queryType
+                QueryType = queryType,
+                Last = last
             };
 
             return _toursService.GetWithSeasonsAsync(playerId, query);
@@ -47,11 +48,12 @@ namespace FliGen.Services.Api.Controllers
 
         [HttpGet("playerId/{playerId}")]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int queryType)
+        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]int queryType, [FromQuery]int last)
         {
-            var query = new ToursByPlayerIdQuery
+            var query = new ToursQuery
             {
-                QueryType = queryType
+                QueryType = queryType,
+                Last = last
             };
 
             return _toursService.GetAsync(playerId, query);
