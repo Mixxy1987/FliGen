@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Application.Queries.SeasonStats;
 using FliGen.Services.Tours.Application.Queries.Tours;
 
 namespace FliGen.Services.Tours.Controllers
@@ -38,12 +39,12 @@ namespace FliGen.Services.Tours.Controllers
 
         [HttpGet("playerId/{playerId}/seasons")]
         [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery]int[] id, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
+        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery(Name = "id")]int[] seasonsId, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
         {
             var query = new ToursQuery
             {
                 PlayerId = playerId,
-                SeasonsId = id,
+                SeasonsId = seasonsId,
                 QueryType = queryType,
                 Last = last
             };
@@ -60,6 +61,18 @@ namespace FliGen.Services.Tours.Controllers
                 PlayerId = playerId,
                 QueryType = queryType,
                 Last = last
+            };
+
+            return _mediatr.Send(query);
+        }
+
+        [HttpGet("season/{id}/stats")]
+        [Produces(typeof(SeasonStatsDto))]
+        public Task<SeasonStatsDto> GetSeasonStats([FromRoute(Name = "id")]int seasonId)
+        {
+            var query = new SeasonStatsQuery()
+            {
+                SeasonId = seasonId
             };
 
             return _mediatr.Send(query);

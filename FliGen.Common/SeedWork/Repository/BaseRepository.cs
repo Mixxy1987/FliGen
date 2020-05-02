@@ -21,7 +21,11 @@ namespace FliGen.Common.SeedWork.Repository
         public virtual IQueryable<T> Query(string sql, params object[] parameters) => _dbSet.FromSqlRaw(sql, parameters);
 
         public T Search(params object[] keyValues) => _dbSet.Find(keyValues);
-       
+
+        public int Count(Expression<Func<T, bool>> predicate = null)
+        {
+            return _dbSet.Count(predicate);
+        }
 
         public T Single(Expression<Func<T, bool>> predicate = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,

@@ -1,37 +1,117 @@
 ﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Services.Seasons.Application.Dto;
+using FliGen.Services.Seasons.Application.Dto.Enum;
+using FliGen.Services.Seasons.Application.Queries.Tours;
 using FliGen.Services.Seasons.Application.Services;
 using FliGen.Services.Seasons.Domain.Entities;
 using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
+using FliGen.Services.Seasons.Domain.Common;
 
 namespace FliGen.Services.Seasons.Application.Queries.Seasons
 {
     public class SeasonsQueryHandler : IRequestHandler<SeasonsQuery, IEnumerable<SeasonDto>>
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        private readonly IToursService _toursServe;
+        private readonly IToursService _toursService;
 
         public SeasonsQueryHandler(
             IUnitOfWork uow,
-            IMapper mapper,
             IToursService toursService)
         {
 	        _uow = uow;
-	        _mapper = mapper;
-            _toursServe = toursService;
+            _toursService = toursService;
         }
 
         public async Task<IEnumerable<SeasonDto>> Handle(SeasonsQuery request, CancellationToken cancellationToken)
         {
-            var seasonsRepo = _uow.GetRepositoryAsync<Season>();
+            var seasonsRepo = _uow.GetReadOnlyRepository<Season>();
+            int[] seasonsId;
 
-            //todo::
-            return null;
+            if (request.SeasonsId is null ||
+                request.SeasonsId.Length == 0)
+            {
+                if (request.LeagueId == 0)
+                {
+                    throw new FliGenException(ErrorCodes.InvalidRequest, "seasonsId or leagueId should be set");
+                }
+
+                seasonsId = seasonsRepo.GetList(
+                    s => request.LeagueId == s.LeagueId,
+                    size: Consts.SeasonsInLeagueMax).Items.Select(s => s.Id).ToArray();
+            }
+            else
+            {
+                seasonsId = request.SeasonsId;
+            }
+
+            var dtos = (await _toursService.GetAsync(0, request.SeasonsId, ToursQueryType.Last, 2)).ToList();
+
+            var seasonDtos = new List<SeasonDto>();
+
+            foreach (var seasonId in seasonsId)
+            {
+                var sortedTourDtos = dtos
+                    .Where(t => t.SeasonId == seasonId)
+                    .OrderBy(t => t.Date)
+                    .ToList();
+
+                Season season = seasonsRepo.Single(s => s.Id == seasonId);
+
+                var seasonDto = new SeasonDto
+                {
+                    SeasonId = seasonId,
+                    Start = season.Start.ToString("yyyy-MM-dd"),
+                    ToursPlayed = (await _toursService.GetSeasonStatsAsync(seasonId)).Count
+                };
+                switch (sortedTourDtos.Count)
+                {
+                    case 2:
+                    {
+                        if (sortedTourDtos[1].TourStatus == TourStatus.Completed ||
+                            sortedTourDtos[1].TourStatus == TourStatus.Canceled)
+                        {
+                            seasonDto.PreviousTour = sortedTourDtos[1];
+                            seasonDto.NextTour = null;
+                        }
+                        else
+                        {
+                            seasonDto.PreviousTour = sortedTourDtos[0];
+                            seasonDto.NextTour = sortedTourDtos[1];
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        if (sortedTourDtos[0].TourStatus == TourStatus.Completed ||
+                            sortedTourDtos[1].TourStatus == TourStatus.Canceled)
+                        {
+                            seasonDto.PreviousTour = sortedTourDtos[0];
+                        }
+                        else
+                        {
+                            seasonDto.NextTour = sortedTourDtos[0];
+                        }
+                        break;
+                    }
+                    case 0:
+                    {
+                        seasonDto.PreviousTour = null;
+                        seasonDto.NextTour = null;
+                        break;
+                    }
+                }
+
+                seasonDtos.Add(seasonDto);
+            }
+
+
+            return seasonDtos;
         }
     }
 }

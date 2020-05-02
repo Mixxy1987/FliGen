@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\FliGen.Common\FliGen.Common.csproj" />
     <ProjectReference Include="..\FliGen.Services.Seasons.Application\FliGen.Services.Seasons.Application.csproj" />
     <ProjectReference Include="..\FliGen.Services.Seasons.Persistence\FliGen.Services.Seasons.Persistence.csproj" />

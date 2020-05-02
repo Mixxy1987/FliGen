@@ -9,6 +9,7 @@ namespace FliGen.Services.Seasons.Application.Queries.Seasons
             RuleFor(c => c)
                 .NotEmpty()
                 .WithMessage("Не задан запрос на получение информации о сезонах");
+
         }
     }
 }
