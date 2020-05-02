@@ -1,16 +1,11 @@
-using System;
-using System.Reflection;
-using System.Security.Claims;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using FliGen.Common.Authentication;
 using FliGen.Common.Extensions;
-using FliGen.Common.RestEase;
 using FliGen.Common.Jaeger;
 using FliGen.Common.RabbitMq;
+using FliGen.Common.RestEase;
 using FliGen.Common.Swagger;
 using FliGen.Services.Api.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Reflection;
 
 namespace FliGen.Services.Api
 {
@@ -90,7 +87,7 @@ namespace FliGen.Services.Api
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
-            //services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
+            services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
             services.RegisterServiceForwarder<IToursService>("tours-service");
             services.RegisterServiceForwarder<ITeamsService>("teams-service");
 
