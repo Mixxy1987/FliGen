@@ -29,12 +29,16 @@ namespace FliGen.Services.Seasons.Controllers
 
         [HttpGet("league/{id}/seasons")]
         [Produces(typeof(IEnumerable<SeasonDto>))]
-        public Task<IEnumerable<SeasonDto>> Get([FromRoute(Name = "id")]int leagueId, [FromQuery(Name = "id")]int[] seasonsId)
+        public Task<IEnumerable<SeasonDto>> Get(
+            [FromRoute(Name = "id")]int leagueId,
+            [FromQuery(Name = "id")]int[] seasonsId,
+            [FromQuery]SeasonsQueryType queryType)
         {
             var query = new SeasonsQuery
             {
                 LeagueId = leagueId,
-                SeasonsId = seasonsId
+                SeasonsId = seasonsId,
+                QueryType = queryType
             };
 
             return _mediatr.Send(query);

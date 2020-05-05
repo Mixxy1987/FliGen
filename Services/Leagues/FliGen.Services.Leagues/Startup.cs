@@ -49,6 +49,7 @@ namespace FliGen.Services.Leagues
             services.AddOpenTracing();
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
+            services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
 
             var builder = new ContainerBuilder();
 

@@ -2,7 +2,7 @@
 
 namespace FliGen.Services.Leagues.Application.Dto
 {
-    public class Tour
+    public class TourDto
     {
         public int Id { get; set; }
         public int LeagueId { get; set; }

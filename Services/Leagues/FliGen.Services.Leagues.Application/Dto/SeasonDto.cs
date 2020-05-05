@@ -1,4 +1,4 @@
-﻿namespace FliGen.Services.Seasons.Application.Dto
+﻿namespace FliGen.Services.Leagues.Application.Dto
 {
     public class SeasonDto
     {

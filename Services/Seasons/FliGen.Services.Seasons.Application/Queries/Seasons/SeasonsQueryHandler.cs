@@ -31,7 +31,7 @@ namespace FliGen.Services.Seasons.Application.Queries.Seasons
         public async Task<IEnumerable<SeasonDto>> Handle(SeasonsQuery request, CancellationToken cancellationToken)
         {
             var seasonsRepo = _uow.GetReadOnlyRepository<Season>();
-            int[] seasonsId;
+            int[] seasonsId = request.SeasonsId;
 
             if (request.SeasonsId is null ||
                 request.SeasonsId.Length == 0)
@@ -41,16 +41,16 @@ namespace FliGen.Services.Seasons.Application.Queries.Seasons
                     throw new FliGenException(ErrorCodes.InvalidRequest, "seasonsId or leagueId should be set");
                 }
 
-                seasonsId = seasonsRepo.GetList(
+                var seasons = seasonsRepo.GetList(
                     s => request.LeagueId == s.LeagueId,
-                    size: Consts.SeasonsInLeagueMax).Items.Select(s => s.Id).ToArray();
-            }
-            else
-            {
-                seasonsId = request.SeasonsId;
+                    size: Consts.SeasonsInLeagueMax).Items;
+
+                seasonsId = request.QueryType == SeasonsQueryType.Last
+                    ? new[] {seasons.OrderBy(s => s.Start).Last().Id}
+                    : seasonsId = seasons.Select(s => s.Id).ToArray();
             }
 
-            var dtos = (await _toursService.GetAsync(0, request.SeasonsId, ToursQueryType.Last, 2)).ToList();
+            var dtos = (await _toursService.GetAsync(0, seasonsId, ToursQueryType.Last, 2)).ToList();
 
             var seasonDtos = new List<SeasonDto>();
 
@@ -67,6 +67,7 @@ namespace FliGen.Services.Seasons.Application.Queries.Seasons
                 {
                     SeasonId = seasonId,
                     Start = season.Start.ToString("yyyy-MM-dd"),
+                    Finish =  season.Finish.ToString("yyyy-MM-dd"),
                     ToursPlayed = (await _toursService.GetSeasonStatsAsync(seasonId)).Count
                 };
                 switch (sortedTourDtos.Count)

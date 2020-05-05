@@ -1,7 +1,7 @@
 ﻿using FliGen.Common.Types;
+using FliGen.Services.Seasons.Application.Dto;
 using MediatR;
 using System.Collections.Generic;
-using FliGen.Services.Seasons.Application.Dto;
 
 namespace FliGen.Services.Seasons.Application.Queries.Seasons
 {
@@ -14,5 +14,6 @@ namespace FliGen.Services.Seasons.Application.Queries.Seasons
     {
         public int[] SeasonsId { get; set; }
         public int LeagueId { get; set; }
+        public SeasonsQueryType QueryType { get; set; }
     }
 }
