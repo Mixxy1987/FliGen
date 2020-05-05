@@ -83,8 +83,8 @@ export class DataService {
     return this.http.delete(this.playersUrl + "/" + id);
   }
 
-  getLeagueSettings(id: number) {
-    return this.http.get<LeagueSettings>(this.leaguesUrl + "/settings/" + id);
+  async getLeagueSettings(id: number) {
+    return await this.http.get<LeagueSettings>(this.leaguesUrl + "/" + id + "/settings").toPromise();;
   }
 
   updateLeagueSettings(leagueSettings: LeagueSettings) {

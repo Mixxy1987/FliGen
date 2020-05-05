@@ -9,13 +9,13 @@ namespace FliGen.Services.Api.Messages.Commands.Leagues
         public int LeagueId { get; set; }
         public bool Visibility { get; set; }
         public bool RequireConfirmation { get; set; }
-        public int PlayersInTeam { get; set; }
-        public int TeamsInTour { get; set; }
+        public int? PlayersInTeam { get; set; }
+        public int? TeamsInTour { get; set; }
 
         private UpdateLeagueSettings() { }
 
         [JsonConstructor]
-        public UpdateLeagueSettings(int leagueId, bool visibility, bool requireConfirmation, int playersInTeam, int teamsInTour)
+        public UpdateLeagueSettings(int leagueId, bool visibility, bool requireConfirmation, int? playersInTeam, int? teamsInTour)
         {
             LeagueId = leagueId;
             Visibility = visibility;

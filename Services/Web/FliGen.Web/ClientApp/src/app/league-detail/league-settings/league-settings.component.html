@@ -2,10 +2,27 @@
   <h2>Настройки лиги</h2>
   <div>
     <p>
-      <mat-slide-toggle [checked]="leagueSettings.visibility" (change)="changeVisibility()">Видимость</mat-slide-toggle>
+      <mat-slide-toggle [checked]="leagueSettings.visibility" (change)="changeVisibility()">Visibility</mat-slide-toggle>
     </p>
     <p>
-      <mat-slide-toggle [checked]="leagueSettings.requireConfirmation" (change)="changeConfirmation()">Требует подтверждения</mat-slide-toggle>
+      <mat-slide-toggle [checked]="leagueSettings.requireConfirmation" (change)="changeConfirmation()">Require confirmation</mat-slide-toggle>
     </p>
+
+    <p>
+      <mat-form-field>
+        <mat-label>Players in team</mat-label>
+        <input matInput #playersCount type="number" min="2" max="20" [(ngModel)]="leagueSettings.playersInTeam">
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <mat-label>Teams in tour</mat-label>
+        <input matInput #teamsCount type="number" min="2" max="5" [(ngModel)]="leagueSettings.teamsInTour">
+      </mat-form-field>
+    </p>
+  </div>
+  <div class="form-group text-left">
+    <button type="submit" class="btn btn-sm btn-success" (click)="save()">Save</button>
   </div>
 </div>

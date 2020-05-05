@@ -4,7 +4,7 @@ import { Platform } from '@angular/cdk/platform';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatSlideToggleModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSlideToggleModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { ApiAuthorizationModule } from "./api-authorization/api-authorization.module";
 import { AuthorizeInterceptor } from "./api-authorization/authorize.interceptor";
@@ -18,6 +18,7 @@ import { MyLeaguesComponent } from "./myleagues/myleagues.component";
 import { MyToursComponent } from "./mytours/mytours.component";
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { PlayersComponent } from "./players/players.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -37,11 +38,15 @@ import { PlayersComponent } from "./players/players.component";
     HttpClientModule,
     ApiAuthorizationModule,
     FormsModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     FocusMonitor,
     Platform,
     ContentObserver],

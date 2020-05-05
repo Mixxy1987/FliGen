@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LeagueSettings } from "../../common/leagueSettings";
 import { DataService } from "../../data-service/data.service";
+import { AutofillMonitor } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-league-settings',
   templateUrl: './league-settings.component.html',
-  providers: [DataService]
+  providers: [DataService, AutofillMonitor]
 })
-export class LeagueSettingsComponent implements OnInit {
+
+export class LeagueSettingsComponent implements OnInit{
   id: number;
   leagueSettings: LeagueSettings;
   loaded: boolean = false;
@@ -22,22 +24,26 @@ export class LeagueSettingsComponent implements OnInit {
 
   changeVisibility() {
     this.leagueSettings.visibility = !this.leagueSettings.visibility;
-    this.updateLeagueSettings(new LeagueSettings(this.leagueSettings.visibility, this.leagueSettings.requireConfirmation, this.id));
   }
 
   changeConfirmation() {
     this.leagueSettings.requireConfirmation = !this.leagueSettings.requireConfirmation;
-    this.updateLeagueSettings(new LeagueSettings(this.leagueSettings.visibility, this.leagueSettings.requireConfirmation, this.id));
+  }
+
+  save() {
+    this.updateLeagueSettings(this.leagueSettings);
   }
 
   async ngOnInit() {
-    this.loadLeagueSettings();
+    await this.loadLeagueSettings();
   }
 
-  loadLeagueSettings() {
-    if (this.id)
-      this.dataService.getLeagueSettings(this.id)
-        .subscribe((data: LeagueSettings) => { this.leagueSettings = data; this.loaded = true; });
+  async loadLeagueSettings() {
+    if (this.id) {
+      this.leagueSettings = await this.dataService.getLeagueSettings(this.id);
+      this.leagueSettings.leagueId = this.id;
+      this.loaded = true;
+    }
   }
 
   updateLeagueSettings(leagueSettings: LeagueSettings) {
