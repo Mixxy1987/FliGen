@@ -72,8 +72,7 @@ export class LeaguesComponent implements OnInit {
     this.tableMode = false;
   }
 
-  joinLeague(l: League) {
-    this.dataService.joinLeague(l.id)
-      .subscribe(data => this.loadLeagues());
+  async joinLeague(l: League) {
+    await this.dataService.joinLeague(l.id);
   }
 }

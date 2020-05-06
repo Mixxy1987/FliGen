@@ -31,8 +31,8 @@ export class DataService {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
-  joinLeague(id: number) {
-    return this.http.post(this.leaguesUrl + "/join", id);
+  async joinLeague(id: number) {
+    return await this.http.post(this.leaguesUrl + "/join", id).toPromise();;
   }
 
   async getLeagues() {

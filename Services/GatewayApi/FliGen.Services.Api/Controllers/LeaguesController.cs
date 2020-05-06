@@ -39,7 +39,8 @@ namespace FliGen.Services.Api.Controllers
         {
             var query = new LeaguesQuery()
             {
-                LeaguesId = leaguesId
+                LeaguesId = leaguesId,
+                PlayerExternalId = _identityService.GetUserIdentity()
             };
             return await _leaguesService.GetAsync(query);
         }

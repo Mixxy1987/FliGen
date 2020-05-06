@@ -40,8 +40,7 @@ export class MyLeaguesComponent implements OnInit {
     this.leagueTypes = await this.dataService.getLeagueTypes();
   }
 
-  joinLeague(l: League) {
-    this.dataService.joinLeague(l.id)
-      .subscribe(data => this.loadLeagues());
+  async joinLeague(l: League) {
+    await this.dataService.joinLeague(l.id);
   }
 }
