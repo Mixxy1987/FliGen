@@ -31,11 +31,13 @@ namespace FliGen.Services.Leagues.Application.Commands.CreateLeague
 
             var repo = _uow.GetRepositoryAsync<League>();
 
-            var newLeagueId = (await repo.AddAsync(league)).Entity.Id;
+            var entity = (await repo.AddAsync(league)).Entity;
 
             _uow.SaveChanges();
+            
 
-            await _busPublisher.PublishAsync(new LeagueCreated(newLeagueId), context);
+
+            await _busPublisher.PublishAsync(new LeagueCreated(entity.Id), context);
         }
     }
 }

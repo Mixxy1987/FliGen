@@ -30,21 +30,13 @@ namespace FliGen.Services.Leagues.Domain.Entities
 			Type ??= LeagueType.None;
         }
 
-		private League(string name, string description, LeagueType type) : this()
-		{
-			if (string.IsNullOrWhiteSpace(name))
-			{
-				throw new FliGenException(ErrorCodes.CannotCreateLeagueWithEmptyName, "Cannot create league with empty name.");
-			}
-
-			Name = name;
-			Description = description;
-			Type = type;
-			LeagueSettings = LeagueSettings.Create(true, false);
-		}
-
 		private League(string name, string description, LeagueType type, LeagueSettings settings = null) : this()
 		{
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new FliGenException(ErrorCodes.CannotCreateLeagueWithEmptyName, "Cannot create league with empty name.");
+            }
+
 			Name = name;
 			Description = description;
 			Type = type;
@@ -52,7 +44,9 @@ namespace FliGen.Services.Leagues.Domain.Entities
 		}
 
 		public static League Create(string name, string description, LeagueType type, LeagueSettings settings = null)
-		{
+        {
+            settings ??= LeagueSettings.Create(true, false);
+
 			return new League(name, description, type, settings);
 		}
 
