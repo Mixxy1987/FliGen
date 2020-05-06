@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
+using FliGen.Common.RabbitMq;
 
 namespace FliGen.Web
 {
@@ -96,6 +97,7 @@ namespace FliGen.Web
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+            builder.AddRabbitMq("FliGen.Web");
             Container = builder.Build();
 
             return new AutofacServiceProvider(Container);
@@ -124,6 +126,8 @@ namespace FliGen.Web
             app.UseErrorHandler();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRabbitMq();
 
             app.UseIdentityServer();
 

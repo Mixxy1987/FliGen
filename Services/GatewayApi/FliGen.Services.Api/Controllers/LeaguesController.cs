@@ -45,7 +45,7 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet("my")]
-        public async Task<IEnumerable<League>> GetMyLeagues([FromQuery]int[] leaguesId)
+        public async Task<IEnumerable<League>> GetMyLeagues([FromQuery(Name = "id")]int[] leaguesId)
         {
             var query = new LeaguesQuery()
             {

@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
+using FliGen.Services.Players.Application.Events.PlayerRegistered;
 
 namespace FliGen.Services.Players
 {
@@ -81,7 +82,8 @@ namespace FliGen.Services.Players
                 .SubscribeCommand<UpdatePlayer>()
                 .SubscribeCommand<AddPlayer>()
                 .SubscribeCommand<DeletePlayer>()
-                .SubscribeCommand<InboxNotification>();
+                .SubscribeCommand<InboxNotification>()
+                .SubscribeEvent<PlayerRegistered>("web");
 
 			app.UseEndpoints(endpoints =>
 			{

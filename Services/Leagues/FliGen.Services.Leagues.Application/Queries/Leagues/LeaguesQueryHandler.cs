@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
-using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Dto;
 using FliGen.Services.Leagues.Application.Dto.Enum;
 using FliGen.Services.Leagues.Application.Services;
-using FliGen.Services.Leagues.Domain.Common;
 using FliGen.Services.Leagues.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +70,6 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
                 if (playerInternalIdDto is null)
                 {
                     return null;
-                    //throw new FliGenException(ErrorCodes.NoPlayerWithSuchExternalId, $"There is no player with external id: {request.PlayerExternalId}");
                 }
                 lplPredicate = l => l.PlayerId == playerInternalIdDto.InternalId;
             }

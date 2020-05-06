@@ -15,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using FliGen.Common.RabbitMq;
+using FliGen.Web.Event;
 
 namespace FliGen.Web.Areas.Identity.Pages.Account
 {
@@ -26,19 +28,22 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
+        private readonly IBusPublisher _busPublisher;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAuthenticationSchemeProvider schemeProvider)
+            IAuthenticationSchemeProvider schemeProvider,
+            IBusPublisher busPublisher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _schemeProvider = schemeProvider;
+            _busPublisher = busPublisher;
         }
 
         [BindProperty]
@@ -105,7 +110,9 @@ namespace FliGen.Web.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-	                //todo:: publish player registered event
+                    await _busPublisher.PublishAsync(
+                        new PlayerRegistered(user.Id, user.FirstName, user.LastName),
+                        new CorrelationContext());
 
                     _logger.LogInformation("User created a new account with password.");
 
