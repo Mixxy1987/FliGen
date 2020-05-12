@@ -22,7 +22,7 @@ namespace FliGen.Services.Api.Controllers
             IBusPublisher busPublisher,
             ITracer tracer,
             ILeaguesService leaguesService,
-            IIdentityService identityService) : base(busPublisher, tracer)
+            IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _leaguesService = leaguesService;
             _identityService = identityService;

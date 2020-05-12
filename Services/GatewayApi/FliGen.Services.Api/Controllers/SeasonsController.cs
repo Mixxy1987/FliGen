@@ -17,13 +17,16 @@ namespace FliGen.Services.Api.Controllers
     public class SeasonsController : BaseController
     {
         private readonly ISeasonsService _seasonsService;
+        private readonly IIdentityService _identityService;
 
         public SeasonsController(
             IBusPublisher busPublisher,
             ITracer tracer,
-            ISeasonsService seasonsService) : base(busPublisher, tracer)
+            ISeasonsService seasonsService,
+            IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _seasonsService = seasonsService;
+            _identityService = identityService;
         }
 
         [HttpGet("league/{id}/seasons")]

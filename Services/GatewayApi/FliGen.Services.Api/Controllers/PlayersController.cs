@@ -14,13 +14,16 @@ namespace FliGen.Services.Api.Controllers
     public class PlayersController : BaseController
     {
         private readonly IPlayersService _playersService;
+        private readonly IIdentityService _identityService;
 
         public PlayersController(
             IBusPublisher busPublisher,
             ITracer tracer,
-            IPlayersService playersService) : base(busPublisher, tracer)
+            IPlayersService playersService,
+            IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _playersService = playersService;
+            _identityService = identityService;
         }
 
         [HttpGet("HealthCheck")]

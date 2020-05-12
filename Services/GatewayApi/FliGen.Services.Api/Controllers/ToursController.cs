@@ -16,13 +16,16 @@ namespace FliGen.Services.Api.Controllers
     public class ToursController : BaseController
     {
         private readonly IToursService _toursService;
+        private readonly IIdentityService _identityService;
 
         public ToursController(
             IBusPublisher busPublisher,
             ITracer tracer,
-            IToursService toursService) : base(busPublisher, tracer)
+            IToursService toursService,
+            IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _toursService = toursService;
+            _identityService = identityService;
         }
 
         [HttpGet("id")]

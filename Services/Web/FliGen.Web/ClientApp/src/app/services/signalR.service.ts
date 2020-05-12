@@ -21,6 +21,8 @@ export class SignalRService {
     @Inject('BASE_URL') private baseUrl: string,
     private readonly authorizeService: AuthorizeService) {
 
+    Object.defineProperty(WebSocket, 'OPEN', { value: 1, });
+
     this.authorizeService.getAccessToken().pipe(
       take(1)
     ).subscribe(data => this.accessToken = data);

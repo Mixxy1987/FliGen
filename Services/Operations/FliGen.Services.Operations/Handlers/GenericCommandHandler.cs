@@ -26,13 +26,27 @@ namespace FliGen.Services.Operations.Handlers
 
         public async Task HandleAsync(T command, ICorrelationContext context)
         {
-            if (!command.BelongsToSaga())
+            if (command.BelongsToSaga())
             {
-                return;
+                var sagaContext = SagaContext.FromCorrelationContext(context);
+                await _sagaCoordinator.ProcessAsync(command, sagaContext);
             }
 
-            var sagaContext = SagaContext.FromCorrelationContext(context);
-            await _sagaCoordinator.ProcessAsync(command, sagaContext);
+            switch (command)
+            {
+                case IRejectedEvent rejectedEvent:
+                    await _operationsStorage.SetAsync(context.Id, context.UserId,
+                        context.Name, OperationState.Rejected, context.Resource,
+                        rejectedEvent.Code, rejectedEvent.Reason);
+                    await _operationPublisher.RejectAsync(context,
+                        rejectedEvent.Code, rejectedEvent.Reason);
+                    return;
+                case ICommand _:
+                    await _operationsStorage.SetAsync(context.Id, context.UserId,
+                        context.Name, OperationState.Completed, context.Resource);
+                    await _operationPublisher.CompleteAsync(context);
+                    return;
+            }
         }
     }
 }

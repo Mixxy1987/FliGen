@@ -7,6 +7,7 @@ using OpenTracing;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FliGen.Services.Api.Services;
 
 namespace FliGen.Services.Api.Controllers
 {
@@ -21,11 +22,16 @@ namespace FliGen.Services.Api.Controllers
         private static readonly string PageLink = "page";
         private readonly IBusPublisher _busPublisher;
         private readonly ITracer _tracer;
+        private readonly IIdentityService _identityService;
 
-        protected BaseController(IBusPublisher busPublisher, ITracer tracer)
+        protected BaseController(
+            IBusPublisher busPublisher,
+            ITracer tracer,
+            IIdentityService identityService)
         {
             _busPublisher = busPublisher;
             _tracer = tracer;
+            _identityService = identityService;
         }
 
         protected IActionResult Single<T>(T model, Func<T, bool> criteria = null)
@@ -100,9 +106,13 @@ namespace FliGen.Services.Api.Controllers
             => User.IsInRole("admin");
 
         protected Guid UserId
-            => string.IsNullOrWhiteSpace(User?.Identity?.Name) ?
-                Guid.Empty :
-                Guid.Parse(User.Identity.Name);
+        {
+            get
+            {
+                string userId = _identityService.GetUserIdentity();
+                return string.IsNullOrWhiteSpace(userId) ? Guid.Empty : Guid.Parse(userId);
+            }
+        }
 
         protected string Culture
             => Request.Headers.ContainsKey(AcceptLanguageHeader) ?

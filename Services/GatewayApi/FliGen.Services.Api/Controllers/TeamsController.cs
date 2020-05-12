@@ -10,13 +10,16 @@ namespace FliGen.Services.Api.Controllers
     public class TeamsController : BaseController
     {
         private readonly ITeamsService _teamsService;
+        private readonly IIdentityService _identityService;
 
         public TeamsController(
             IBusPublisher busPublisher,
             ITracer tracer,
-            ITeamsService teamsService) : base(busPublisher, tracer)
+            ITeamsService teamsService,
+            IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _teamsService = teamsService;
+            _identityService = identityService;
         }
 
         [HttpPost("generate")]
