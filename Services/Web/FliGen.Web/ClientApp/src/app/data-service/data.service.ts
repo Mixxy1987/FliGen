@@ -8,6 +8,7 @@ import { LeagueType } from "../common/leagueType";
 import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
 import { Player } from "../common/player";
+import { map } from 'rxjs/internal/operators/map';
 
 @Injectable()
 export class DataService {
@@ -31,8 +32,12 @@ export class DataService {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
-  async joinLeague(id: number) {
-    return await this.http.post(this.leaguesUrl + "/join", id).toPromise();;
+  async joinLeague(id: number) : Promise<string> {
+
+    var result = await this.http
+      .post(this.leaguesUrl + "/join", id, { observe: 'response' }).toPromise();
+
+    return result.headers.get('X-Operation');
   }
 
   async getLeagues() {
@@ -88,7 +93,6 @@ export class DataService {
   }
 
   updateLeagueSettings(leagueSettings: LeagueSettings) {
-    debugger;
     return this.http.put(this.leaguesUrl + "/updateSettings", leagueSettings);
   }
 }

@@ -1,27 +1,27 @@
-import { Injectable, Inject, OnInit } from '@angular/core';
-import {
-  HubConnection,
-  HubConnectionBuilder,
-  HubConnectionState,
-  LogLevel
-} from '@microsoft/signalr';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { AuthorizeService } from "../api-authorization/authorize.service";
+import { Inject, Injectable } from '@angular/core';
+import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr';
+import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
+import { AuthorizeService } from "../api-authorization/authorize.service";
+import { Dictionary } from "../utils/dictionary";
+import { ICallbackFunc } from "../utils/ICallbackFunc";
+import { IDictionary } from "../utils/iDictionary";
 
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
 
-  connectionEstablished$ = new BehaviorSubject<boolean>(false);
+  private connectionEstablished$ = new BehaviorSubject<boolean>(false);
   private connection: HubConnection;
   private accessToken: string;
+
+  private callbacks: IDictionary<ICallbackFunc>;
 
   constructor(
     @Inject('BASE_URL') private baseUrl: string,
     private readonly authorizeService: AuthorizeService) {
 
-    Object.defineProperty(WebSocket, 'OPEN', { value: 1, });
+    this.callbacks = new Dictionary<ICallbackFunc>();
 
     this.authorizeService.getAccessToken().pipe(
       take(1)
@@ -30,6 +30,10 @@ export class SignalRService {
     this.createConnection();
     this.registerOnServerEvents();
     this.startConnection();
+  }
+
+  public registerCallback(key: string, value: ICallbackFunc) {
+    this.callbacks.add(key, value);
   }
 
   private createConnection() {
@@ -44,7 +48,6 @@ export class SignalRService {
     if (this.connection.state === HubConnectionState.Connected) {
       return;
     }
-    debugger;
     console.log("Connecting to FliGen Hub...");
 
     this.connection.start().then(
@@ -66,17 +69,23 @@ export class SignalRService {
     });
 
     this.connection.on('operation_pending', (operation) => {
-      debugger;
       console.log("Operation pending.");
     });
 
     this.connection.on('operation_completed', (operation) => {
-      debugger;
+      var id = operation.id;
+
+      if (id) {
+        var key = `operations/${id}`;
+        if (this.callbacks.containsKey(key)) {
+          this.callbacks[key]();
+        }
+      }
+
       console.log("Operation completed.");
     });
 
     this.connection.on('operation_rejected', (operation) => {
-      debugger;
       console.log("Operation rejected.");
     });
   }

@@ -59,7 +59,7 @@ namespace FliGen.Services.Api
                     cors.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        /*.WithExposedHeaders(Headers)*/);
+                        .WithExposedHeaders(Headers));
             });
 
             var tokenValidationParameters = new TokenValidationParameters

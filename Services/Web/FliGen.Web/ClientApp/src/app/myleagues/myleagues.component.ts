@@ -25,7 +25,6 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   async ngOnInit() {
-    debugger;
     this.isAuthenticated = await this.authorizeService.isAuthenticated().pipe(
       take(1)
     ).toPromise();
@@ -48,6 +47,7 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   async joinLeague(l: League) {
-    await this.dataService.joinLeague(l.id);
+    var requestId = await this.dataService.joinLeague(l.id);
+    this.signalrService.registerCallback(requestId, () => this.loadLeagues());
   }
 }

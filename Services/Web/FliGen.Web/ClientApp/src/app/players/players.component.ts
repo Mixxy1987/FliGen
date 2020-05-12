@@ -24,7 +24,6 @@ export class PlayersComponent implements OnInit {
 
   async loadPlayers() {
     this.players = await this.dataService.getPlayers();
-    debugger;
   }
 
   editPlayer(p: Player) {

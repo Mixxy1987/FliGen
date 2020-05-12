@@ -4,6 +4,7 @@ import { AuthorizeService } from "../api-authorization/authorize.service";
 import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
 import { DataService } from "../data-service/data.service";
+import { SignalRService } from "../services/signalR.service";
 
 @Component({
   selector: 'app-leagues',
@@ -21,7 +22,8 @@ export class LeaguesComponent implements OnInit {
 
   constructor(
     private readonly dataService: DataService,
-    private readonly authorizeService: AuthorizeService) {
+    private readonly authorizeService: AuthorizeService,
+    private readonly signalrService: SignalRService) {
   }
 
   async ngOnInit() {
@@ -73,6 +75,7 @@ export class LeaguesComponent implements OnInit {
   }
 
   async joinLeague(l: League) {
-    await this.dataService.joinLeague(l.id);
+    var requestId = await this.dataService.joinLeague(l.id);
+    this.signalrService.registerCallback(requestId, () => this.loadLeagues());
   }
 }
