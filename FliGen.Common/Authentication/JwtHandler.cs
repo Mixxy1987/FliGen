@@ -31,12 +31,15 @@ namespace FliGen.Common.Authentication
             _signingCredentials = new SigningCredentials(issuerSigningKey, SecurityAlgorithms.HmacSha256);
             _tokenValidationParameters = new TokenValidationParameters
             {
-                IssuerSigningKey = issuerSigningKey,
+                //IssuerSigningKey = issuerSigningKey,
                 ValidIssuer = _options.Issuer,
                 ValidAudience = _options.ValidAudience,
                 ValidateAudience = _options.ValidateAudience,
-                ValidateLifetime = _options.ValidateLifetime
+                ValidateLifetime = _options.ValidateLifetime,
+                ValidateIssuer = _options.ValidateIssuer,
+                ValidateIssuerSigningKey = false,
             };
+
         }
 
         public JsonWebToken CreateToken(string userId, string role = null, IDictionary<string, string> claims = null)
@@ -85,20 +88,25 @@ namespace FliGen.Common.Authentication
 
         public JsonWebTokenPayload GetTokenPayload(string accessToken)
         {
-            _jwtSecurityTokenHandler.ValidateToken(accessToken, _tokenValidationParameters,
+
+            var jwt = _jwtSecurityTokenHandler.ReadToken(accessToken) as JwtSecurityToken;
+
+            //todo:: uncomment and validate token
+
+            /*_jwtSecurityTokenHandler.ValidateToken(accessToken, _tokenValidationParameters,
                 out var validatedSecurityToken);
             if (!(validatedSecurityToken is JwtSecurityToken jwt))
             {
                 return null;
-            }
+            }*/
 
             return new JsonWebTokenPayload
             {
                 Subject = jwt.Subject,
                 Role = jwt.Claims.SingleOrDefault(x => x.Type == ClaimTypes.Role)?.Value,
                 Expires = jwt.ValidTo.ToTimestamp(),
-                Claims = jwt.Claims.Where(x => !DefaultClaims.Contains(x.Type))
-                    .ToDictionary(k => k.Type, v => v.Value)
+                /*Claims = jwt.Claims.Where(x => !DefaultClaims.Contains(x.Type))
+                    .ToDictionary(k => k.Type, v => v.Value)*/
             };
         }
     }

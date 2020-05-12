@@ -68,7 +68,7 @@ namespace FliGen.Common.Logging
 
         private static string CleanTypeName(string name)
         {
-            return name.Remove(name.IndexOf(',')); //todo:: what here?
+            return name.Remove(name.IndexOf('`'));
         }
     }
 }

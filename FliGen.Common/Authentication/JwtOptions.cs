@@ -7,6 +7,7 @@
         public int ExpiryMinutes { get; set; }
         public bool ValidateLifetime { get; set; }
         public bool ValidateAudience { get; set; }
+        public bool ValidateIssuer { get; set; }
         public string ValidAudience { get; set; }
     }
 }

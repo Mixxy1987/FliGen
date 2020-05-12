@@ -31,7 +31,8 @@
     "oidc-client": "^1.9.1",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.4",
-    "zone.js": "0.9.1"
+    "zone.js": "0.9.1",
+    "@microsoft/signalr": "3.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.25",

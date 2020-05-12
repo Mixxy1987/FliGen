@@ -8,11 +8,11 @@ namespace FliGen.Services.Signalr.Hubs
 {
     public class FliGenHub : Hub
     {
-        //private readonly IJwtHandler _jwtHandler;
+        private readonly IJwtHandler _jwtHandler;
 
-        public FliGenHub(/*IJwtHandler jwtHandler*/)
+        public FliGenHub(IJwtHandler jwtHandler)
         {
-            //_jwtHandler = jwtHandler;
+            _jwtHandler = jwtHandler;
         }
 
         public async Task InitializeAsync(string token)
@@ -23,18 +23,18 @@ namespace FliGen.Services.Signalr.Hubs
             }
             try
             {
-                var payload = token; //_jwtHandler.GetTokenPayload(token); //todo:: remove comments 
+                var payload = _jwtHandler.GetTokenPayload(token);
                 if (payload == null)
                 {
                     await DisconnectAsync();
 
                     return;
                 }
-                var group = Guid.Parse(payload/*.Subject*/).ToUserGroup();
+                var group = Guid.Parse(payload.Subject).ToUserGroup();
                 await Groups.AddToGroupAsync(Context.ConnectionId, group);
                 await ConnectAsync();
             }
-            catch
+            catch(Exception e)
             {
                 await DisconnectAsync();
             }

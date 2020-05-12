@@ -64,7 +64,6 @@ namespace FliGen.Services.Api
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-
                 RequireExpirationTime = true,
                 RequireSignedTokens = false,
                 ValidateIssuerSigningKey = true,

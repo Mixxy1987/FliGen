@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
+using FliGen.Common.Authentication;
 
 namespace FliGen.Services.Signalr
 {
@@ -38,18 +39,32 @@ namespace FliGen.Services.Signalr
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    b => b.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-            });
+
+            services
+                .AddCors(options =>
+                {
+                    options.AddPolicy("CorsPolicy",
+                        builder => builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                    );
+
+                    options.AddPolicy("signalr",
+                        builder => builder
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials()
+                            .SetIsOriginAllowed(hostName => true));
+                });
+
             AddSignalR(services);
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            
+
+            services.AddJwt();
+
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
@@ -86,29 +101,25 @@ namespace FliGen.Services.Signalr
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseRouting();
 
-            app.UseCors("CorsPolicy");
+            app.UseCors("signalr");
             app.UseStaticFiles();
             app.UseErrorHandler();
             app.UseAuthentication();
-
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<FliGenHub>($"/{signalrOptions.Hub}");
-            });
-
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<FliGenHub>($"/{signalrOptions.Hub}");
             });
 
-
             app.UseRabbitMq()
-                .SubscribeEvent<OperationPending>(@namespace: "operations")
-                .SubscribeEvent<OperationCompleted>(@namespace: "operations")
-                .SubscribeEvent<OperationRejected>(@namespace: "operations");
+                .SubscribeEvent<OperationPending>("operations")
+                .SubscribeEvent<OperationCompleted>("operations")
+                .SubscribeEvent<OperationRejected>("operations");
 
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() => 
