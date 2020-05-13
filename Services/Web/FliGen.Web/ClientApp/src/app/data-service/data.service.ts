@@ -34,8 +34,10 @@ export class DataService {
 
   async joinLeague(id: number) : Promise<string> {
 
-    var result = await this.http
-      .post(this.leaguesUrl + "/join", id, { observe: 'response' }).toPromise();
+    var result =
+      await this.http
+      .post(this.leaguesUrl + "/join", id, { observe: 'response' })
+      .toPromise();
 
     return result.headers.get('X-Operation');
   }
@@ -52,16 +54,31 @@ export class DataService {
     return await this.http.get<LeagueType[]>(this.leaguesUrl + "/types").toPromise();
   }
 
-  async createLeague(league: League) {
-    return await this.http.post<League>(this.leaguesUrl, league).toPromise();;
+  async createLeague(league: League): Promise<string>  {
+
+    var result =
+      await this.http
+        .post<League>(this.leaguesUrl, league, { observe: 'response' })
+        .toPromise();
+
+    return result.headers.get('X-Operation');
   }
 
-  async updateLeague(league: League) {
-    return await this.http.put(this.leaguesUrl + "/update", league).toPromise();
+  async updateLeague(league: League) : Promise<string> {
+    var result =
+      await this.http
+        .put(this.leaguesUrl + "/update", league, { observe: 'response' })
+        .toPromise();
+
+    return result.headers.get('X-Operation');
   }
 
-  deleteLeague(id: number) {
-    return this.http.delete(this.leaguesUrl + "/" + id);
+  async deleteLeague(id: number): Promise<string> {
+    var result = await this.http
+      .delete(this.leaguesUrl + "/" + id, { observe: 'response' })
+      .toPromise();
+
+    return result.headers.get('X-Operation');
   }
   
   async getLeagueInformation(id: number) {

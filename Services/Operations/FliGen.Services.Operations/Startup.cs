@@ -62,7 +62,6 @@ namespace FliGen.Services.Operations
                 .As(typeof(IEventHandler<>));
             builder.RegisterGeneric(typeof(GenericCommandHandler<>))
                 .As(typeof(ICommandHandler<>));
-            //builder.AddMediator("FliGen.Services.Operations.Application");
             builder.AddRequestLogDecorator();
             builder.AddRequestValidationDecorator();
             builder.AddRequestValidationCommandHandlerDecorator();

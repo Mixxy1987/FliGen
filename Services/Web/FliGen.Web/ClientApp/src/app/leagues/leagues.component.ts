@@ -49,12 +49,13 @@ export class LeaguesComponent implements OnInit {
 
   async save() {
     this.league.leagueType = new LeagueType(this.newLeagueType.name);
+    let requestId : string;
     if (this.league.id == null) {
-      await this.dataService.createLeague(this.league);
+      requestId = await this.dataService.createLeague(this.league);
     } else {
-      await this.dataService.updateLeague(this.league);
+      requestId = await this.dataService.updateLeague(this.league);
     }
-    await this.loadLeagues();
+    this.signalrService.registerCallback(requestId, () => this.loadLeagues());
     this.cancel();
   }
 
@@ -63,9 +64,9 @@ export class LeaguesComponent implements OnInit {
     this.tableMode = true;
   }
 
-  delete(l: League) {
-    this.dataService.deleteLeague(l.id)
-      .subscribe(data => this.loadLeagues());
+  async delete(l: League) {
+    let requestId = await this.dataService.deleteLeague(l.id);
+    this.signalrService.registerCallback(requestId, () => this.loadLeagues());
   }
 
   add() {
@@ -75,7 +76,7 @@ export class LeaguesComponent implements OnInit {
   }
 
   async joinLeague(l: League) {
-    var requestId = await this.dataService.joinLeague(l.id);
+    let requestId = await this.dataService.joinLeague(l.id);
     this.signalrService.registerCallback(requestId, () => this.loadLeagues());
   }
 }
