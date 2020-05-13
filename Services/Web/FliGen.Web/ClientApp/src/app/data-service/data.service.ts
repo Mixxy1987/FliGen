@@ -109,7 +109,11 @@ export class DataService {
     return await this.http.get<LeagueSettings>(this.leaguesUrl + "/" + id + "/settings").toPromise();;
   }
 
-  updateLeagueSettings(leagueSettings: LeagueSettings) {
-    return this.http.put(this.leaguesUrl + "/updateSettings", leagueSettings);
+  async updateLeagueSettings(leagueSettings: LeagueSettings) {
+    var result = await this.http
+      .put(this.leaguesUrl + "/updateSettings", leagueSettings, { observe: 'response' })
+      .toPromise();
+
+    return result.headers.get('X-Operation');
   }
 }

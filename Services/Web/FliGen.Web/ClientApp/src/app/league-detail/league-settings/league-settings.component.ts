@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AutofillMonitor } from '@angular/cdk/text-field';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LeagueSettings } from "../../common/leagueSettings";
 import { DataService } from "../../data-service/data.service";
-import { AutofillMonitor } from '@angular/cdk/text-field';
+import { SignalRService } from "../../services/signalR.service";
 
 @Component({
   selector: 'app-league-settings',
@@ -11,13 +12,14 @@ import { AutofillMonitor } from '@angular/cdk/text-field';
 })
 
 export class LeagueSettingsComponent implements OnInit{
-  id: number;
-  leagueSettings: LeagueSettings;
-  loaded: boolean = false;
+  private readonly id: number;
+  private leagueSettings: LeagueSettings;
+  private loaded: boolean = false;
 
   constructor(
-    private dataService: DataService,
-    activeRoute: ActivatedRoute)
+    private readonly dataService: DataService,
+    private readonly activeRoute: ActivatedRoute,
+    private readonly signalrService: SignalRService)
   {
     this.id = Number.parseInt(activeRoute.snapshot.params["id"]);
   }
@@ -46,7 +48,9 @@ export class LeagueSettingsComponent implements OnInit{
     }
   }
 
-  updateLeagueSettings(leagueSettings: LeagueSettings) {
-    this.dataService.updateLeagueSettings(leagueSettings).subscribe(data => this.loadLeagueSettings());;
+  async updateLeagueSettings(leagueSettings: LeagueSettings) {
+
+    var requestId = await this.dataService.updateLeagueSettings(leagueSettings);
+    this.signalrService.registerCallback(requestId, () => this.loadLeagueSettings());
   }
 }

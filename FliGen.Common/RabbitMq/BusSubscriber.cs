@@ -128,6 +128,12 @@ namespace FliGen.Common.RabbitMq
                             return new Ack();
                         }
 
+                        if (exception is RequestValidationException validationException)
+                        {
+                            span.SetTag("error-type", "domain");
+                            return new Ack();
+                        }
+
                         span.SetTag("error-type", "infrastructure");
                         throw new Exception($"Unable to handle a message: '{messageName}' " +
                                             $"with correlation id: '{correlationContext.Id}', " +
