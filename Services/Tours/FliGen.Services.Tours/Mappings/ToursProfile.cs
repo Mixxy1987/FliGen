@@ -7,11 +7,11 @@ namespace FliGen.Services.Tours.Mappings
         public ToursProfile()
         {
             CreateMap<Domain.Entities.Tour, Application.Dto.TourDto>()
-                .ForMember(x => x.Date, ls => ls.MapFrom(s => s.Date.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.HomeCount, ls => ls.MapFrom(s => s.HomeCount))
-                .ForMember(x => x.GuestCount, ls => ls.MapFrom(s => s.GuestCount))
-                .ForMember(x => x.SeasonId, ls => ls.MapFrom(s => s.SeasonId))
-                .ForMember(x => x.TourStatus, ls => ls.MapFrom(s => s.TourStatus.Id));
+                .ForMember(x => x.Date, t => t.MapFrom(s => s.Date.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.HomeCount, t => t.MapFrom(s => s.HomeCount))
+                .ForMember(x => x.GuestCount, t => t.MapFrom(s => s.GuestCount))
+                .ForMember(x => x.SeasonId, t => t.MapFrom(s => s.SeasonId))
+                .ForMember(x => x.TourStatus, t => t.MapFrom(s => s.TourStatus.Id));
         }
     }
 }

@@ -5,7 +5,7 @@ import { take } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { AuthorizeService } from "../api-authorization/authorize.service";
 import { Dictionary } from "../utils/dictionary";
-import { ICallbackFunc } from "../utils/ICallbackFunc";
+import { ICallbackFunc } from "../utils/iCallbackFunc";
 import { IDictionary } from "../utils/iDictionary";
 
 @Injectable({ providedIn: 'root' })
