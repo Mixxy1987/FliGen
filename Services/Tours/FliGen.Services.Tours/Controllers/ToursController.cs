@@ -32,7 +32,7 @@ namespace FliGen.Services.Tours.Controllers
 
         [HttpGet]
         [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> GetTours([FromBody]ToursQuery query)
+        public Task<IEnumerable<TourDto>> GetTours([FromQuery]ToursQuery query)
         {
             return _mediatr.Send(query);
         }

@@ -12,5 +12,9 @@ namespace FliGen.Services.Tours.Application.Services
         [AllowAnyStatusCode]
         [Get("leagues")]
         Task<IEnumerable<LeagueDto>> GetLeaguesAsync([Query]LeaguesQuery leaguesQuery);
+
+        [AllowAnyStatusCode]
+        [Get("leagues/playerJoinedLeagues")]
+        Task<int[]> GetPlayerJoinedLeagues([Query]int playerId);
     }
 }

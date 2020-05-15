@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FliGen.Services.Seasons.Application.Queries.LeaguesIdBySeasonsId;
+using FliGen.Services.Seasons.Application.Queries.LeaguesSeasonsIdQuery;
 
 namespace FliGen.Services.Seasons.Controllers
 {
@@ -45,14 +45,18 @@ namespace FliGen.Services.Seasons.Controllers
             return _mediatr.Send(query);
         }
 
-        [HttpGet("leaguesIdBySeasonsId")]
-        [Produces(typeof(IEnumerable<LeagueIdBySeasonIdDto>))]
-        public Task<IEnumerable<LeagueIdBySeasonIdDto>> GetLeaguesIdBySeasonsId(
-            [FromQuery(Name = "id")]int[] seasonsId)
+        [HttpGet("leaguesSeasonsId")]
+        [Produces(typeof(IEnumerable<LeaguesSeasonsIdDto>))]
+        public Task<IEnumerable<LeaguesSeasonsIdDto>> GetLeaguesSeasonsId(
+            [FromQuery(Name = "seasonId")]int[] seasonsId,
+            [FromQuery(Name = "leagueId")]int[] leaguesId, 
+            [FromQuery]LeaguesSeasonsIdQueryType queryType)
         {
-            var query = new LeaguesIdBySeasonsIdQuery()
+            var query = new LeaguesSeasonsIdQuery()
             {
                 SeasonsId = seasonsId,
+                LeaguesId = leaguesId,
+                LeaguesSeasonsIdQueryType = queryType
             };
 
             return _mediatr.Send(query);

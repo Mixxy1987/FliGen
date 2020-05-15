@@ -73,8 +73,9 @@ namespace FliGen.Services.Tours
 			services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
 			services.RegisterServiceForwarder<IPlayersService>("players-service");
 			services.RegisterServiceForwarder<ITeamsService>("teams-service");
+            services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
 
-			var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder();
 
             ConfigureContainer(builder);
             builder.Populate(services);

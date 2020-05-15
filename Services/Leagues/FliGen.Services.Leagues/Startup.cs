@@ -21,11 +21,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common.Extensions;
+using FliGen.Common.Swagger;
 
 namespace FliGen.Services.Leagues
 {
     public class Startup
     {
+        private SwaggerOptions _swaggerOptions;
         public IConfiguration Configuration { get; }
         public IContainer Container { get; private set; }
 
@@ -39,6 +42,8 @@ namespace FliGen.Services.Leagues
             string connectionString = Configuration["TestConnection"] ??
                                       Configuration.GetConnectionString("DefaultConnection");
 
+            _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
+
             services.AddDbContext<LeaguesContext>(options => options.UseSqlServer(connectionString),
                     contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<LeaguesContext>();
@@ -47,6 +52,20 @@ namespace FliGen.Services.Leagues
 
             services.AddJaeger();
             services.AddOpenTracing();
+
+            if (_swaggerOptions.Enabled)
+            {
+                services.AddSwaggerDocument(config =>
+                {
+                    config.PostProcess = document =>
+                    {
+                        document.Info.Version = "v1";
+                        document.Info.Title = "Seasons Api";
+                        document.Info.Description = "Seasons Service Api";
+                        document.Info.TermsOfService = "None";
+                    };
+                });
+            }
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
             services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
@@ -90,6 +109,12 @@ namespace FliGen.Services.Leagues
                 .SubscribeCommand<JoinLeague>()
                 .SubscribeCommand<UpdateLeague>()
                 .SubscribeCommand<UpdateLeagueSettings>();
+
+            if (_swaggerOptions.Enabled)
+            {
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+            }
 
             app.UseEndpoints(endpoints =>
             {

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Services.Tours.Application.Queries.LeaguesSeasonsIdQuery;
 
 namespace FliGen.Services.Tours.Application.Queries.Tours
 {
@@ -20,15 +21,21 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
         private readonly ITeamsService _teamsService;
+        private readonly ISeasonsService _seasonsService;
+        private readonly ILeaguesService _leaguesService;
 
         public ToursQueryHandler(
             IUnitOfWork uow,
             IMapper mapper,
-            ITeamsService teamsService)
+            ITeamsService teamsService,
+            ISeasonsService seasonsService,
+            ILeaguesService leaguesService)
         {
             _uow = uow;
             _mapper = mapper;
             _teamsService = teamsService;
+            _seasonsService = seasonsService;
+            _leaguesService = leaguesService;
         }
 
         public async Task<IEnumerable<TourDto>> Handle(ToursQuery request, CancellationToken cancellationToken)
@@ -48,7 +55,14 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             }
             else
             {
-                tours = await FilterByPlayerId(request, toursRepo, predicate);
+                if (request.QueryType == ToursQueryType.Incoming)
+                {
+                    tours = await FilterByPlayerIdAndIncomingStatus(request, toursRepo);
+                }
+                else
+                {
+                    tours = await FilterByPlayerId(request, toursRepo, predicate);
+                }
             }
             
             var toursDtos = new List<TourDto>();
@@ -63,7 +77,56 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
                 toursDtos.Add(_mapper.Map<TourDto>(tour));
             }
 
+            await EnrichTourDtoByLeagueId(toursDtos);
+
             return toursDtos;
+        }
+
+        private async Task EnrichTourDtoByLeagueId(IReadOnlyCollection<TourDto> toursDtos)
+        {
+            var leaguesIdDtos = await _seasonsService.GetLeaguesSeasonsId(
+                Array.Empty<int>(),
+                toursDtos.Select(t => t.SeasonId).Distinct().ToArray(),
+                LeaguesSeasonsIdQueryType.All);
+
+            var dict = new Dictionary<int, int>();
+
+            foreach (var dto in leaguesIdDtos)
+            {
+                dict[dto.SeasonId] = dto.LeagueId;
+            }
+
+            foreach (var dto in toursDtos)
+            {
+                dto.LeagueId = dict[dto.SeasonId];
+            }
+        }
+
+        private async Task<IPaginate<Tour>> FilterByPlayerIdAndIncomingStatus(
+            ToursQuery request,
+            IRepositoryReadOnly<Tour> toursRepo)
+        {
+            var leaguesId = await _leaguesService.GetPlayerJoinedLeagues(request.PlayerId);
+            var actualSeasons = await _seasonsService.GetLeaguesSeasonsId(
+                leaguesId,
+                Array.Empty<int>(),
+                LeaguesSeasonsIdQueryType.Actual);
+
+            var tours = new List<Tour>();
+
+            foreach (var season in actualSeasons)
+            {
+                var tour = toursRepo.Single(
+                    predicate: t => t.SeasonId == season.SeasonId,
+                    orderBy: q => q.OrderByDescending(t => t.Date));
+
+                if (tour != null && !tour.IsRegistrationClosed())
+                {
+                    tours.Add(tour);
+                }
+            }
+
+            return tours.ToPaginate(0, tours.Count);
         }
 
         private async Task<IPaginate<Tour>> FilterByPlayerId(
