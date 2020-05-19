@@ -20,12 +20,6 @@ namespace FliGen.Services.Teams.Controllers
 			_mediatr = mediatr;
 		}
 
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Teams service ready!");
-        }
-
 		[HttpGet("ToursByPlayerId")]
         [Produces(typeof(ToursByPlayerIdDto))]
         public Task<ToursByPlayerIdDto> Get(int size, int page, [FromQuery]int playerId)

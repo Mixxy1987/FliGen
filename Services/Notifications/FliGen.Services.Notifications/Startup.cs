@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
+using FliGen.Common.Consul;
 
 namespace FliGen.Services.Notifications
 {
@@ -43,7 +44,7 @@ namespace FliGen.Services.Notifications
                 .AddUnitOfWork<NotificationsContext>();
 
             services.AddControllers();
-
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
 

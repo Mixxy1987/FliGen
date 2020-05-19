@@ -24,12 +24,6 @@ namespace FliGen.Services.Tours.Controllers
 			_mediatr = mediatr;
 		}
 
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Tours service ready!");
-        }
-
         [HttpGet]
         [Produces(typeof(IEnumerable<TourDto>))]
         public Task<IEnumerable<TourDto>> GetTours([FromQuery]ToursQuery query)

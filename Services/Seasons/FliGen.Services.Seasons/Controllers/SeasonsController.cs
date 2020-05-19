@@ -22,12 +22,6 @@ namespace FliGen.Services.Seasons.Controllers
 			_mediatr = mediatr;
 		}
 
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Seasons service ready!");
-        }
-
         [HttpGet("league/{id}/seasons")]
         [Produces(typeof(IEnumerable<SeasonDto>))]
         public Task<IEnumerable<SeasonDto>> Get(

@@ -1,11 +1,13 @@
-using System;
-using System.Linq;
-using System.Net.Http;
+using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
+using FliGen.Common.Fabio;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RestEase;
+using System;
+using System.Linq;
+using System.Net.Http;
 
 namespace FliGen.Common.RestEase
 {
@@ -17,21 +19,19 @@ namespace FliGen.Common.RestEase
             var clientName = typeof(T).ToString();
             var options = ConfigureOptions(services);
 
-
             ConfigureDefaultClient(services, clientName, serviceName, options);
-            //todo:: add consul + fabio
-            /* switch (options.LoadBalancer?.ToLowerInvariant())
-             {
-                 case "consul":
-                     ConfigureConsulClient(services, clientName, serviceName);
-                     break;
-                 case "fabio":
-                     ConfigureFabioClient(services, clientName, serviceName);
-                     break;
-                 default:
-                     ConfigureDefaultClient(services, clientName, serviceName, options);
-                     break;
-             }*/
+            switch (options.LoadBalancer?.ToLowerInvariant())
+            {
+                case "consul":
+                    ConfigureConsulClient(services, clientName, serviceName);
+                    break;
+                case "fabio":
+                    ConfigureFabioClient(services, clientName, serviceName);
+                    break;
+                default:
+                    ConfigureDefaultClient(services, clientName, serviceName, options);
+                    break;
+            }
 
             ConfigureForwarder<T>(services, clientName);
         }
@@ -49,7 +49,7 @@ namespace FliGen.Common.RestEase
             return configuration.GetOptions<RestEaseOptions>("restEase");
         }
 
-        /*private static void ConfigureConsulClient(IServiceCollection services, string clientName,
+        private static void ConfigureConsulClient(IServiceCollection services, string clientName,
             string serviceName)
         {
             services.AddHttpClient(clientName)
@@ -64,7 +64,7 @@ namespace FliGen.Common.RestEase
             services.AddHttpClient(clientName)
                 .AddHttpMessageHandler(c =>
                     new FabioMessageHandler(c.GetService<IOptions<FabioOptions>>(), serviceName));
-        }*/
+        }
 
         private static void ConfigureDefaultClient(IServiceCollection services, string clientName,
             string serviceName, RestEaseOptions options)

@@ -28,10 +28,10 @@ namespace FliGen.Services.Api.Controllers
             _identityService = identityService;
         }
 
-        [HttpGet("HealthCheck")]
+        [HttpGet("Ping")]
         public Task HealthCheck()
         {
-            return Task.FromResult(_leaguesService.HealthCheck());
+            return Task.FromResult(_leaguesService.Ping());
         }
 
         [HttpGet]

@@ -23,12 +23,6 @@ namespace FliGen.Services.Players.Controllers
             _mediatr = mediatr;
         }
 
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Players service ready!");
-        }
-
         [HttpGet]
         [Produces(typeof(IEnumerable<PlayerWithRate>))]
         public async Task<IEnumerable<PlayerWithRate>> GetAsync([FromQuery]PlayersQuery query)

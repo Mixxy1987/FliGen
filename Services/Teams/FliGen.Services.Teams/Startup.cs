@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common.Consul;
 
 namespace FliGen.Services.Teams
 {
@@ -42,7 +43,7 @@ namespace FliGen.Services.Teams
                 .AddUnitOfWork<TeamsContext>();
 
             services.AddControllers();
-
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
 

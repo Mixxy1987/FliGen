@@ -10,7 +10,6 @@ namespace FliGen.Services.Api.Controllers
     public class TeamsController : BaseController
     {
         private readonly ITeamsService _teamsService;
-        private readonly IIdentityService _identityService;
 
         public TeamsController(
             IBusPublisher busPublisher,
@@ -19,7 +18,12 @@ namespace FliGen.Services.Api.Controllers
             IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _teamsService = teamsService;
-            _identityService = identityService;
+        }
+
+        [HttpGet("Ping")]
+        public Task HealthCheck()
+        {
+            return Task.FromResult(_teamsService.Ping());
         }
 
         [HttpPost("generate")]

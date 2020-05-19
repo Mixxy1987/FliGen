@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
+using FliGen.Common.Consul;
 
 namespace FliGen.Services.Operations
 {
@@ -34,7 +35,7 @@ namespace FliGen.Services.Operations
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();

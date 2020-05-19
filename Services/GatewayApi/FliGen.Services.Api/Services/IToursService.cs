@@ -12,6 +12,10 @@ namespace FliGen.Services.Api.Services
     public interface IToursService
     {
         [AllowAnyStatusCode]
+        [Get("Ping")]
+        Task Ping();
+
+        [AllowAnyStatusCode]
         [Get("tours/id")]
         Task<Tour> GetAsync([Query]TourByIdQuery query);
 

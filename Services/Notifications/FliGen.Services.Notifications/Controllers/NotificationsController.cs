@@ -18,11 +18,5 @@ namespace FliGen.Services.Notifications.Controllers
             _logger = logger;
             _mediatr = mediatr;
         }
-
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Notifications service ready!");
-        }
     }
 }

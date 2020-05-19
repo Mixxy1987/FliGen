@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Consul;
+using FliGen.Common.Extensions;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
@@ -7,6 +9,7 @@ using FliGen.Common.Mvc;
 using FliGen.Common.RabbitMq;
 using FliGen.Common.RestEase;
 using FliGen.Common.SeedWork.Repository.DependencyInjection;
+using FliGen.Common.Swagger;
 using FliGen.Services.Leagues.Application.Commands.CreateLeague;
 using FliGen.Services.Leagues.Application.Commands.DeleteLeague;
 using FliGen.Services.Leagues.Application.Commands.JoinLeague;
@@ -21,8 +24,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.Extensions;
-using FliGen.Common.Swagger;
 
 namespace FliGen.Services.Leagues
 {
@@ -49,7 +50,7 @@ namespace FliGen.Services.Leagues
                 .AddUnitOfWork<LeaguesContext>();
 
             services.AddControllers();
-
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
 

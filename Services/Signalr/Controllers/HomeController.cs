@@ -6,6 +6,9 @@ namespace FliGen.Services.Signalr.Controllers
     public class HomeController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get() => Ok("FliGen SignalR Service");
+        public IActionResult Get() => Ok("FliGen SignalR service");
+
+        [HttpGet("ping")]
+        public IActionResult Ping() => Ok("pong");
     }
 }

@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
@@ -40,7 +41,7 @@ namespace FliGen.Services.Seasons
             _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
 
             services.AddControllers();
-
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
 

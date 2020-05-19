@@ -11,8 +11,8 @@ namespace FliGen.Services.Api.Services
     public interface IPlayersService
     {
         [AllowAnyStatusCode]
-        [Get("HealthCheck")]
-        Task HealthCheck();
+        [Get("Ping")]
+        Task Ping();
 
         [AllowAnyStatusCode]
         [Get("players")]

@@ -16,7 +16,6 @@ namespace FliGen.Services.Api.Controllers
     public class ToursController : BaseController
     {
         private readonly IToursService _toursService;
-        private readonly IIdentityService _identityService;
 
         public ToursController(
             IBusPublisher busPublisher,
@@ -25,7 +24,12 @@ namespace FliGen.Services.Api.Controllers
             IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _toursService = toursService;
-            _identityService = identityService;
+        }
+
+        [HttpGet("Ping")]
+        public Task HealthCheck()
+        {
+            return Task.FromResult(_toursService.Ping());
         }
 
         [HttpGet("id")]

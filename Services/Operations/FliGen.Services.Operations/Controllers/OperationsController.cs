@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using FliGen.Services.Operations.Dto;
 using FliGen.Services.Operations.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace FliGen.Services.Operations.Controllers
 {
@@ -14,12 +14,6 @@ namespace FliGen.Services.Operations.Controllers
         public OperationsController(IOperationsStorage operationsStorage)
         {
             _operationsStorage = operationsStorage;
-        }
-
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Operations service ready!");
         }
 
         [HttpGet("{id}")]

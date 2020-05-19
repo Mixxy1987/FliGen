@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FliGen.Services.Operations.Controllers
+namespace FliGen.Services.Teams.Controllers
 {
     [Route("")]
     public class HomeController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get() => Ok("Operations service ready!");
+        public IActionResult Get() => Ok("Teams service ready!");
 
         [HttpGet("ping")]
         public IActionResult Ping() => Ok("pong");

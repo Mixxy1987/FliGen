@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.RabbitMq;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Reflection;
@@ -34,9 +34,9 @@ namespace FliGen.Services.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true; // temp
             _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
 
+            services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
             if (_swaggerOptions.Enabled)
@@ -91,8 +91,7 @@ namespace FliGen.Services.Api
             services.RegisterServiceForwarder<ITeamsService>("teams-service");
 
             services.AddHttpContextAccessor();
-            services
-                .AddControllers()
+            services.AddControllers()
                 .AddNewtonsoftJson();
 
             var builder = new ContainerBuilder();
@@ -115,7 +114,11 @@ namespace FliGen.Services.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
             //app.UseHttpsRedirection();
+
+
             app.UseRabbitMq();
             app.UseRouting();
             app.UseCors("CorsPolicy");

@@ -29,12 +29,6 @@ namespace FliGen.Services.Leagues.Controllers
             _mediatr = mediatr;
         }
 
-        [HttpGet("HealthCheck")]
-        public IActionResult HealthCheck()
-        {
-            return Ok("Leagues service ready!");
-        }
-
         [HttpGet("types")]
         [Produces(typeof(IEnumerable<LeagueType>))]
         public Task<IEnumerable<LeagueType>> GetTypes()

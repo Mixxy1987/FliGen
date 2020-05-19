@@ -1,16 +1,10 @@
 ﻿using FliGen.Common.RabbitMq;
-using FliGen.Services.Api.Messages.Commands.Tours;
-using FliGen.Services.Api.Models;
-using FliGen.Services.Api.Models.Tours;
-using FliGen.Services.Api.Queries.Tours;
+using FliGen.Services.Api.Models.Seasons;
 using FliGen.Services.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
-using FliGen.Services.Api.Models.Seasons;
 
 namespace FliGen.Services.Api.Controllers
 {
@@ -27,6 +21,12 @@ namespace FliGen.Services.Api.Controllers
         {
             _seasonsService = seasonsService;
             _identityService = identityService;
+        }
+
+        [HttpGet("Ping")]
+        public Task HealthCheck()
+        {
+            return Task.FromResult(_seasonsService.Ping());
         }
 
         [HttpGet("league/{id}/seasons")]

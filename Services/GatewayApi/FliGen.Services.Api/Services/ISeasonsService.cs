@@ -10,6 +10,10 @@ namespace FliGen.Services.Api.Services
     public interface ISeasonsService
     {
         [AllowAnyStatusCode]
+        [Get("Ping")]
+        Task Ping();
+
+        [AllowAnyStatusCode]
         [Get("seasons/league/{id}/seasons")]
         Task<IEnumerable<Season>> GetAsync([Path(Name = "id")]int leagueId, [Query(Name = "id")]int[] seasonsId);
 
