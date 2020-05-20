@@ -24,22 +24,33 @@ export class DataService {
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
-      this.playersUrl = this.baseUrl + "players";
-      this.leaguesUrl = this.baseUrl + "leagues";
-      this.myToursUrl = this.baseUrl + "mytours";
-      this.seasonsUrl = this.baseUrl + "seasons";
-      this.toursUrl = this.baseUrl + "tours";
+    this.playersUrl = this.baseUrl + "players";
+    this.leaguesUrl = this.baseUrl + "leagues";
+    this.myToursUrl = this.baseUrl + "mytours";
+    this.seasonsUrl = this.baseUrl + "seasons";
+    this.toursUrl = this.baseUrl + "tours";
   }
 
-  async getTours(playerId: number, seasonId: number): Promise<Tour[]> {
-    return await this.http.get<Tour[]>(
-      this.toursUrl + "/player/" + playerId + "/seasons?id=" + seasonId + "&queryType=" + ToursQueryType.Incoming)
-      .toPromise();
+  async getTours(
+    playerId: number,
+    seasonsId: number[],
+    queryType: ToursQueryType): Promise<Tour[]> {
+      let url: string = this.toursUrl + "/player/" + playerId + "/seasons?";
+      for (let i = 0; i < seasonsId.length; i++) {
+        url += `id=${seasonsId[i]}`;
+        if (i !== seasonsId.length - 1) {
+          url += "&";
+        }
+      }
+      url += `&queryType=${queryType}`;
+      return await this.http.get<Tour[]>(url).toPromise();
   }
 
-  async getLeaguesSeasonsId(id: number): Promise<LeagueSeasonId[]> {
+  async getLeaguesSeasonsId(
+    id: number,
+    queryType: LeaguesSeasonsIdQueryType): Promise<LeagueSeasonId[]> {
     return await this.http.get<LeagueSeasonId[]>(
-      this.seasonsUrl + "/leaguesSeasonsId?leagueId=" + id + "&queryType=" + LeaguesSeasonsIdQueryType.Actual)
+      this.seasonsUrl + "/leaguesSeasonsId?leagueId=" + id + "&queryType=" + queryType)
       .toPromise();
   }
 
@@ -51,12 +62,12 @@ export class DataService {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
-  async joinLeague(id: number) : Promise<string> {
+  async joinLeague(id: number): Promise<string> {
 
     var result =
       await this.http
-      .post(this.leaguesUrl + "/join", id, { observe: 'response' })
-      .toPromise();
+        .post(this.leaguesUrl + "/join", id, { observe: 'response' })
+        .toPromise();
 
     return result.headers.get('X-Operation');
   }
@@ -73,7 +84,7 @@ export class DataService {
     return await this.http.get<LeagueType[]>(this.leaguesUrl + "/types").toPromise();
   }
 
-  async createLeague(league: League): Promise<string>  {
+  async createLeague(league: League): Promise<string> {
 
     var result =
       await this.http
@@ -83,7 +94,7 @@ export class DataService {
     return result.headers.get('X-Operation');
   }
 
-  async updateLeague(league: League) : Promise<string> {
+  async updateLeague(league: League): Promise<string> {
     var result =
       await this.http
         .put(this.leaguesUrl + "/update", league, { observe: 'response' })
@@ -99,7 +110,7 @@ export class DataService {
 
     return result.headers.get('X-Operation');
   }
-  
+
   async getLeagueInformation(id: number) {
     return await this.http.get<LeagueInformation>(this.leaguesUrl + "/" + id).toPromise();
   }

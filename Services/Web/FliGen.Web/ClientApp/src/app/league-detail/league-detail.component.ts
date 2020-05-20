@@ -3,9 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AuthorizeService } from "../api-authorization/authorize.service";
 import { LeagueInformation } from "../common/leagueInformation";
-import { DataService } from "../data-service/data.service";
 import { LeagueSeasonId } from "../common/LeagueSeasonId";
+import { LeaguesSeasonsIdQueryType } from "../common/leaguesSeasonsIdQueryType";
 import { Tour } from "../common/tour";
+import { ToursQueryType } from "../common/toursQueryType";
+import { DataService } from "../data-service/data.service";
 
 @Component({
   selector: 'app-league-detail',
@@ -18,6 +20,7 @@ export class LeagueDetailComponent implements OnInit {
   private leagueInformation: LeagueInformation;
   private leaguesSeasonsId: LeagueSeasonId[];
   private incomingTours: Tour[];
+  private allTours: Tour[];
   private loaded: boolean = false;
 
   constructor(
@@ -35,10 +38,12 @@ export class LeagueDetailComponent implements OnInit {
 
     if (this.id) {
       this.leagueInformation = await this.dataService.getLeagueInformation(this.id);
-      this.leaguesSeasonsId = await this.dataService.getLeaguesSeasonsId(this.id);
-
-      if (this.leaguesSeasonsId.length > 0) {
-        this.incomingTours = await this.dataService.getTours(0, this.leaguesSeasonsId[0].seasonId);
+      const actualSeason = (await this.dataService.getLeaguesSeasonsId(this.id, LeaguesSeasonsIdQueryType.Actual)).map(t => t.seasonId);
+      const allTours = (await this.dataService.getLeaguesSeasonsId(this.id, LeaguesSeasonsIdQueryType.All)).map(t => t.seasonId);
+      debugger;
+      if (actualSeason.length > 0) {
+        this.allTours = await this.dataService.getTours(0, allTours, ToursQueryType.All);
+        this.incomingTours = await this.dataService.getTours(0, actualSeason, ToursQueryType.Incoming);
       }
 
       this.loaded = true;

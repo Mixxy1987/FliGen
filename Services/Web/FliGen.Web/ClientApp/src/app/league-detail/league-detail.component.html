@@ -16,7 +16,7 @@
       <mat-tab label="Предстоящие туры">
         <p *ngIf="!loaded"><em>Загрузка...</em></p>
         <div *ngIf="loaded && incomingTours?.length == 0">
-          <h1>Ничего не найдено</h1>
+          <p>Ничего не найдено</p>
         </div>
 
         <div *ngIf="loaded && incomingTours?.length != 0">
@@ -31,11 +31,25 @@
             </tr>
           </table>
         </div>
-
       </mat-tab>
       <mat-tab label="История">
-        <h1>Ничего не найдено</h1>
-        <p>...</p>
+        <p *ngIf="!loaded"><em>Загрузка...</em></p>
+        <div *ngIf="loaded && allTours?.length == 0">
+          <p>Ничего не найдено</p>
+        </div>
+
+        <div *ngIf="loaded && allTours?.length != 0">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <td>Дата</td>
+            </tr>
+            </thead>
+            <tr *ngFor="let t of allTours">
+              <td>{{t.date}}</td>
+            </tr>
+          </table>
+        </div>
       </mat-tab>
     </mat-tab-group>
 
