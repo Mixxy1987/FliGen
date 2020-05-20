@@ -9,12 +9,17 @@ import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
 import { Player } from "../common/player";
 import { map } from 'rxjs/internal/operators/map';
+import { LeagueSeasonId } from "../common/LeagueSeasonId";
+import { LeaguesSeasonsIdQueryType } from "../common/leaguesSeasonsIdQueryType";
+import { ToursQueryType } from "../common/toursQueryType";
 
 @Injectable()
 export class DataService {
-  private playersUrl: string;
-  private leaguesUrl: string;
-  private myToursUrl: string;
+  private readonly playersUrl: string;
+  private readonly leaguesUrl: string;
+  private readonly myToursUrl: string;
+  private readonly seasonsUrl: string;
+  private readonly toursUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -22,6 +27,20 @@ export class DataService {
       this.playersUrl = this.baseUrl + "players";
       this.leaguesUrl = this.baseUrl + "leagues";
       this.myToursUrl = this.baseUrl + "mytours";
+      this.seasonsUrl = this.baseUrl + "seasons";
+      this.toursUrl = this.baseUrl + "tours";
+  }
+
+  async getTours(playerId: number, seasonId: number): Promise<Tour[]> {
+    return await this.http.get<Tour[]>(
+      this.toursUrl + "/player/" + playerId + "/seasons?id=" + seasonId + "&queryType=" + ToursQueryType.Incoming)
+      .toPromise();
+  }
+
+  async getLeaguesSeasonsId(id: number): Promise<LeagueSeasonId[]> {
+    return await this.http.get<LeagueSeasonId[]>(
+      this.seasonsUrl + "/leaguesSeasonsId?leagueId=" + id + "&queryType=" + LeaguesSeasonsIdQueryType.Actual)
+      .toPromise();
   }
 
   getMyTours() {

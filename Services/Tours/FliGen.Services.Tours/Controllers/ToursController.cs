@@ -31,9 +31,13 @@ namespace FliGen.Services.Tours.Controllers
             return _mediatr.Send(query);
         }
 
-        [HttpGet("playerId/{playerId}/seasons")]
+        [HttpGet("player/{playerId}/seasons")]
         [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery(Name = "id")]int[] seasonsId, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
+        public Task<IEnumerable<TourDto>> Get(
+            [FromRoute]int playerId,
+            [FromQuery(Name = "id")]int[] seasonsId, 
+            [FromQuery]ToursQueryType queryType,
+            [FromQuery]int? last)
         {
             var query = new ToursQuery
             {
@@ -46,7 +50,7 @@ namespace FliGen.Services.Tours.Controllers
             return _mediatr.Send(query);
         }
 
-        [HttpGet("playerId/{playerId}")]
+        [HttpGet("player/{playerId}")]
         [Produces(typeof(IEnumerable<TourDto>))]
         public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
         {

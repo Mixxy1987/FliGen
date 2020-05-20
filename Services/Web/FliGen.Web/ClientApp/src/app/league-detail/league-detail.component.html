@@ -12,18 +12,36 @@
     <p><b>Последний тур был:</b> {{leagueInformation.currentSeason.previousTour.date}}</p>
     <p><b>Следующий тур:</b> {{leagueInformation.currentSeason.nextTour?.date}}</p>
 
+    <mat-tab-group>
+      <mat-tab label="Предстоящие туры">
+        <p *ngIf="!loaded"><em>Загрузка...</em></p>
+        <div *ngIf="loaded && incomingTours?.length == 0">
+          <h1>Ничего не найдено</h1>
+        </div>
+
+        <div *ngIf="loaded && incomingTours?.length != 0">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <td>Дата</td>
+            </tr>
+            </thead>
+            <tr *ngFor="let t of incomingTours">
+              <td>{{t.date}}</td>
+            </tr>
+          </table>
+        </div>
+
+      </mat-tab>
+      <mat-tab label="История">
+        <h1>Ничего не найдено</h1>
+        <p>...</p>
+      </mat-tab>
+    </mat-tab-group>
+
     <p><b><a [routerLink]="'settings'" class="nav-link">Настройки</a></b></p>
     <p><a routerLink="/leagues" class="nav-link">Обратно к лигам</a></p>
   </div>
 </div>
 
-<mat-tab-group>
-  <mat-tab label="One">
-    <h1>Some tab content</h1>
-    <p>...</p>
-  </mat-tab>
-  <mat-tab label="Two">
-    <h1>Some more tab content</h1>
-    <p>...</p>
-  </mat-tab>
-</mat-tab-group>
+

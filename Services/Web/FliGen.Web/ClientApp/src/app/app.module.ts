@@ -18,6 +18,7 @@ import { MyLeaguesComponent } from "./myleagues/myleagues.component";
 import { MyToursComponent } from "./mytours/mytours.component";
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { PlayersComponent } from "./players/players.component";
+import { MaterialModule } from './material.module';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { PlayersComponent } from "./players/players.component";
     ApiAuthorizationModule,
     FormsModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

@@ -161,8 +161,8 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             {
                 return toursRepo.GetList(predicate);
             }
-
-            int size = request.QueryType == ToursQueryType.Last ? request.Last : 1;
+            //todo:: valdiate data
+            int size = request.QueryType == ToursQueryType.Last ? (int)request.Last : 1;
 
             if (request.SeasonsId != null &&
                 request.SeasonsId.Length != 0)

@@ -13,7 +13,7 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
     public class ToursQuery : PagedQuery, IRequest<IEnumerable<TourDto>>
     {
         public int PlayerId { get; set; }
-        public int Last { get; set; }
+        public int? Last { get; set; }
         public int[] SeasonsId { get; set; }
         public ToursQueryType QueryType { get; set; }
     }

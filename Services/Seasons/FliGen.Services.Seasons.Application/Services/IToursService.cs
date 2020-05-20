@@ -10,12 +10,12 @@ namespace FliGen.Services.Seasons.Application.Services
     public interface IToursService
     {
         [AllowAnyStatusCode]
-        [Get("tours/playerId/{playerId}/seasons")]
+        [Get("tours/player/{playerId}/seasons")]
         Task<IEnumerable<TourDto>> GetAsync(
             [Path]int playerId, 
             [Query(Name = "id")]int[] seasonsId,
             [Query]ToursQueryType queryType,
-            [Query]int last);
+            [Query]int? last);
 
         [AllowAnyStatusCode]
         [Get("tours/season/{id}/stats")]

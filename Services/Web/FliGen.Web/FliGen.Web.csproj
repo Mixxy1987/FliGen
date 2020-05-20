@@ -33,7 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ClientApp\src\app\common\leaguesSeasonsIdQueryType.ts" />
     <None Remove="ClientApp\src\app\common\playerLeagueJoinStatus.ts" />
+    <None Remove="ClientApp\src\app\common\toursQueryType.ts" />
     <None Remove="ClientApp\src\app\common\tourStatus.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +43,8 @@
     <ProjectReference Include="..\..\AuthServer\FliGen.Services.AuthServer.Persistence\FliGen.Services.AuthServer.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\common\toursQueryType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\common\leaguesSeasonsIdQueryType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\common\tourStatus.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\common\playerLeagueJoinStatus.ts" />
   </ItemGroup>
