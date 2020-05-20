@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Consul;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Seasons
 {
@@ -41,9 +43,11 @@ namespace FliGen.Services.Seasons
             _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
 
             services.AddControllers();
+            services.AddCustomMvc();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
 
             if (_swaggerOptions.Enabled)
             {
@@ -82,7 +86,11 @@ namespace FliGen.Services.Seasons
             builder.AddSerilogService();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
@@ -103,6 +111,13 @@ namespace FliGen.Services.Seasons
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
             });
         }
     }

@@ -126,7 +126,7 @@ namespace FliGen.Web
             app.UseErrorHandler();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseServiceId();
             app.UseRabbitMq();
 
             app.UseIdentityServer();

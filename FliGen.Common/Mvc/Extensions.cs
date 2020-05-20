@@ -49,5 +49,15 @@ namespace FliGen.Common.Mvc
 
                     return startupInitializer;
                 });
+
+        public static IApplicationBuilder UseServiceId(this IApplicationBuilder builder)
+            => builder.Map("/id", c => c.Run(async ctx =>
+            {
+                using (var scope = c.ApplicationServices.CreateScope())
+                {
+                    var id = scope.ServiceProvider.GetService<IServiceId>().Id;
+                    await ctx.Response.WriteAsync(id);
+                }
+            }));
     }
 }

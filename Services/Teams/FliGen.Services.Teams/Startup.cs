@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
+using FliGen.Common.Consul;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
@@ -19,7 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.Consul;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Teams
 {
@@ -43,9 +45,11 @@ namespace FliGen.Services.Teams
                 .AddUnitOfWork<TeamsContext>();
 
             services.AddControllers();
+            services.AddCustomMvc();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
 
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
             services.RegisterServiceForwarder<IPlayersService>("players-service");
@@ -75,7 +79,11 @@ namespace FliGen.Services.Teams
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
@@ -89,7 +97,7 @@ namespace FliGen.Services.Teams
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseServiceId();
             app.UseRabbitMq()
                 .SubscribeCommand<GenerateTeams>(onError: (c, e) =>
                     new GenerateTeamsRejected(e.Message, e.Code));
@@ -97,6 +105,13 @@ namespace FliGen.Services.Teams
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
             });
         }
     }

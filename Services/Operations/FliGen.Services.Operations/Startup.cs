@@ -1,7 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Chronicle;
+using Consul;
 using FliGen.Common;
+using FliGen.Common.Consul;
 using FliGen.Common.Handlers;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
@@ -18,7 +20,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using FliGen.Common.Consul;
 
 namespace FliGen.Services.Operations
 {
@@ -35,6 +36,7 @@ namespace FliGen.Services.Operations
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCustomMvc();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
@@ -73,7 +75,9 @@ namespace FliGen.Services.Operations
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
-            IStartupInitializer startupInitializer)
+            IHostApplicationLifetime applicationLifetime,
+            IStartupInitializer startupInitializer,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
@@ -84,7 +88,7 @@ namespace FliGen.Services.Operations
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-
+            app.UseServiceId();
             app.UseRabbitMq().SubscribeAllMessages();
 
             app.UseEndpoints(endpoints =>
@@ -92,6 +96,12 @@ namespace FliGen.Services.Operations
                 endpoints.MapControllers();
             });
 
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
+            });
             startupInitializer.InitializeAsync();
         }
     }

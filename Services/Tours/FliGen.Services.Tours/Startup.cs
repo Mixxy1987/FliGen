@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
+using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
@@ -23,7 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using FliGen.Common.Consul;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Tours
 {
@@ -67,11 +69,13 @@ namespace FliGen.Services.Tours
                     };
                 });
             }
+            services.AddCustomMvc();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
 
-			services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
+            services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
 			services.RegisterServiceForwarder<IPlayersService>("players-service");
 			services.RegisterServiceForwarder<ITeamsService>("teams-service");
             services.RegisterServiceForwarder<ISeasonsService>("seasons-service");
@@ -97,27 +101,28 @@ namespace FliGen.Services.Tours
 			builder.AddSerilogService();
 		}
 		
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
-			app.UseErrorHandler();
-
-			app.UseHttpsRedirection();
-
-			app.UseRouting();
-
-			app.UseAuthorization();
-
+            app.UseErrorHandler();
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+            
             if (_swaggerOptions.Enabled)
             {
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
 
+            app.UseServiceId();
             app.UseRabbitMq()
                 .SubscribeCommand<PlayerRegisterOnTour>(onError: (c, e) =>
                     new PlayerRegisterOnTourRejected(e.Message, e.Code))
@@ -129,6 +134,13 @@ namespace FliGen.Services.Tours
 			{
 				endpoints.MapControllers();
 			});
-		}
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
+            });
+        }
 	}
 }

@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
+using FliGen.Common.Consul;
 using FliGen.Common.Handlers.Extensions;
 using FliGen.Common.Jaeger;
 using FliGen.Common.Mediator.Extensions;
@@ -19,7 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using FliGen.Common.Consul;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Notifications
 {
@@ -42,11 +44,13 @@ namespace FliGen.Services.Notifications
                         options.UseSqlServer(connectionString),
                     contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<NotificationsContext>();
-
+            
+            services.AddCustomMvc();
             services.AddControllers();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
 
             services.RegisterServiceForwarder<IPlayersService>("players-service");
             services.RegisterServiceForwarder<ILeaguesService>("leagues-service");
@@ -76,7 +80,11 @@ namespace FliGen.Services.Notifications
             builder.AddSerilogService();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
@@ -87,7 +95,7 @@ namespace FliGen.Services.Notifications
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-
+            app.UseServiceId();
             app.UseRabbitMq()
                 .SubscribeEvent<TourRegistrationOpened>("tours")
                 .SubscribeEvent<TeamsCreated>("teams");
@@ -95,6 +103,13 @@ namespace FliGen.Services.Notifications
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
             });
         }
     }

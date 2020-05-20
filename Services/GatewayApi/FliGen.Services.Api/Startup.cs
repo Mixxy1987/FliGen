@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
 using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
 using FliGen.Common.Jaeger;
@@ -15,6 +16,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Reflection;
+using FliGen.Common.Mvc;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Api
 {
@@ -36,9 +39,12 @@ namespace FliGen.Services.Api
         {
             _swaggerOptions = Configuration.GetOptions<SwaggerOptions>("swagger");
 
+            services.AddCustomMvc();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
+
             if (_swaggerOptions.Enabled)
             {
                 services.AddSwaggerDocument(config =>
@@ -108,17 +114,18 @@ namespace FliGen.Services.Api
             return new AutofacServiceProvider(Container);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-
-            //app.UseHttpsRedirection();
-
-
+            app.UseServiceId();
             app.UseRabbitMq();
             app.UseRouting();
             app.UseCors("CorsPolicy");
@@ -135,6 +142,13 @@ namespace FliGen.Services.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
             });
         }
     }

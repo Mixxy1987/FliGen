@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
 using FliGen.Common.Consul;
 using FliGen.Common.Extensions;
 using FliGen.Common.Handlers.Extensions;
@@ -24,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using FliGen.Common.Redis;
 
 namespace FliGen.Services.Leagues
 {
@@ -49,10 +51,12 @@ namespace FliGen.Services.Leagues
                     contextLifetime: ServiceLifetime.Transient)
                 .AddUnitOfWork<LeaguesContext>();
 
+            services.AddCustomMvc();
             services.AddControllers();
             services.AddConsul();
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddRedis();
 
             if (_swaggerOptions.Enabled)
             {
@@ -92,7 +96,11 @@ namespace FliGen.Services.Leagues
             builder.AddSerilogService();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime,
+            IConsulClient client)
         {
             if (env.IsDevelopment())
             {
@@ -103,6 +111,7 @@ namespace FliGen.Services.Leagues
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseServiceId();
 
             app.UseRabbitMq()
                 .SubscribeCommand<CreateLeague>()
@@ -120,6 +129,13 @@ namespace FliGen.Services.Leagues
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                client.Agent.ServiceDeregister(consulServiceId);
+                Container.Dispose();
             });
         }
     }

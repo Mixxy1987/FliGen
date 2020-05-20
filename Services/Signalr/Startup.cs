@@ -115,7 +115,7 @@ namespace FliGen.Services.Signalr
                 endpoints.MapControllers();
                 endpoints.MapHub<FliGenHub>($"/{signalrOptions.Hub}");
             });
-
+            app.UseServiceId();
             app.UseRabbitMq()
                 .SubscribeEvent<OperationPending>("operations")
                 .SubscribeEvent<OperationCompleted>("operations")

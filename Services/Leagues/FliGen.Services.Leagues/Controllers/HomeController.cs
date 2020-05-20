@@ -6,7 +6,7 @@ namespace FliGen.Services.Leagues.Controllers
     public class HomeController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get() => Ok("Notifications service ready!");
+        public IActionResult Get() => Ok("Leagues service ready!");
 
         [HttpGet("ping")]
         public IActionResult Ping() => Ok("pong");
