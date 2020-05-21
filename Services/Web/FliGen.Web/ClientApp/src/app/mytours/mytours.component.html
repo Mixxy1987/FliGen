@@ -12,12 +12,14 @@
     <div *ngIf="loaded && incomingTours?.length != 0">
       <table class="table table-striped">
         <thead>
-        <tr>
-          <td>Дата</td>
-        </tr>
+          <tr>
+            <td>Дата</td>
+            <td>Лига</td>
+          </tr>
         </thead>
         <tr *ngFor="let t of incomingTours">
           <td>{{t.date}}</td>
+          <td>{{leagueIdNameMap[t.leagueId]}}</td>
         </tr>
       </table>
     </div>
@@ -31,14 +33,16 @@
     <div *ngIf="loaded && allTours?.length != 0">
       <table class="table table-striped">
         <thead>
-        <tr>
-          <td>Дата</td>
-          <td>Хозяева</td>
-          <td>Гости</td>
-        </tr>
+          <tr>
+            <td>Дата</td>
+            <td>Лига</td>
+            <td>Хозяева</td>
+            <td>Гости</td>
+          </tr>
         </thead>
         <tr *ngFor="let t of allTours">
           <td>{{t.date}}</td>
+          <td>{{leagueIdNameMap[t.leagueId]}}</td>
           <td>{{t.homeCount}}</td>
           <td>{{t.guestCount}}</td>
         </tr>

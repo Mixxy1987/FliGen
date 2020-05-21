@@ -4,6 +4,7 @@ import { AuthorizeService } from "../api-authorization/authorize.service";
 import { Tour } from "../common/tour";
 import { DataService } from "../data-service/data.service";
 import { ToursQueryType } from "../common/toursQueryType";
+import { Dictionary } from "../utils/dictionary";
 
 @Component({
   selector: 'app-mytours',
@@ -11,14 +12,16 @@ import { ToursQueryType } from "../common/toursQueryType";
   providers: [DataService]
 })
 export class MyToursComponent implements OnInit {
+  private leagueIdNameMap: string[] = [];
+
   private incomingTours: Tour[];
   private allTours: Tour[];
   private isAuthenticated: boolean;
   private loaded = false;
 
   constructor(
-    private dataService: DataService,
-    private authorizeService: AuthorizeService) {
+    private readonly dataService: DataService,
+    private readonly authorizeService: AuthorizeService) {
   }
 
   async ngOnInit() {
@@ -32,6 +35,14 @@ export class MyToursComponent implements OnInit {
   async loadMyTours() {
     this.incomingTours = await this.dataService.getToursForPlayer(ToursQueryType.Incoming);
     this.allTours = await this.dataService.getToursForPlayer(ToursQueryType.All);
+
+    const leaguesId = [...new Set(
+      this.allTours.map(t => t.leagueId)
+        .concat(this.incomingTours.map(t => t.leagueId)))];
+
+    const leaguesInfo = await this.dataService.getLeagues(leaguesId);
+    leaguesInfo.forEach(l => this.leagueIdNameMap[l.id]= l.name);
+
     this.loaded = true;
   }
 }

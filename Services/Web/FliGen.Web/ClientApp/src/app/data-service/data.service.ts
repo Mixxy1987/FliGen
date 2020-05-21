@@ -32,7 +32,7 @@ export class DataService {
     playerId: number,
     seasonsId: number[],
     queryType: ToursQueryType): Promise<Tour[]> {
-      let url: string = this.toursUrl + "/player/" + playerId + "/seasons?";
+      let url = this.toursUrl + "/player/" + playerId + "/seasons?";
       for (let i = 0; i < seasonsId.length; i++) {
         url += `id=${seasonsId[i]}`;
         if (i !== seasonsId.length - 1) {
@@ -61,6 +61,20 @@ export class DataService {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
+  async getLeagues(leaguesId: number[] = null) {
+    let url = this.leaguesUrl;
+    if (leaguesId !== null) {
+      url += "?";
+      for (let i = 0; i < leaguesId.length; i++) {
+        url += `id=${leaguesId[i]}`;
+        if (i !== leaguesId.length - 1) {
+          url += "&";
+        }
+      }
+    }
+    return await this.http.get<League[]>(url).toPromise();
+  }
+
   async joinLeague(id: number): Promise<string> {
     const result =
       await this.http
@@ -68,10 +82,6 @@ export class DataService {
         .toPromise();
 
     return result.headers.get('X-Operation');
-  }
-
-  async getLeagues() {
-    return await this.http.get<League[]>(this.leaguesUrl).toPromise();
   }
 
   async getLeaguesInfo() {

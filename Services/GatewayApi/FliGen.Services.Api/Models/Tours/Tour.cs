@@ -3,6 +3,7 @@
     public class Tour
     {
         public int Id { get; set; }
+        public int LeagueId { get; set; }
         public int SeasonId { get; set; }
         public string Date { get; set; }
         public int HomeCount { get; set; }
