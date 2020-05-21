@@ -10,7 +10,6 @@
     <p><b>Текущий сезон начат:</b> {{leagueInformation.currentSeason.start}}</p>
     <p><b>В текущем сезоне туров сыграно:</b> {{leagueInformation.currentSeason.toursPlayed}}</p>
     <p><b>Последний тур был:</b> {{leagueInformation.currentSeason.previousTour.date}}</p>
-    <p><b>Следующий тур:</b> {{leagueInformation.currentSeason.nextTour?.date}}</p>
 
     <mat-tab-group>
       <mat-tab label="Предстоящие туры">
@@ -41,12 +40,16 @@
         <div *ngIf="loaded && allTours?.length != 0">
           <table class="table table-striped">
             <thead>
-            <tr>
-              <td>Дата</td>
-            </tr>
+              <tr>
+                <td>Дата</td>
+                <td>Хозяева</td>
+                <td>Гости</td>
+              </tr>
             </thead>
             <tr *ngFor="let t of allTours">
               <td>{{t.date}}</td>
+              <td>{{t.homeCount}}</td>
+              <td>{{t.guestCount}}</td>
             </tr>
           </table>
         </div>

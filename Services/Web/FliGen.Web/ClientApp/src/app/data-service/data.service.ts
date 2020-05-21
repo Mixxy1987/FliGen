@@ -2,36 +2,33 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { League } from "../common/league";
 import { LeagueInformation } from "../common/leagueInformation";
+import { LeagueSeasonId } from "../common/LeagueSeasonId";
 import { LeagueSettings } from "../common/leagueSettings";
 import { LeaguesInfo } from "../common/leaguesInfo";
+import { LeaguesSeasonsIdQueryType } from "../common/leaguesSeasonsIdQueryType";
 import { LeagueType } from "../common/leagueType";
+import { Player } from "../common/player";
 import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
-import { Player } from "../common/player";
-import { map } from 'rxjs/internal/operators/map';
-import { LeagueSeasonId } from "../common/LeagueSeasonId";
-import { LeaguesSeasonsIdQueryType } from "../common/leaguesSeasonsIdQueryType";
 import { ToursQueryType } from "../common/toursQueryType";
 
 @Injectable()
 export class DataService {
   private readonly playersUrl: string;
   private readonly leaguesUrl: string;
-  private readonly myToursUrl: string;
   private readonly seasonsUrl: string;
   private readonly toursUrl: string;
 
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
-    this.playersUrl = this.baseUrl + "players";
-    this.leaguesUrl = this.baseUrl + "leagues";
-    this.myToursUrl = this.baseUrl + "mytours";
-    this.seasonsUrl = this.baseUrl + "seasons";
-    this.toursUrl = this.baseUrl + "tours";
+      this.playersUrl = this.baseUrl + "players";
+      this.leaguesUrl = this.baseUrl + "leagues";
+      this.seasonsUrl = this.baseUrl + "seasons";
+      this.toursUrl = this.baseUrl + "tours";
   }
 
-  async getTours(
+  async getToursBySeasons(
     playerId: number,
     seasonsId: number[],
     queryType: ToursQueryType): Promise<Tour[]> {
@@ -46,6 +43,12 @@ export class DataService {
       return await this.http.get<Tour[]>(url).toPromise();
   }
 
+  async getToursForPlayer(queryType: ToursQueryType): Promise<Tour[]> {
+      let url: string = this.toursUrl + "/player";
+      url += `?queryType=${queryType}`;
+      return await this.http.get<Tour[]>(url).toPromise();
+  }
+
   async getLeaguesSeasonsId(
     id: number,
     queryType: LeaguesSeasonsIdQueryType): Promise<LeagueSeasonId[]> {
@@ -54,17 +57,12 @@ export class DataService {
       .toPromise();
   }
 
-  getMyTours() {
-    return this.http.get<Tour[]>(this.myToursUrl);
-  }
-
   async getMyLeagues() {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
   async joinLeague(id: number): Promise<string> {
-
-    var result =
+    const result =
       await this.http
         .post(this.leaguesUrl + "/join", id, { observe: 'response' })
         .toPromise();
@@ -85,8 +83,7 @@ export class DataService {
   }
 
   async createLeague(league: League): Promise<string> {
-
-    var result =
+    const result =
       await this.http
         .post<League>(this.leaguesUrl, league, { observe: 'response' })
         .toPromise();
@@ -95,7 +92,7 @@ export class DataService {
   }
 
   async updateLeague(league: League): Promise<string> {
-    var result =
+    const result =
       await this.http
         .put(this.leaguesUrl + "/update", league, { observe: 'response' })
         .toPromise();
@@ -104,7 +101,7 @@ export class DataService {
   }
 
   async deleteLeague(id: number): Promise<string> {
-    var result = await this.http
+    const result = await this.http
       .delete(this.leaguesUrl + "/" + id, { observe: 'response' })
       .toPromise();
 
@@ -136,11 +133,11 @@ export class DataService {
   }
 
   async getLeagueSettings(id: number) {
-    return await this.http.get<LeagueSettings>(this.leaguesUrl + "/" + id + "/settings").toPromise();;
+    return await this.http.get<LeagueSettings>(this.leaguesUrl + "/" + id + "/settings").toPromise();
   }
 
   async updateLeagueSettings(leagueSettings: LeagueSettings) {
-    var result = await this.http
+    const result = await this.http
       .put(this.leaguesUrl + "/updateSettings", leagueSettings, { observe: 'response' })
       .toPromise();
 

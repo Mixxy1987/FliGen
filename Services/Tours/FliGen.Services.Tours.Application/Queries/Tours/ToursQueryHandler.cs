@@ -147,12 +147,16 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             }
             var tourIds = toursByPlayerIdDto.ToursId.ToList();
 
+            predicate = predicate == null ?
+                t => tourIds.Contains(t.Id) : 
+                predicate.AndAlso(t => tourIds.Contains(t.Id));
+
             return toursRepo.GetList(
-                predicate: predicate.AndAlso(t => tourIds.Contains(t.Id)),
+                predicate,
                 size: tourIds.Count);
         }
 
-        private IPaginate<Tour> QueryForAllPlayers(
+        private static IPaginate<Tour> QueryForAllPlayers(
             ToursQuery request,
             IRepositoryReadOnly<Tour> toursRepo,
             Expression<Func<Tour, bool>> predicate)

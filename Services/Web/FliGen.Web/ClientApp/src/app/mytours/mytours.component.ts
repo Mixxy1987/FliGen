@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { AuthorizeService } from "../api-authorization/authorize.service";
 import { Tour } from "../common/tour";
 import { DataService } from "../data-service/data.service";
+import { ToursQueryType } from "../common/toursQueryType";
 
 @Component({
   selector: 'app-mytours',
@@ -10,9 +11,10 @@ import { DataService } from "../data-service/data.service";
   providers: [DataService]
 })
 export class MyToursComponent implements OnInit {
-  private myTours: Tour[];
-
-  isAuthenticated: boolean;
+  private incomingTours: Tour[];
+  private allTours: Tour[];
+  private isAuthenticated: boolean;
+  private loaded = false;
 
   constructor(
     private dataService: DataService,
@@ -27,9 +29,9 @@ export class MyToursComponent implements OnInit {
     this.loadMyTours();
   }
 
-  loadMyTours() {
-    this.dataService.getMyTours().subscribe(result => {
-      this.myTours = result;
-    }, error => console.error(error));
+  async loadMyTours() {
+    this.incomingTours = await this.dataService.getToursForPlayer(ToursQueryType.Incoming);
+    this.allTours = await this.dataService.getToursForPlayer(ToursQueryType.All);
+    this.loaded = true;
   }
 }

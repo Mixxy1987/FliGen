@@ -1,13 +1,48 @@
 <h1 id="tableLabel">Мои Туры</h1>
 
-<p *ngIf="!myTours"><em>Загрузка...</em></p>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <td>Дата</td>
-    </tr>
-  </thead>
-  <tr *ngFor="let t of tours">
-    
-  </tr>
-</table>
+<p *ngIf="!loaded"><em>Загрузка...</em></p>
+
+<mat-tab-group>
+  <mat-tab label="Предстоящие туры">
+    <p *ngIf="!loaded"><em>Загрузка...</em></p>
+    <div *ngIf="loaded && incomingTours?.length == 0">
+      <p>Ничего не найдено</p>
+    </div>
+
+    <div *ngIf="loaded && incomingTours?.length != 0">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <td>Дата</td>
+        </tr>
+        </thead>
+        <tr *ngFor="let t of incomingTours">
+          <td>{{t.date}}</td>
+        </tr>
+      </table>
+    </div>
+  </mat-tab>
+  <mat-tab label="История">
+    <p *ngIf="!loaded"><em>Загрузка...</em></p>
+    <div *ngIf="loaded && allTours?.length == 0">
+      <p>Ничего не найдено</p>
+    </div>
+
+    <div *ngIf="loaded && allTours?.length != 0">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <td>Дата</td>
+          <td>Хозяева</td>
+          <td>Гости</td>
+        </tr>
+        </thead>
+        <tr *ngFor="let t of allTours">
+          <td>{{t.date}}</td>
+          <td>{{t.homeCount}}</td>
+          <td>{{t.guestCount}}</td>
+        </tr>
+      </table>
+    </div>
+  </mat-tab>
+</mat-tab-group>

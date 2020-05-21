@@ -64,6 +64,13 @@ namespace FliGen.Services.Tours.Controllers
             return _mediatr.Send(query);
         }
 
+        [HttpGet("player")]
+        [Produces(typeof(IEnumerable<TourDto>))]
+        public Task<IEnumerable<TourDto>> GetMyTours([FromQuery]ToursQuery query)
+        {
+            return _mediatr.Send(query);
+        }
+
         [HttpGet("season/{id}/stats")]
         [Produces(typeof(SeasonStatsDto))]
         public Task<SeasonStatsDto> GetSeasonStats([FromRoute(Name = "id")]int seasonId)

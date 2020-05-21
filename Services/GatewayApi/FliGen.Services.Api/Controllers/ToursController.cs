@@ -16,14 +16,19 @@ namespace FliGen.Services.Api.Controllers
     public class ToursController : BaseController
     {
         private readonly IToursService _toursService;
+        private readonly IPlayersService _playersService;
+        private readonly IIdentityService _identityService;
 
         public ToursController(
             IBusPublisher busPublisher,
             ITracer tracer,
             IToursService toursService,
+            IPlayersService playersService,
             IIdentityService identityService) : base(busPublisher, tracer, identityService)
         {
             _toursService = toursService;
+            _playersService = playersService;
+            _identityService = identityService;
         }
 
         [HttpGet("Ping")]
@@ -33,14 +38,14 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<Tour> Get([FromQuery]TourByIdQuery query)
+        public async Task<Tour> GetTourById([FromQuery]TourByIdQuery query)
         {
             return await _toursService.GetAsync(query);
         }
 
         [HttpGet("player/{playerId}/seasons")]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get(
+        public Task<IEnumerable<Tour>> GetTours(
             [FromRoute]int playerId,
             [FromQuery(Name="id")]int[] seasonIds,
             [FromQuery]ToursQueryType queryType, 
@@ -51,7 +56,7 @@ namespace FliGen.Services.Api.Controllers
 
         [HttpGet("player/{playerId}")]
         [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> Get([FromRoute]int playerId, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
+        public Task<IEnumerable<Tour>> GetTours([FromRoute]int playerId, [FromQuery]ToursQueryType queryType, [FromQuery]int? last)
         {
             var query = new ToursQuery
             {
@@ -60,6 +65,23 @@ namespace FliGen.Services.Api.Controllers
             };
 
             return _toursService.GetAsync(playerId, query);
+        }
+
+        [HttpGet("player")]
+        [Produces(typeof(IEnumerable<Tour>))]
+        public async Task<IEnumerable<Tour>> GetMyTours([FromQuery]ToursQueryType queryType, [FromQuery]int? last)
+        {
+            var playerExternalId = _identityService.GetUserIdentity();
+            var internalId = (await _playersService.GetInternalIdAsync(playerExternalId)).InternalId;
+
+            var query = new ToursQuery
+            {
+                PlayerId = internalId,
+                QueryType = queryType,
+                Last = last
+            };
+
+            return await _toursService.GetAsync(query);
         }
 
         [HttpGet("registeredOnTourPlayers")]

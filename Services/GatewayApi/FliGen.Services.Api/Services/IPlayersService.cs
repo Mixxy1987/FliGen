@@ -21,5 +21,8 @@ namespace FliGen.Services.Api.Services
         [AllowAnyStatusCode]
         [Get("players/info")]
         Task<PlayersInfo> GetPlayersInfoAsync([Query]PlayersInfoQuery query);
+
+        [Get("players/id")]
+        Task<PlayerInternalId> GetInternalIdAsync([Query]string externalId);
     }
 }
