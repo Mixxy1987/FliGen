@@ -15,11 +15,36 @@
           <tr>
             <td>Дата</td>
             <td>Лига</td>
+            <td>Текущий статус</td>
           </tr>
         </thead>
         <tr *ngFor="let t of incomingTours">
           <td>{{t.date}}</td>
           <td>{{leagueIdNameMap[t.leagueId]}}</td>
+          <td [ngSwitch]="t.tourStatus">
+            <ng-template ngSwitchCase="1">
+              <div> Регистрация еще не открыта </div>
+            </ng-template>
+            <ng-template ngSwitchCase="2">
+              <!--registration opened-->
+              <div *ngIf="t.playerRegistered">
+                <button class="btn btn-sm btn-danger" (click)="RegisterOnTour(t)">
+                  Отменить регистрацию
+                </button>
+              </div>
+              <div *ngIf="!t.playerRegistered">
+                <button class="btn btn-sm btn-success" (click)="RegisterOnTour(t)">
+                  Зарегистрироваться
+                </button>
+              </div>
+            </ng-template>
+            <ng-template ngSwitchCase="3">
+              <div> Регистрация закрыта </div>
+            </ng-template>
+            <ng-template ngSwitchCase="3">
+              <div> Идет игра </div>
+            </ng-template>
+          </td>
         </tr>
       </table>
     </div>

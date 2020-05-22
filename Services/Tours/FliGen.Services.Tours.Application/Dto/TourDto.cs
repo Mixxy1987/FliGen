@@ -11,5 +11,6 @@ namespace FliGen.Services.Tours.Application.Dto
         public int HomeCount { get; set; }
         public int GuestCount { get; set; }
         public TourStatus TourStatus { get; set; }
+        public bool PlayerRegistered { get; set; } // if request done by authorized player and status is incoming
     }
 }

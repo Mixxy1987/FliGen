@@ -9,5 +9,6 @@
         public int HomeCount { get; set; }
         public int GuestCount { get; set; }
         public int TourStatus { get; set; }
+        public bool PlayerRegistered { get; set; }
     }
 }

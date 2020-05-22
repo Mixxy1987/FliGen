@@ -8,4 +8,5 @@ export class Tour {
   leagueId: number;
   seasonId: number;
   tourStatus: TourStatus;
+  playerRegistered: boolean;
 }

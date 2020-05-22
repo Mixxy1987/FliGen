@@ -79,7 +79,25 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
 
             await EnrichTourDtoByLeagueId(toursDtos);
 
+            if (request.QueryType == ToursQueryType.Incoming && request.PlayerId != 0)
+            {
+                EnrichByRegisterStatus(toursDtos, request.PlayerId);
+            }
             return toursDtos;
+        }
+
+        private void EnrichByRegisterStatus(IEnumerable<TourDto> toursDtos, int playerId)
+        {
+            var tourRegistrationRepo = _uow.GetReadOnlyRepository<TourRegistration>();
+
+            foreach (var dto in toursDtos)
+            {
+                var entity = tourRegistrationRepo.Single(t =>
+                    t.PlayerId == playerId &&
+                    t.TourId == dto.Id);
+
+                dto.PlayerRegistered = entity != null;
+            }
         }
 
         private async Task EnrichTourDtoByLeagueId(IReadOnlyCollection<TourDto> toursDtos)

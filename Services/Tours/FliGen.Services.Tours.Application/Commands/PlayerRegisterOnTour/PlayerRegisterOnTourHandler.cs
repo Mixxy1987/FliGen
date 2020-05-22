@@ -77,9 +77,13 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
                 {
                     return;
                 }
-                throw new FliGenException(
+
+                tourRegistrationRepo.RemoveAsync(tourRegistration);
+
+                /*throw new FliGenException(
                     ErrorCodes.PlayerAlreadyRegistered,
-                    $"Player with id {playerInternalId} is already registered on tour: {tourId}");
+                    $"Player with id {playerInternalId} is already registered on tour: {tourId}");*/
+                return;
             }
 
             await tourRegistrationRepo.AddAsync(
@@ -138,12 +142,25 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
             }
 
             var leaguesArr = leagues.ToList();
-            if (leaguesArr.Count == 0 || leaguesArr[0].PlayerLeagueJoinStatus != PlayerLeagueJoinStatus.Joined)
+
+            if (leaguesArr.Count == 0)
             {
                 throw new FliGenException(
                     ErrorCodes.PlayerIsNotAMemberOfLeague,
                     $"Player with id {command.PlayerExternalId} is not a member of league: {command.LeagueId}");
             }
+
+            if (leaguesArr.Count != 0)
+            {
+                var statuses = leaguesArr[0].PlayersLeagueStatuses.ToArray();
+                if (statuses.Length == 0  || statuses[0].PlayerLeagueJoinStatus != PlayerLeagueJoinStatus.Joined)
+                {
+                    throw new FliGenException(
+                        ErrorCodes.PlayerIsNotAMemberOfLeague,
+                        $"Player with id {command.PlayerExternalId} is not a member of league: {command.LeagueId}");
+                }
+            }
+
         }
     }
 }

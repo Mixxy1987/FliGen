@@ -1,4 +1,5 @@
-﻿using FliGen.Services.Tours.Application.Dto.Enum;
+﻿using System.Collections.Generic;
+using FliGen.Services.Tours.Application.Dto.Enum;
 
 namespace FliGen.Services.Tours.Application.Dto
 {
@@ -9,6 +10,6 @@ namespace FliGen.Services.Tours.Application.Dto
         public string Description { get; set; }
         public LeagueTypeDto LeagueTypeDto { get; set; }
         public int PlayerInternalId { get; set; }
-        public PlayerLeagueJoinStatus PlayerLeagueJoinStatus { get; set; } = PlayerLeagueJoinStatus.None;
+        public IEnumerable<PlayerWithLeagueStatusDto> PlayersLeagueStatuses { get; set; }
     }
 }
