@@ -108,14 +108,35 @@ namespace FliGen.Services.Api.Controllers
             return await SendAsync(command);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Post(PlayerRegisterOnTour command)
+        [HttpPost("bulkRegister")]
+        public async Task<IActionResult> Register(Messages.Commands.Tours.PlayerRegisterOnTour command)
         {
             if (string.IsNullOrWhiteSpace(command.RegistrationDate))
             {
                 command.RegistrationDate = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
             }
+
+            if (command.PlayerInternalIds == null ||
+                command.PlayerInternalIds.Length == 0)
+            {
+                command.PlayerExternalId = _identityService.GetUserIdentity();
+            }
+            
             return await SendAsync(command);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterByTourId(Models.Tours.PlayerRegisterOnTour command)
+        {
+            var cmd = new Messages.Commands.Tours.PlayerRegisterOnTour()
+            {
+                TourId = command.TourId,
+                LeagueId = command.LeagueId,
+                RegistrationDate = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture),
+                PlayerExternalId = _identityService.GetUserIdentity()
+            };
+
+            return await SendAsync(cmd);
         }
     }
 }

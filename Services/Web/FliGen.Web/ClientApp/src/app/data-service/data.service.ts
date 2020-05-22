@@ -11,6 +11,7 @@ import { Player } from "../common/player";
 import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
 import { ToursQueryType } from "../common/toursQueryType";
+import { PlayerRegisterOnTour } from "../common/playerRegisterOnTour";
 
 @Injectable()
 export class DataService {
@@ -150,6 +151,16 @@ export class DataService {
     const result = await this.http
       .put(this.leaguesUrl + "/updateSettings", leagueSettings, { observe: 'response' })
       .toPromise();
+
+    return result.headers.get('X-Operation');
+  }
+
+  async registerOnTour(tourId: number, leagueId: number): Promise<string> {
+
+    const result =
+      await this.http
+        .post(this.toursUrl + `/register `, new PlayerRegisterOnTour(tourId, leagueId), { observe: 'response' })
+        .toPromise();
 
     return result.headers.get('X-Operation');
   }

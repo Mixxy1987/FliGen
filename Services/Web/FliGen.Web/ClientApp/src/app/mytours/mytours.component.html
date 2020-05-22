@@ -15,7 +15,8 @@
           <tr>
             <td>Дата</td>
             <td>Лига</td>
-            <td>Текущий статус</td>
+            <td>Статус тура</td>
+            <td>Статус игрока</td>
           </tr>
         </thead>
         <tr *ngFor="let t of incomingTours">
@@ -23,27 +24,29 @@
           <td>{{leagueIdNameMap[t.leagueId]}}</td>
           <td [ngSwitch]="t.tourStatus">
             <ng-template ngSwitchCase="1">
-              <div> Регистрация еще не открыта </div>
+              Регистрация еще не открыта
             </ng-template>
             <ng-template ngSwitchCase="2">
-              <!--registration opened-->
-              <div *ngIf="t.playerRegistered">
-                <button class="btn btn-sm btn-danger" (click)="RegisterOnTour(t)">
-                  Отменить регистрацию
-                </button>
-              </div>
-              <div *ngIf="!t.playerRegistered">
-                <button class="btn btn-sm btn-success" (click)="RegisterOnTour(t)">
-                  Зарегистрироваться
-                </button>
-              </div>
+              Регистрация открыта
             </ng-template>
             <ng-template ngSwitchCase="3">
-              <div> Регистрация закрыта </div>
+              Регистрация закрыта
             </ng-template>
             <ng-template ngSwitchCase="3">
-              <div> Идет игра </div>
+              Идет игра
             </ng-template>
+          </td>
+          <td>
+            <div *ngIf="t.tourStatus == 2 && t.playerRegistered">
+              <button class="btn btn-sm btn-danger" (click)="registerOnTour(t)">
+                Отменить регистрацию
+              </button>
+            </div>
+            <div *ngIf="t.tourStatus == 2 && !t.playerRegistered">
+              <button class="btn btn-sm btn-success" (click)="registerOnTour(t)">
+                Зарегистрироваться
+              </button>
+            </div>
           </td>
         </tr>
       </table>

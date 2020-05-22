@@ -12,7 +12,7 @@ namespace FliGen.Services.Api.Messages.Commands.Tours
         public int LeagueId { get; set; }
         public int TourId { get; set; }
         public string RegistrationDate { get; set; }
-        private PlayerRegisterOnTour() {}
+        public PlayerRegisterOnTour() {}
 
         [JsonConstructor]
         public PlayerRegisterOnTour(

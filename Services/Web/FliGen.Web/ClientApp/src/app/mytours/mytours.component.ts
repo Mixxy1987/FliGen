@@ -5,6 +5,7 @@ import { Tour } from "../common/tour";
 import { DataService } from "../data-service/data.service";
 import { ToursQueryType } from "../common/toursQueryType";
 import { Dictionary } from "../utils/dictionary";
+import { SignalRService } from "../services/signalR.service";
 
 @Component({
   selector: 'app-mytours',
@@ -21,7 +22,8 @@ export class MyToursComponent implements OnInit {
 
   constructor(
     private readonly dataService: DataService,
-    private readonly authorizeService: AuthorizeService) {
+    private readonly authorizeService: AuthorizeService,
+    private readonly signalrService: SignalRService) {
   }
 
   async ngOnInit() {
@@ -44,5 +46,10 @@ export class MyToursComponent implements OnInit {
     leaguesInfo.forEach(l => this.leagueIdNameMap[l.id]= l.name);
 
     this.loaded = true;
+  }
+
+  async registerOnTour(t: Tour) {
+    var requestId = await this.dataService.registerOnTour(t.id, t.leagueId);
+    this.signalrService.registerCallback(requestId, () => this.loadMyTours());
   }
 }
