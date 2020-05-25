@@ -12,6 +12,7 @@ import { PlayersInfo } from "../common/playersInfo";
 import { Tour } from "../common/tour";
 import { ToursQueryType } from "../common/toursQueryType";
 import { PlayerRegisterOnTour } from "../common/playerRegisterOnTour";
+import { Consts } from "../common/consts/consts";
 
 @Injectable()
 export class DataService {
@@ -62,18 +63,24 @@ export class DataService {
     return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
   }
 
-  async getLeagues(leaguesId: number[] = null) {
-    let url = this.leaguesUrl;
-    if (leaguesId !== null) {
-      url += "?";
-      for (let i = 0; i < leaguesId.length; i++) {
-        url += `id=${leaguesId[i]}`;
-        if (i !== leaguesId.length - 1) {
-          url += "&";
+  async getLeagues(
+    leaguesId: number[] = null,
+    size: number = Consts.leaguesDefaultPageSize,
+    page: number = Consts.leaguesDefaultPageIndex) {
+      let url = this.leaguesUrl;
+      if (leaguesId !== null) {
+        url += "?";
+        for (let i = 0; i < leaguesId.length; i++) {
+          url += `id=${leaguesId[i]}`;
+          if (i !== leaguesId.length - 1) {
+            url += "&";
+          }
         }
+        url += `&size=${size}&page=${page}`;
+      } else {
+        url += `?size=${size}&page=${page}`;
       }
-    }
-    return await this.http.get<League[]>(url).toPromise();
+    return await this.http.get<PagedResult<League>>(url).toPromise();
   }
 
   async joinLeague(id: number): Promise<string> {

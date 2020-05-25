@@ -13,10 +13,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 
 namespace FliGen.Services.Leagues.Application.Queries.Leagues
 {
-    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, IEnumerable<LeagueDto>>
+    public class LeaguesQueryHandler : IRequestHandler<LeaguesQuery, PagedResult<LeagueDto>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -32,7 +33,7 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
             _playersService = playersService;
         }
 
-        public async Task<IEnumerable<LeagueDto>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<LeagueDto>> Handle(LeaguesQuery request, CancellationToken cancellationToken)
         {
             var leagueRepo = _uow.GetRepositoryAsync<League>();
 
@@ -60,7 +61,7 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
             {
                 if (request.Pid is null || request.Pid.Length == 0)
                 {
-                    return resultLeagues;
+                    return GetPagedResult(resultLeagues, leagues);
                 }
                 lplPredicate = l => request.Pid.Contains(l.PlayerId);
             }
@@ -86,7 +87,19 @@ namespace FliGen.Services.Leagues.Application.Queries.Leagues
                 resultLeagues.First(x => x.Id == league.Id).PlayersLeagueStatuses = EnrichByPlayerInformation(distinctLinks);
             }
 
-            return resultLeagues;
+            return GetPagedResult(resultLeagues, leagues);
+        }
+
+        private static PagedResult<LeagueDto> GetPagedResult(
+            List<LeagueDto> resultLeagues,
+            IPaginate<League> leagues)
+        {
+            return PagedResult<LeagueDto>.Create(
+                resultLeagues,
+                leagues.Index,
+                leagues.Size,
+                leagues.Pages,
+                leagues.Count);
         }
 
         private static List<PlayerWithLeagueStatusDto> EnrichByPlayerInformation(IEnumerable<LeaguePlayerLink> links)

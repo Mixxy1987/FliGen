@@ -3,97 +3,105 @@
 <p *ngIf="!leagues"><em>Загрузка...</em></p>
 
 <h2>Создание лиги</h2>
-<input type="button" value="Создать" class="btn btn-sm btn-success" (click)="add()" />
-<table *ngIf="tableMode; else create" class="table table-striped">
-  <thead>
-    <tr>
-      <td>Название</td>
-      <td>Описание</td>
-      <td>Тип</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let l of leagues">
-      <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
-        <td><a [routerLink]="[l.id]" class="nav-link">{{l?.name}}</a></td>
-        <td>{{l?.description}}</td>
-        <td>{{l?.leagueType?.name}}</td>
-        <ng-template [ngIf]="isAuthenticated && l?.playersLeagueStatuses.length !== 0">
-          <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
-            <ng-template ngSwitchCase="0">
+<div *ngIf="leagues">
+  <input type="button" value="Создать" class="btn btn-sm btn-success" (click)="add()" />
+  <table *ngIf="tableMode; else create" class="table table-striped">
+    <thead>
+      <tr>
+        <td>Название</td>
+        <td>Описание</td>
+        <td>Тип</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <mat-paginator [length]="leaguesCount"
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="pageSizeOptions"
+                     (page)="pageEvent = loadLeagues($event)">
+      </mat-paginator>
+
+      <tr *ngFor="let l of leagues.items">
+        <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
+          <td><a [routerLink]="[l.id]" class="nav-link">{{l?.name}}</a></td>
+          <td>{{l?.description}}</td>
+          <td>{{l?.leagueType?.name}}</td>
+          <ng-template [ngIf]="isAuthenticated && l?.playersLeagueStatuses.length !== 0">
+            <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
+              <ng-template ngSwitchCase="0">
+                <button class="btn btn-sm btn-success" (click)="joinLeague(l)">
+                  Join
+                </button>
+              </ng-template>
+              <ng-template ngSwitchCase="1">
+                <button class="btn btn-sm btn-danger" (click)="joinLeague(l)">
+                  Leave
+                </button>
+              </ng-template>
+              <ng-template ngSwitchCase="2">
+                <button class="btn btn-sm btn-warning" (click)="joinLeague(l)">
+                  Waiting...
+                </button>
+              </ng-template>
+            </td>
+          </ng-template>
+
+          <ng-template [ngIf]="isAuthenticated && (l?.playersLeagueStatuses === null || l?.playersLeagueStatuses.length === 0)">
+            <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
               <button class="btn btn-sm btn-success" (click)="joinLeague(l)">
                 Join
               </button>
-            </ng-template>
-            <ng-template ngSwitchCase="1">
-              <button class="btn btn-sm btn-danger" (click)="joinLeague(l)">
-                Leave
-              </button>
-            </ng-template>
-            <ng-template ngSwitchCase="2">
-              <button class="btn btn-sm btn-warning" (click)="joinLeague(l)">
-                Waiting...
-              </button>
-            </ng-template>
+            </td>
+          </ng-template>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editLeague(l)">Изменить</button>
+            <button class="btn btn-sm btn-danger" (click)="delete(l)">Удалить</button>
           </td>
         </ng-template>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <ng-template #edit>
+    <td>
+      <input type="text" [(ngModel)]="league.name" class="form-control" />
+    </td>
+    <td>
+      <input type="text" [(ngModel)]="league.description" class="form-control" />
+    </td>
+    <td>
+      <div *ngIf="newLeagueType != null">
+        <select [(ngModel)]="newLeagueType">
+          <option *ngFor="let l of leagueTypes" [ngValue]="l">{{l.name}}</option>
+        </select>
+      </div>
+    </td>
+    <td>
+      <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+      <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+    </td>
+  </ng-template>
 
-        <ng-template [ngIf]="isAuthenticated && (l?.playersLeagueStatuses === null || l?.playersLeagueStatuses.length === 0)">
-          <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
-            <button class="btn btn-sm btn-success" (click)="joinLeague(l)">
-              Join
-            </button>
-          </td>
-        </ng-template>
-        <td>
-          <button class="btn btn-sm btn-primary" (click)="editLeague(l)">Изменить</button>
-          <button class="btn btn-sm btn-danger" (click)="delete(l)">Удалить</button>
-        </td>
-      </ng-template>
-    </tr>
-  </tbody>
-</table>
-
-<ng-template #edit>
-  <td>
-    <input type="text" [(ngModel)]="league.name" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="league.description" class="form-control" />
-  </td>
-  <td>
-    <div *ngIf="newLeagueType != null">
-      <select [(ngModel)]="newLeagueType">
-        <option *ngFor="let l of leagueTypes" [ngValue]="l">{{l.name}}</option>
-      </select>
+  <ng-template #create>
+    <div class="form-group">
+      <label>Название</label>
+      <input type="text" [(ngModel)]="league.name" class="form-control" />
     </div>
-  </td>
-  <td>
-    <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
-    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
-  </td>
-</ng-template>
-
-<ng-template #create>
-  <div class="form-group">
-    <label>Название</label>
-    <input type="text" [(ngModel)]="league.name" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Описание</label>
-    <input type="text" [(ngModel)]="league.description" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Тип</label>
-    <div *ngIf="newLeagueType != null">
-      <select [(ngModel)]="newLeagueType">
-        <option *ngFor="let l of leagueTypes" [ngValue]="l">{{l.name}}</option>
-      </select>
+    <div class="form-group">
+      <label>Описание</label>
+      <input type="text" [(ngModel)]="league.description" class="form-control" />
     </div>
-  </div>
-  <div>
-    <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
-    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
-  </div>
-</ng-template>
+    <div class="form-group">
+      <label>Тип</label>
+      <div *ngIf="newLeagueType != null">
+        <select [(ngModel)]="newLeagueType">
+          <option *ngFor="let l of leagueTypes" [ngValue]="l">{{l.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+      <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </div>
+  </ng-template>

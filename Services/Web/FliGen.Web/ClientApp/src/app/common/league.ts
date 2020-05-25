@@ -1,7 +1,7 @@
 import { LeagueType } from "./leagueType";
 import { PlayerWithLeagueStatus } from "./playerWithLeagueStatus";
 
-export class League {
+export class League{
   id: number;
   name: string;
   description: string;

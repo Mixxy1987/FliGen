@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 using FliGen.Services.Leagues.Application.Queries.PlayerJoinedLeagues;
 
 namespace FliGen.Services.Leagues.Controllers
@@ -38,7 +39,7 @@ namespace FliGen.Services.Leagues.Controllers
 
         [HttpGet]
         [Produces(typeof(IEnumerable<LeagueDto>))]
-        public Task<IEnumerable<LeagueDto>> GetLeagues([FromQuery]LeaguesQuery query)
+        public Task<PagedResult<LeagueDto>> GetLeagues([FromQuery]LeaguesQuery query)
         {
             return _mediatr.Send(query);
         }

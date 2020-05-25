@@ -5,4 +5,4 @@ var LeaguesSeasonsIdQueryType;
     LeaguesSeasonsIdQueryType[LeaguesSeasonsIdQueryType["All"] = 0] = "All";
     LeaguesSeasonsIdQueryType[LeaguesSeasonsIdQueryType["Actual"] = 1] = "Actual";
 })(LeaguesSeasonsIdQueryType = exports.LeaguesSeasonsIdQueryType || (exports.LeaguesSeasonsIdQueryType = {}));
-//# sourceMappingURL=tourStatus - Copy.js.map
+//# sourceMappingURL=leaguesSeasonsIdQueryType.js.map

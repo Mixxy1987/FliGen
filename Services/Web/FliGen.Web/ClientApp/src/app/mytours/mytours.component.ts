@@ -42,14 +42,14 @@ export class MyToursComponent implements OnInit {
       this.allTours.map(t => t.leagueId)
         .concat(this.incomingTours.map(t => t.leagueId)))];
 
-    const leaguesInfo = await this.dataService.getLeagues(leaguesId);
+    const leaguesInfo = (await this.dataService.getLeagues(leaguesId)).items;
     leaguesInfo.forEach(l => this.leagueIdNameMap[l.id]= l.name);
 
     this.loaded = true;
   }
 
   async registerOnTour(t: Tour) {
-    var requestId = await this.dataService.registerOnTour(t.id, t.leagueId);
+    const requestId = await this.dataService.registerOnTour(t.id, t.leagueId);
     this.signalrService.registerCallback(requestId, () => this.loadMyTours());
   }
 }

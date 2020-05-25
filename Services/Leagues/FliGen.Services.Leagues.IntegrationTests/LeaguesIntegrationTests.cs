@@ -220,7 +220,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
             {
                 var uow = new UnitOfWork<LeaguesContext>(context);
                 var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
-                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).Items.ToList();
                 result.Count.Should().Be(context.Leagues.Count());
 
                 List<PlayerWithLeagueStatusDto> playerWithLeagueStatuses = result.SelectMany(l => l.PlayersLeagueStatuses).ToList();
@@ -255,7 +255,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
             {
                 var uow = new UnitOfWork<LeaguesContext>(context);
                 var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
-                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).Items.ToList();
 
                 const int expectedLeaguesCount = 2;
                 result.Count.Should().Be(expectedLeaguesCount);
@@ -285,7 +285,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
             {
                 var uow = new UnitOfWork<LeaguesContext>(context);
                 var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
-                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).Items.ToList();
 
                 const int expectedLeaguesCount = 2;
                 result.Count.Should().Be(expectedLeaguesCount);
@@ -316,7 +316,7 @@ namespace FliGen.Services.Leagues.IntegrationTests
             {
                 var uow = new UnitOfWork<LeaguesContext>(context);
                 var commandHandler = new LeaguesQueryHandler(uow, _mapper, playersService);
-                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).ToList();
+                List<LeagueDto> result = (await commandHandler.Handle(command, CancellationToken.None)).Items.ToList();
 
                 const int expectedLeaguesCount = 2;
                 result.Count.Should().Be(expectedLeaguesCount);

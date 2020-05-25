@@ -4,6 +4,7 @@ using FliGen.Services.Api.Queries.Leagues;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 
 
 namespace FliGen.Services.Api.Services
@@ -17,7 +18,7 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("leagues")]
-        Task<IEnumerable<League>> GetAsync([Query]LeaguesQuery leaguesQuery);
+        Task<PagedResult<League>> GetAsync([Query]LeaguesQuery leaguesQuery);
 
         [AllowAnyStatusCode]
         [Get("leagues/info")]

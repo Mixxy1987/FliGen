@@ -144,11 +144,12 @@ namespace FliGen.Services.Teams.Application.Commands.GenerateTeams
                     Pid = command.Pid,
                     LeagueId = new[] { command.LeagueId }
                 }))
+                .Items
                 .FirstOrDefault();
 
             if (leagueDto is null)
             {
-                throw new FliGenException(ErrorCodes.NoInformationAboutLeague, "No information about players.");
+                throw new FliGenException(ErrorCodes.NoInformationAboutLeague, "No information about leagues.");
             }
 
             return leagueDto.PlayersLeagueStatuses.ToList();

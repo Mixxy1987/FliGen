@@ -127,21 +127,22 @@ namespace FliGen.Services.Tours.Application.Commands.PlayerRegisterOnTour
                     $"There is no player with external id: {command.PlayerExternalId}");
             }
 
-            var leagues = await _leaguesService.GetLeaguesAsync(
-                new LeaguesQuery()
+            var leagues = await _leaguesService.GetAsync(
+                new LeaguesQuery
                 {
                     PlayerExternalId = command.PlayerExternalId,
                     LeagueId = new[] { command.LeagueId }
                 });
 
-            if (leagues is null)
+            if (leagues is null || 
+                leagues.IsEmpty)
             {
                 throw new FliGenException(
                     ErrorCodes.NoLeagueWithSuchId,
                     $"There is no league with id: {command.LeagueId}");
             }
 
-            var leaguesArr = leagues.ToList();
+            var leaguesArr = leagues.Items.ToList();
 
             if (leaguesArr.Count == 0)
             {

@@ -9,6 +9,7 @@ using OpenTracing;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 
 namespace FliGen.Services.Api.Controllers
 {
@@ -35,25 +36,33 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<League>> GetLeagues([FromQuery(Name = "id")]int[] leaguesId)
+        public async Task<PagedResult<League>> GetLeagues(
+            [FromQuery(Name = "id")]int[] leaguesId,
+            [FromQuery]int? size,
+            [FromQuery]int? page)
         {
-            var query = new LeaguesQuery()
-            {
-                LeaguesId = leaguesId,
-                PlayerExternalId = _identityService.GetUserIdentity()
-            };
+            var query = new LeaguesQuery(
+                _identityService.GetUserIdentity(),
+                leaguesId,
+                Array.Empty<int>(),
+                size,
+                page);
+
             return await _leaguesService.GetAsync(query);
         }
 
         [HttpGet("my")]
-        public async Task<IEnumerable<League>> GetMyLeagues([FromQuery(Name = "id")]int[] leaguesId)
+        public async Task<PagedResult<League>> GetMyLeagues(
+            [FromQuery(Name = "id")]int[] leaguesId,
+            [FromQuery]int? size,
+            [FromQuery]int? page)
         {
-            var query = new LeaguesQuery()
-            {
-                PlayersId = Array.Empty<int>(),
-                LeaguesId = leaguesId ?? Array.Empty<int>(),
-                PlayerExternalId = _identityService.GetUserIdentity()
-            };
+            var query = new LeaguesQuery(
+                _identityService.GetUserIdentity(),
+                leaguesId ?? Array.Empty<int>(),
+                Array.Empty<int>(),
+                size,
+                page);
             return await _leaguesService.GetAsync(query);
         }
 
@@ -73,7 +82,7 @@ namespace FliGen.Services.Api.Controllers
         [Produces(typeof(LeagueInformation))]
         public async Task<LeagueInformation> GetLeagues(int id)
         {
-            return await _leaguesService.GetLeagueInformationAsync(new LeagueInformationQuery{ Id = id });
+            return await _leaguesService.GetLeagueInformationAsync(new LeagueInformationQuery { Id = id });
         }
 
         [HttpPost]
@@ -93,7 +102,7 @@ namespace FliGen.Services.Api.Controllers
         public async Task<IActionResult> Join([FromBody]int id)
         {
             var playerId = _identityService.GetUserIdentity();
-            
+
             return await SendAsync(new JoinLeague(id, playerId));
         }
 

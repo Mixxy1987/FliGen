@@ -1,7 +1,7 @@
-﻿using FliGen.Services.Tours.Application.Dto;
+﻿using FliGen.Common.Types;
+using FliGen.Services.Tours.Application.Dto;
 using FliGen.Services.Tours.Application.Queries.LeaguesQuery;
 using RestEase;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FliGen.Services.Tours.Application.Services
@@ -11,7 +11,7 @@ namespace FliGen.Services.Tours.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("leagues")]
-        Task<IEnumerable<LeagueDto>> GetLeaguesAsync([Query]LeaguesQuery leaguesQuery);
+        Task<PagedResult<LeagueDto>> GetAsync([Query]LeaguesQuery leaguesQuery);
 
         [AllowAnyStatusCode]
         [Get("leagues/playerJoinedLeagues")]

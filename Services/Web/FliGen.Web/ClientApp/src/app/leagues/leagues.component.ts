@@ -5,6 +5,8 @@ import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
 import { DataService } from "../data-service/data.service";
 import { SignalRService } from "../services/signalR.service";
+import { PageEvent } from '@angular/material/paginator';
+import { Consts } from "../common/consts/consts";
 
 @Component({
   selector: 'app-leagues',
@@ -12,13 +14,20 @@ import { SignalRService } from "../services/signalR.service";
   providers: [DataService]
 })
 export class LeaguesComponent implements OnInit {
+
+  private pageEvent: PageEvent;
+  private readonly pageSizeOptions = [3, 5, 10, 25, 100];
+  private pageIndex = Consts.leaguesDefaultPageIndex;
+  private pageSize = Consts.leaguesDefaultPageSize;
+
   private league: League = new League();
-  private leagues: League[];
+  private leagues: PagedResult<League>;
   private leagueTypes: LeagueType[];
   private newLeagueType: LeagueType;
 
-  private tableMode: boolean = true;
+  private tableMode = true;
   private isAuthenticated: boolean;
+  private leaguesCount : number;
 
   constructor(
     private readonly dataService: DataService,
@@ -34,8 +43,16 @@ export class LeaguesComponent implements OnInit {
     await this.loadLeagueTypes();
   }
 
-  async loadLeagues() {
-    this.leagues = await this.dataService.getLeagues();
+  async loadLeagues(event?: PageEvent) {
+    if (event) {
+      this.leagues = await this.dataService.getLeagues(null, event.pageSize, event.pageIndex);
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+    } else {
+      this.leagues = await this.dataService.getLeagues();
+    }
+    this.leaguesCount = this.leagues.totalResults;
+    return event;
   }
 
   async loadLeagueTypes() {
@@ -65,7 +82,7 @@ export class LeaguesComponent implements OnInit {
   }
 
   async delete(l: League) {
-    let requestId = await this.dataService.deleteLeague(l.id);
+    const requestId = await this.dataService.deleteLeague(l.id);
     this.signalrService.registerCallback(requestId, () => this.loadLeagues());
   }
 
