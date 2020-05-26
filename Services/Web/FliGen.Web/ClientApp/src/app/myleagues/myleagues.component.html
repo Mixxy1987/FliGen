@@ -1,31 +1,41 @@
 <h1 id="tableLabel">Мои лиги</h1>
 
 <p *ngIf="!loaded"><em>Загрузка...</em></p>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <td>Название</td>
-      <td>Описание</td>
-      <td>Тип</td>
-    </tr>
-  </thead>
-  <tr *ngFor="let l of leagues">
-    <ng-template [ngIf]="isAuthenticated && l?.playersLeagueStatuses.length !== 0 && l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus !== 0">
-      <td>{{l?.name}}</td>
-      <td>{{l?.description}}</td>
-      <td>{{l?.leagueType?.name}}</td>
-      <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
-        <ng-template ngSwitchCase="1">
-          <button class="btn btn-sm btn-danger" (click)="joinLeague(l)">
-            Leave
-          </button>
+<div *ngIf="leagues">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td>Название</td>
+        <td>Описание</td>
+        <td>Тип</td>
+      </tr>
+    </thead>
+    <tbody>
+      <mat-paginator [length]="leaguesCount"
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="pageSizeOptions"
+                     (page)="pageEvent = loadLeagues($event)">
+      </mat-paginator>
+      <tr *ngFor="let l of leagues.items">
+        <ng-template [ngIf]="isAuthenticated && l?.playersLeagueStatuses.length !== 0 && l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus !== 0">
+          <td>{{l?.name}}</td>
+          <td>{{l?.description}}</td>
+          <td>{{l?.leagueType?.name}}</td>
+          <td [ngSwitch]="l?.playersLeagueStatuses[0]?.playerLeagueJoinStatus">
+            <ng-template ngSwitchCase="1">
+              <button class="btn btn-sm btn-danger" (click)="joinLeague(l)">
+                Leave
+              </button>
+            </ng-template>
+            <ng-template ngSwitchCase="2">
+              <button class="btn btn-sm btn-warning" (click)="joinLeague(l)">
+                Waiting...
+              </button>
+            </ng-template>
+          </td>
         </ng-template>
-        <ng-template ngSwitchCase="2">
-          <button class="btn btn-sm btn-warning" (click)="joinLeague(l)">
-            Waiting...
-          </button>
-        </ng-template>
-      </td>
-    </ng-template>
-  </tr>
-</table>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -5,6 +5,8 @@ import { League } from "../common/league";
 import { LeagueType } from "../common/leagueType";
 import { DataService } from "../data-service/data.service";
 import { SignalRService } from "../services/signalR.service";
+import { PageEvent } from "@angular/material/paginator/paginator";
+import { Consts } from "../common/consts/consts";
 
 @Component({
   selector: 'app-leagues',
@@ -12,11 +14,16 @@ import { SignalRService } from "../services/signalR.service";
   providers: [DataService]
 })
 export class MyLeaguesComponent implements OnInit {
+  private pageEvent: PageEvent;
+  private readonly pageSizeOptions = [3, 5, 10, 25, 100];
+  private pageIndex = Consts.leaguesDefaultPageIndex;
+  private pageSize = Consts.leaguesDefaultPageSize;
 
-  private leagues: League[];
+  private leagues: PagedResult<League>;
   private leagueTypes: LeagueType[];
   private loaded: boolean = false;
   private isAuthenticated: boolean;
+  private leaguesCount: number;
 
   constructor(
     private readonly dataService: DataService,
@@ -38,8 +45,17 @@ export class MyLeaguesComponent implements OnInit {
     this.loaded = true;
   }
 
-  async loadLeagues() {
-    this.leagues = await this.dataService.getMyLeagues();
+  async loadLeagues(event?: PageEvent) {
+    if (event) {
+      this.leagues = await this.dataService.getMyLeagues(event.pageSize, event.pageIndex);
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+    } else {
+      this.leagues = await this.dataService.getMyLeagues();
+    }
+
+    this.leaguesCount = this.leagues.totalResults;
+    return event;
   }
 
   async loadLeagueTypes() {

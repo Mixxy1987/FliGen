@@ -24,10 +24,10 @@ export class DataService {
   constructor(
     private readonly http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
-      this.playersUrl = this.baseUrl + "players";
-      this.leaguesUrl = this.baseUrl + "leagues";
-      this.seasonsUrl = this.baseUrl + "seasons";
-      this.toursUrl = this.baseUrl + "tours";
+    this.playersUrl = this.baseUrl + "players";
+    this.leaguesUrl = this.baseUrl + "leagues";
+    this.seasonsUrl = this.baseUrl + "seasons";
+    this.toursUrl = this.baseUrl + "tours";
   }
 
   async getToursBySeasons(
@@ -36,15 +36,15 @@ export class DataService {
     queryType: ToursQueryType,
     size: number = Consts.toursDefaultPageSize,
     page: number = Consts.toursDefaultPageIndex) {
-      let url = this.toursUrl + "/player/" + playerId + "/seasons?";
-      for (let i = 0; i < seasonsId.length; i++) {
-        url += `id=${seasonsId[i]}`;
-        if (i !== seasonsId.length - 1) {
-          url += "&";
-        }
+    let url = this.toursUrl + "/player/" + playerId + "/seasons?";
+    for (let i = 0; i < seasonsId.length; i++) {
+      url += `id=${seasonsId[i]}`;
+      if (i !== seasonsId.length - 1) {
+        url += "&";
       }
-      url += `&queryType=${queryType}`;
-      url += `&size=${size}&page=${page}`;
+    }
+    url += `&queryType=${queryType}`;
+    url += `&size=${size}&page=${page}`;
     return await this.http.get<PagedResult<Tour>>(url).toPromise();
   }
 
@@ -52,10 +52,10 @@ export class DataService {
     queryType: ToursQueryType,
     size: number = Consts.toursDefaultPageSize,
     page: number = Consts.toursDefaultPageIndex) {
-      let url: string = this.toursUrl + "/player";
-      url += `?queryType=${queryType}`;
-      url += `&size=${size}&page=${page}`;
-      return await this.http.get<PagedResult<Tour>>(url).toPromise();
+    let url: string = this.toursUrl + "/player";
+    url += `?queryType=${queryType}`;
+    url += `&size=${size}&page=${page}`;
+    return await this.http.get<PagedResult<Tour>>(url).toPromise();
   }
 
   async getLeaguesSeasonsId(
@@ -66,27 +66,31 @@ export class DataService {
       .toPromise();
   }
 
-  async getMyLeagues() {
-    return await this.http.get<League[]>(this.leaguesUrl + "/my").toPromise();
+  async getMyLeagues(
+    size: number = Consts.leaguesDefaultPageSize,
+    page: number = Consts.leaguesDefaultPageIndex) {
+    let url = this.leaguesUrl + "/my";
+    url += `?size=${size}&page=${page}`;
+    return await this.http.get<PagedResult<League>>(url).toPromise();
   }
 
   async getLeagues(
     leaguesId: number[] = null,
     size: number = Consts.leaguesDefaultPageSize,
     page: number = Consts.leaguesDefaultPageIndex) {
-      let url = this.leaguesUrl;
-      if (leaguesId !== null) {
-        url += "?";
-        for (let i = 0; i < leaguesId.length; i++) {
-          url += `id=${leaguesId[i]}`;
-          if (i !== leaguesId.length - 1) {
-            url += "&";
-          }
+    let url = this.leaguesUrl;
+    if (leaguesId !== null) {
+      url += "?";
+      for (let i = 0; i < leaguesId.length; i++) {
+        url += `id=${leaguesId[i]}`;
+        if (i !== leaguesId.length - 1) {
+          url += "&";
         }
-        url += `&size=${size}&page=${page}`;
-      } else {
-        url += `?size=${size}&page=${page}`;
       }
+      url += `&size=${size}&page=${page}`;
+    } else {
+      url += `?size=${size}&page=${page}`;
+    }
     return await this.http.get<PagedResult<League>>(url).toPromise();
   }
 
