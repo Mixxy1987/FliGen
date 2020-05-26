@@ -10,7 +10,7 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
      * Last - if querytype == last
      * SeasonsId - filter by seasons
      */
-    public class ToursQuery : PagedQuery, IRequest<IEnumerable<TourDto>>
+    public class ToursQuery : PagedQuery, IRequest<PagedResult<TourDto>>
     {
         public int PlayerId { get; set; }
         public int? Last { get; set; }

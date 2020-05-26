@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 
 namespace FliGen.Services.Api.Controllers
 {
@@ -44,43 +45,43 @@ namespace FliGen.Services.Api.Controllers
         }
 
         [HttpGet("player/{playerId}/seasons")]
-        [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> GetTours(
+        [Produces(typeof(PagedResult<Tour>))]
+        public Task<PagedResult<Tour>> GetTours(
             [FromRoute]int playerId,
             [FromQuery(Name="id")]int[] seasonIds,
             [FromQuery]ToursQueryType queryType, 
-            [FromQuery]int? last)
+            [FromQuery]int? last,
+            [FromQuery]int? size,
+            [FromQuery]int? page)
         {
-            return _toursService.GetWithSeasonsAsync(playerId, seasonIds, queryType, last);
+            return _toursService.GetWithSeasonsAsync(playerId, seasonIds, queryType, last, size, page);
         }
 
         [HttpGet("player/{playerId}")]
-        [Produces(typeof(IEnumerable<Tour>))]
-        public Task<IEnumerable<Tour>> GetTours([FromRoute]int playerId, [FromQuery]ToursQueryType queryType, [FromQuery]int? last)
+        [Produces(typeof(PagedResult<Tour>))]
+        public Task<PagedResult<Tour>> GetTours(
+            [FromRoute]int playerId,
+            [FromQuery]ToursQueryType queryType, 
+            [FromQuery]int? last,
+            [FromQuery]int? size,
+            [FromQuery]int? page)
         {
-            var query = new ToursQuery
-            {
-                QueryType = queryType,
-                Last = last
-            };
-
+            var query = new ToursQuery(playerId, last, queryType, Array.Empty<int>(), size, page);
             return _toursService.GetAsync(playerId, query);
         }
 
         [HttpGet("player")]
-        [Produces(typeof(IEnumerable<Tour>))]
-        public async Task<IEnumerable<Tour>> GetMyTours([FromQuery]ToursQueryType queryType, [FromQuery]int? last)
+        [Produces(typeof(PagedResult<Tour>))]
+        public async Task<PagedResult<Tour>> GetMyTours(
+            [FromQuery]ToursQueryType queryType,
+            [FromQuery]int? last,
+            [FromQuery]int? size,
+            [FromQuery]int? page)
         {
             var playerExternalId = _identityService.GetUserIdentity();
             var internalId = (await _playersService.GetInternalIdAsync(playerExternalId)).InternalId;
 
-            var query = new ToursQuery
-            {
-                PlayerId = internalId,
-                QueryType = queryType,
-                Last = last
-            };
-
+            var query = new ToursQuery(internalId, last, queryType, Array.Empty<int>(), size, page);
             return await _toursService.GetAsync(query);
         }
 

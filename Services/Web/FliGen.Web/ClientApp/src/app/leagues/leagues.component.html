@@ -21,7 +21,6 @@
                      [pageSizeOptions]="pageSizeOptions"
                      (page)="pageEvent = loadLeagues($event)">
       </mat-paginator>
-
       <tr *ngFor="let l of leagues.items">
         <ng-template [ngIf]="league?.id != l.id" [ngIfElse]="edit">
           <td><a [routerLink]="[l.id]" class="nav-link">{{l?.name}}</a></td>

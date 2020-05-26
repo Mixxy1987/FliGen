@@ -2,7 +2,9 @@
 using FliGen.Common.Extensions;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
+using FliGen.Common.Types;
 using FliGen.Services.Tours.Application.Dto;
+using FliGen.Services.Tours.Application.Queries.LeaguesSeasonsIdQuery;
 using FliGen.Services.Tours.Application.Services;
 using FliGen.Services.Tours.Domain.Entities;
 using MediatR;
@@ -12,11 +14,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FliGen.Services.Tours.Application.Queries.LeaguesSeasonsIdQuery;
 
 namespace FliGen.Services.Tours.Application.Queries.Tours
 {
-    public class ToursQueryHandler : IRequestHandler<ToursQuery, IEnumerable<TourDto>>
+    public class ToursQueryHandler : IRequestHandler<ToursQuery, PagedResult<TourDto>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -38,7 +39,7 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             _leaguesService = leaguesService;
         }
 
-        public async Task<IEnumerable<TourDto>> Handle(ToursQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<TourDto>> Handle(ToursQuery request, CancellationToken cancellationToken)
         {
             var toursRepo = _uow.GetReadOnlyRepository<Tour>();
 
@@ -49,6 +50,7 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             }
 
             IPaginate<Tour> tours;
+            int? count = null;
             if (request.PlayerId == 0)
             {
                 tours = QueryForAllPlayers(request, toursRepo, predicate);
@@ -61,7 +63,7 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
                 }
                 else
                 {
-                    tours = await FilterByPlayerId(request, toursRepo, predicate);
+                    (count, tours) = await FilterByPlayerId(request, toursRepo, predicate);
                 }
             }
             
@@ -83,7 +85,12 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             {
                 EnrichByRegisterStatus(toursDtos, request.PlayerId);
             }
-            return toursDtos;
+            return PagedResult<TourDto>.Create(
+                toursDtos,
+                tours.Index,
+                tours.Size,
+                tours.Pages,
+                count ?? tours.Count);
         }
 
         private void EnrichByRegisterStatus(IEnumerable<TourDto> toursDtos, int playerId)
@@ -135,8 +142,8 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             foreach (var season in actualSeasons)
             {
                 var tour = toursRepo.Single(
-                    predicate: t => t.SeasonId == season.SeasonId,
-                    orderBy: q => q.OrderByDescending(t => t.Date));
+                    t => t.SeasonId == season.SeasonId,
+                    q => q.OrderByDescending(t => t.Date));
 
                 if (tour != null && !tour.IsRegistrationClosed())
                 {
@@ -147,31 +154,28 @@ namespace FliGen.Services.Tours.Application.Queries.Tours
             return tours.ToPaginate(0, tours.Count);
         }
 
-        private async Task<IPaginate<Tour>> FilterByPlayerId(
+        private async Task<(int, IPaginate<Tour>)> FilterByPlayerId(
             ToursQuery request,
             IRepositoryReadOnly<Tour> toursRepo,
             Expression<Func<Tour, bool>> predicate)
         {
-            ToursByPlayerIdDto toursByPlayerIdDto =
+            PagedResult<int> toursByPlayerIdDto =
                 await _teamsService.GetToursByPlayerIdAsync(
                     request.Size,
                     request.Page,
                     request.PlayerId);
 
-            if (toursByPlayerIdDto?.ToursId is null ||
-                toursByPlayerIdDto.ToursId.Length == 0)
+            if (toursByPlayerIdDto.IsEmpty)
             {
-                return null;
+                return (0, null);
             }
-            var tourIds = toursByPlayerIdDto.ToursId.ToList();
+            var tourIds = toursByPlayerIdDto.Items.ToList();
 
             predicate = predicate == null ?
                 t => tourIds.Contains(t.Id) : 
                 predicate.AndAlso(t => tourIds.Contains(t.Id));
 
-            return toursRepo.GetList(
-                predicate,
-                size: tourIds.Count);
+            return ((int)toursByPlayerIdDto.TotalResults, toursRepo.GetList(predicate, size: tourIds.Count));
         }
 
         private static IPaginate<Tour> QueryForAllPlayers(

@@ -3,78 +3,98 @@
 <p *ngIf="!loaded"><em>Загрузка...</em></p>
 
 <mat-tab-group>
-  <mat-tab label="Предстоящие туры">
-    <p *ngIf="!loaded"><em>Загрузка...</em></p>
-    <div *ngIf="loaded && incomingTours?.length == 0">
-      <p>Ничего не найдено</p>
-    </div>
+  <div *ngIf="incomingTours">
+    <mat-tab label="Предстоящие туры">
+      <p *ngIf="!loaded"><em>Загрузка...</em></p>
+      <div *ngIf="loaded && incomingTours?.items.length == 0">
+        <p>Ничего не найдено</p>
+      </div>
 
-    <div *ngIf="loaded && incomingTours?.length != 0">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <td>Дата</td>
-            <td>Лига</td>
-            <td>Статус тура</td>
-            <td>Статус игрока</td>
-          </tr>
-        </thead>
-        <tr *ngFor="let t of incomingTours">
-          <td>{{t.date}}</td>
-          <td>{{leagueIdNameMap[t.leagueId]}}</td>
-          <td [ngSwitch]="t.tourStatus">
-            <ng-template ngSwitchCase="1">
-              Регистрация еще не открыта
-            </ng-template>
-            <ng-template ngSwitchCase="2">
-              Регистрация открыта
-            </ng-template>
-            <ng-template ngSwitchCase="3">
-              Регистрация закрыта
-            </ng-template>
-            <ng-template ngSwitchCase="3">
-              Идет игра
-            </ng-template>
-          </td>
-          <td>
-            <div *ngIf="t.tourStatus == 2 && t.playerRegistered">
-              <button class="btn btn-sm btn-danger" (click)="registerOnTour(t)">
-                Отменить регистрацию
-              </button>
-            </div>
-            <div *ngIf="t.tourStatus == 2 && !t.playerRegistered">
-              <button class="btn btn-sm btn-success" (click)="registerOnTour(t)">
-                Зарегистрироваться
-              </button>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </mat-tab>
-  <mat-tab label="История">
-    <p *ngIf="!loaded"><em>Загрузка...</em></p>
-    <div *ngIf="loaded && allTours?.length == 0">
-      <p>Ничего не найдено</p>
-    </div>
+      <div *ngIf="loaded && incomingTours?.items.length != 0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>Дата</td>
+              <td>Лига</td>
+              <td>Статус тура</td>
+              <td>Статус игрока</td>
+            </tr>
+          </thead>
+          <tbody>
+            <mat-paginator [length]="incomingToursCount"
+                           [pageIndex]="incomingToursPageIndex"
+                           [pageSize]="incomingToursPageSize"
+                           [pageSizeOptions]="pageSizeOptions"
+                           (page)="pageEvent = loadMyTours($event, 1)">
+            </mat-paginator>
+            <tr *ngFor="let t of incomingTours.items">
+              <td>{{t.date}}</td>
+              <td>{{leagueIdNameMap[t.leagueId]}}</td>
+              <td [ngSwitch]="t.tourStatus">
+                <ng-template ngSwitchCase="1">
+                  Регистрация еще не открыта
+                </ng-template>
+                <ng-template ngSwitchCase="2">
+                  Регистрация открыта
+                </ng-template>
+                <ng-template ngSwitchCase="3">
+                  Регистрация закрыта
+                </ng-template>
+                <ng-template ngSwitchCase="3">
+                  Идет игра
+                </ng-template>
+              </td>
+              <td>
+                <div *ngIf="t.tourStatus == 2 && t.playerRegistered">
+                  <button class="btn btn-sm btn-danger" (click)="registerOnTour(t)">
+                    Отменить регистрацию
+                  </button>
+                </div>
+                <div *ngIf="t.tourStatus == 2 && !t.playerRegistered">
+                  <button class="btn btn-sm btn-success" (click)="registerOnTour(t)">
+                    Зарегистрироваться
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </div>
+  <div *ngIf="allTours">
+    <mat-tab label="История">
+      <p *ngIf="!loaded"><em>Загрузка...</em></p>
+      <div *ngIf="loaded && allTours?.items.length == 0">
+        <p>Ничего не найдено</p>
+      </div>
 
-    <div *ngIf="loaded && allTours?.length != 0">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <td>Дата</td>
-            <td>Лига</td>
-            <td>Хозяева</td>
-            <td>Гости</td>
-          </tr>
-        </thead>
-        <tr *ngFor="let t of allTours">
-          <td>{{t.date}}</td>
-          <td>{{leagueIdNameMap[t.leagueId]}}</td>
-          <td>{{t.homeCount}}</td>
-          <td>{{t.guestCount}}</td>
-        </tr>
-      </table>
-    </div>
-  </mat-tab>
+      <div *ngIf="loaded && allTours?.items.length != 0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>Дата</td>
+              <td>Лига</td>
+              <td>Хозяева</td>
+              <td>Гости</td>
+            </tr>
+          </thead>
+          <tbody>
+            <mat-paginator [length]="allToursCount"
+                           [pageIndex]="allToursPageIndex"
+                           [pageSize]="allToursPageSize"
+                           [pageSizeOptions]="pageSizeOptions"
+                           (page)="pageEvent = loadMyTours($event, 0)">
+            </mat-paginator>
+            <tr *ngFor="let t of allTours.items">
+              <td>{{t.date}}</td>
+              <td>{{leagueIdNameMap[t.leagueId]}}</td>
+              <td>{{t.homeCount}}</td>
+              <td>{{t.guestCount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </div>
 </mat-tab-group>

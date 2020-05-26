@@ -19,8 +19,8 @@ export class LeagueDetailComponent implements OnInit {
   private readonly id: number;
   private leagueInformation: LeagueInformation;
   private leaguesSeasonsId: LeagueSeasonId[];
-  private incomingTours: Tour[];
-  private allTours: Tour[];
+  private incomingTours: PagedResult<Tour>;
+  private allTours: PagedResult<Tour>;
   private loaded = false;
 
   constructor(

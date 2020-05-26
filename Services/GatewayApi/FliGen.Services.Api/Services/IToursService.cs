@@ -4,6 +4,7 @@ using FliGen.Services.Api.Queries.Tours;
 using RestEase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 
 
 namespace FliGen.Services.Api.Services
@@ -21,19 +22,21 @@ namespace FliGen.Services.Api.Services
 
         [AllowAnyStatusCode]
         [Get("tours/player/{playerId}")]
-        Task<IEnumerable<Tour>> GetAsync([Path]int playerId, [Query]ToursQuery query);
+        Task<PagedResult<Tour>> GetAsync([Path]int playerId, [Query]ToursQuery query);
 
         [AllowAnyStatusCode]
         [Get("tours/player")]
-        Task<IEnumerable<Tour>> GetAsync([Query] ToursQuery query);
+        Task<PagedResult<Tour>> GetAsync([Query] ToursQuery query);
 
         [AllowAnyStatusCode]
         [Get("tours/player/{playerId}/seasons")]
-        Task<IEnumerable<Tour>> GetWithSeasonsAsync(
+        Task<PagedResult<Tour>> GetWithSeasonsAsync(
             [Path]int playerId,
             [Query(Name = "id")]int[] seasonsId,
             [Query]ToursQueryType queryType,
-            [Query]int? last);
+            [Query]int? last,
+            [Query]int? size,
+            [Query]int? page);
 
         [AllowAnyStatusCode]
         [Get("tours/registeredOnTourPlayers")]

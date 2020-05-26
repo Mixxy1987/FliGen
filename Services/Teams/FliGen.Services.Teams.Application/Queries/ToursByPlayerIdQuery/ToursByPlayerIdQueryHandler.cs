@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FliGen.Common.SeedWork.Repository;
 using FliGen.Common.SeedWork.Repository.Paging;
-using FliGen.Services.Teams.Application.Dto;
+using FliGen.Common.Types;
 using FliGen.Services.Teams.Domain.Entities;
 using MediatR;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 {
-    public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, ToursByPlayerIdDto>
+    public class ToursByPlayerIdQueryHandler : IRequestHandler<ToursByPlayerIdQuery, PagedResult<int>>
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -21,13 +21,13 @@ namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
             _mapper = mapper;
         }
 
-        public Task<ToursByPlayerIdDto> Handle(ToursByPlayerIdQuery request, CancellationToken cancellationToken)
+        public Task<PagedResult<int>> Handle(ToursByPlayerIdQuery request, CancellationToken cancellationToken)
         {
             var teamPlayerLinksRepo = _uow.GetReadOnlyRepository<TeamPlayerLink>();
 
             IPaginate<TeamPlayerLink> teamPlayerLinks = teamPlayerLinksRepo
                 .GetList(
-                    predicate: tpl => tpl.PlayerId == request.PlayerId,
+                    tpl => tpl.PlayerId == request.PlayerId,
                     size: request.Size,
                     index: request.Page);
 
@@ -40,17 +40,14 @@ namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 
             var teamRepo = _uow.GetReadOnlyRepository<Team>();
 
-            var toursByPlayerIdDto = new ToursByPlayerIdDto()
-            {
-                ToursId = teamRepo.GetList(
-                        predicate: x => teamIds.Contains(x.Id),
-                        size: teamIds.Count)
-                    .Items
-                    .Select(x => x.TourId)
-                    .ToArray()
-            };
+            var result = PagedResult<int>.Create(
+                teamRepo.GetList(x => teamIds.Contains(x.Id), size: teamIds.Count).Items.Select(x => x.TourId),
+                teamPlayerLinks.Index,
+                teamPlayerLinks.Size,
+                teamPlayerLinks.Pages,
+                teamPlayerLinks.Count);
 
-            return Task.FromResult(toursByPlayerIdDto);
+            return Task.FromResult(result);
         }
     }
 }

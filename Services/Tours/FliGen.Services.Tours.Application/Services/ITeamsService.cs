@@ -1,4 +1,4 @@
-﻿using FliGen.Services.Tours.Application.Dto;
+﻿using FliGen.Common.Types;
 using RestEase;
 using System.Threading.Tasks;
 
@@ -8,6 +8,9 @@ namespace FliGen.Services.Tours.Application.Services
     {
         [AllowAnyStatusCode]
         [Get("teams/toursByPlayerId")]
-        Task<ToursByPlayerIdDto> GetToursByPlayerIdAsync([Query]int size, [Query]int page, [Query]int playerId);
+        Task<PagedResult<int>> GetToursByPlayerIdAsync(
+            [Query]int size,
+            [Query]int page, 
+            [Query]int playerId);
     }
 }

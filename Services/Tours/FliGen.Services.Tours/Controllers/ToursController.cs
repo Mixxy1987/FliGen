@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FliGen.Common.Types;
 using FliGen.Services.Tours.Application.Queries.SeasonStats;
 using FliGen.Services.Tours.Application.Queries.Tours;
 
@@ -25,48 +26,59 @@ namespace FliGen.Services.Tours.Controllers
 		}
 
         [HttpGet]
-        [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> GetTours([FromQuery]ToursQuery query)
+        [Produces(typeof(PagedResult<TourDto>))]
+        public Task<PagedResult<TourDto>> GetTours([FromQuery]ToursQuery query)
         {
             return _mediatr.Send(query);
         }
 
         [HttpGet("player/{playerId}/seasons")]
-        [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> Get(
+        [Produces(typeof(PagedResult<TourDto>))]
+        public Task<PagedResult<TourDto>> Get(
             [FromRoute]int playerId,
             [FromQuery(Name = "id")]int[] seasonsId, 
             [FromQuery]ToursQueryType queryType,
-            [FromQuery]int? last)
+            [FromQuery]int? last,
+            [FromQuery]int size,
+            [FromQuery]int page)
         {
             var query = new ToursQuery
             {
                 PlayerId = playerId,
                 SeasonsId = seasonsId,
                 QueryType = queryType,
-                Last = last
+                Last = last,
+                Size = size,
+                Page = page,
             };
 
             return _mediatr.Send(query);
         }
 
         [HttpGet("player/{playerId}")]
-        [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> Get([FromRoute]int playerId, [FromQuery]ToursQueryType queryType, [FromQuery]int last)
+        [Produces(typeof(PagedResult<TourDto>))]
+        public Task<PagedResult<TourDto>> Get(
+            [FromRoute]int playerId,
+            [FromQuery]ToursQueryType queryType,
+            [FromQuery]int last,
+            [FromQuery]int size,
+            [FromQuery]int page)
         {
             var query = new ToursQuery
             {
                 PlayerId = playerId,
                 QueryType = queryType,
-                Last = last
+                Last = last,
+                Size = size,
+                Page = page,
             };
 
             return _mediatr.Send(query);
         }
 
         [HttpGet("player")]
-        [Produces(typeof(IEnumerable<TourDto>))]
-        public Task<IEnumerable<TourDto>> GetMyTours([FromQuery]ToursQuery query)
+        [Produces(typeof(PagedResult<TourDto>))]
+        public Task<PagedResult<TourDto>> GetMyTours([FromQuery]ToursQuery query)
         {
             return _mediatr.Send(query);
         }

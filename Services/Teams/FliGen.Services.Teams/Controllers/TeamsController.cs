@@ -1,4 +1,4 @@
-﻿using FliGen.Services.Teams.Application.Dto;
+﻿using FliGen.Common.Types;
 using FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +21,8 @@ namespace FliGen.Services.Teams.Controllers
 		}
 
 		[HttpGet("ToursByPlayerId")]
-        [Produces(typeof(ToursByPlayerIdDto))]
-        public Task<ToursByPlayerIdDto> Get(int size, int page, [FromQuery]int playerId)
+        [Produces(typeof(PagedResult<int>))]
+        public Task<PagedResult<int>> Get(int size, int page, [FromQuery]int playerId)
         {
             return _mediatr.Send(new ToursByPlayerIdQuery(size, page, playerId));
         }

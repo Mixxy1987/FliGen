@@ -33,7 +33,9 @@ export class DataService {
   async getToursBySeasons(
     playerId: number,
     seasonsId: number[],
-    queryType: ToursQueryType): Promise<Tour[]> {
+    queryType: ToursQueryType,
+    size: number = Consts.toursDefaultPageSize,
+    page: number = Consts.toursDefaultPageIndex) {
       let url = this.toursUrl + "/player/" + playerId + "/seasons?";
       for (let i = 0; i < seasonsId.length; i++) {
         url += `id=${seasonsId[i]}`;
@@ -42,13 +44,18 @@ export class DataService {
         }
       }
       url += `&queryType=${queryType}`;
-      return await this.http.get<Tour[]>(url).toPromise();
+      url += `&size=${size}&page=${page}`;
+    return await this.http.get<PagedResult<Tour>>(url).toPromise();
   }
 
-  async getToursForPlayer(queryType: ToursQueryType): Promise<Tour[]> {
+  async getToursForPlayer(
+    queryType: ToursQueryType,
+    size: number = Consts.toursDefaultPageSize,
+    page: number = Consts.toursDefaultPageIndex) {
       let url: string = this.toursUrl + "/player";
       url += `?queryType=${queryType}`;
-      return await this.http.get<Tour[]>(url).toPromise();
+      url += `&size=${size}&page=${page}`;
+      return await this.http.get<PagedResult<Tour>>(url).toPromise();
   }
 
   async getLeaguesSeasonsId(

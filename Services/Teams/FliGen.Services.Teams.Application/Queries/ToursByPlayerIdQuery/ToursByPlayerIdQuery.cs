@@ -1,18 +1,14 @@
-﻿using FliGen.Services.Teams.Application.Dto;
+﻿using FliGen.Common.Types;
 using MediatR;
 
 namespace FliGen.Services.Teams.Application.Queries.ToursByPlayerIdQuery
 {
-    public class ToursByPlayerIdQuery : IRequest<ToursByPlayerIdDto>
+    public class ToursByPlayerIdQuery : PagedQuery, IRequest<PagedResult<int>>
     {
-        public int Page { get; }
-        public int Size { get; }
         public int PlayerId { get; }
         
-        public ToursByPlayerIdQuery(int size, int page, int playerId)
+        public ToursByPlayerIdQuery(int size, int page, int playerId): base(size, page)
         {
-            Size = size;
-            Page = page;
             PlayerId = playerId;
         }
     }
